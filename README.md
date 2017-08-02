@@ -39,3 +39,7 @@ console.log(packer.items);
 // unfitItems will be empty, all items fit into bin1
 console.log(packer.unfitItems)
 ```
+
+## License
+
+MIT
