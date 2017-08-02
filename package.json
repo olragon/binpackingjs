@@ -2,7 +2,7 @@
   "name": "bp3d",
   "version": "1.0.0",
   "description": "3D Bin Packing",
-  "main": "index.js",
+  "main": "dist/bp3d.js",
   "scripts": {
     "build": "WEBPACK_ENV=build webpack",
     "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
