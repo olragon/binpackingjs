@@ -1,25 +1,28 @@
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-let libraryName = 'bp3d', plugins = [], outputFile;
+let libraryName = 'BinPacking', plugins = [], outputFile;
 const env = process.env.WEBPACK_ENV;
 
 if (env === 'build') {
   plugins.push(new UglifyJSPlugin({
   	sourceMap: true
   }));
-  outputFile = libraryName + '.min.js';
+  outputFile = `[name].min.js`;
 } else {
-  outputFile = libraryName + '.js';
+  outputFile = `[name].js`;
 }
 
 module.exports = {
 	context: __dirname + "/src",
-  entry: "./bp3d",
+  entry: {
+    BP2D: './2D',
+    BP3D: './3D',
+  },
   output: {
     path: __dirname + "/dist",
     filename: outputFile,
-    library: "bp3d",
+    library: libraryName,
     libraryTarget: "umd",
     umdNamedDefine: true    
   },

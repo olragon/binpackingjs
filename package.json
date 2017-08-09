@@ -6,7 +6,8 @@
   "scripts": {
     "build": "WEBPACK_ENV=build webpack",
     "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
-    "test": "mocha"
+    "test": "mocha --compilers js:babel-core/register ./test/*.js",
+    "test-dev": "mocha --watch --compilers js:babel-core/register ./test/*.js"
   },
   "author": "Long Nguyen",
   "license": "MIT",
@@ -15,7 +16,7 @@
     "babel-loader": "^7.1.1",
     "babel-preset-stage-1": "^6.24.1",
     "uglify-es": "^3.0.27",
-    "webpack": "^3.4.1",
-    "uglifyjs-webpack-plugin": "1.0.0-beta.2"
+    "uglifyjs-webpack-plugin": "1.0.0-beta.2",
+    "webpack": "^3.4.1"
   }
 }
