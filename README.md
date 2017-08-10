@@ -1,6 +1,8 @@
 binpackingjs
 ------------
 
+[![Build Status](https://api.travis-ci.org/olragon/binpackingjs.svg?branch=master)](https://travis-ci.org/olragon/binpackingjs)
+
 binpackingjs is 2D, 3D, 4D well tested JavaScript Bin Packing library.
 
 - 3D Bin Packing Code is porting from golang package [bp3d](https://github.com/gedex/bp3d) which is based on [this paper](http://www.cs.ukzn.ac.za/publications/erick_dube_507-034.pdf).
