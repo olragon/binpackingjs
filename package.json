@@ -2,6 +2,10 @@
   "name": "binpackingjs",
   "version": "2.0.0",
   "description": "2D, 3D, 4D Bin Packing",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olragon/binpackingjs"
+  },
   "main": "dist/BinPacking.min.js",
   "scripts": {
     "build": "WEBPACK_ENV=build webpack",
