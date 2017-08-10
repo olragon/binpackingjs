@@ -70,261 +70,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */,
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/******/ ({
 
-"use strict";
-class Bin {
-
-  constructor(name, w, h, d, mw) {
-    this.name = '';
-    this.width = 0;
-    this.height = 0;
-    this.depth = 0;
-    this.maxWeight = 0;
-    this.items = [];
-
-    this.name = name;
-    this.width = w;
-    this.height = h;
-    this.depth = d;
-    this.maxWeight = mw;
-  }
-
-  getName() {
-    return this.name;
-  }
-
-  getWidth() {
-    return this.width;
-  }
-
-  getHeight() {
-    return this.height;
-  }
-
-  getDepth() {
-    return this.depth;
-  }
-
-  getMaxWeight() {
-    return this.maxWeight;
-  }
-
-  getItems() {
-    return this.items;
-  }
-
-  getVolume() {
-    return this.getWidth() * this.getHeight() * this.getDepth();
-  }
-
-  putItem(item, p) {
-    let box = this;
-    let fit = false;
-
-    item.position = p;
-    for (let i = 0; i < 6; i++) {
-      item.rotationType = i;
-      let d = item.getDimension();
-
-      if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {
-        continue;
-      }
-
-      fit = true;
-
-      for (let j = 0; j < box.items.length; j++) {
-        let _j = box.items[j];
-        if (_j.intersect(item)) {
-          fit = false;
-          break;
-        }
-      }
-
-      if (fit) {
-        box.items.push(item);
-      }
-
-      return fit;
-    }
-
-    return fit;
-  }
-
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Bin;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const RotationType_WHD = 0;
-/* unused harmony export RotationType_WHD */
-
-const RotationType_HWD = 1;
-/* unused harmony export RotationType_HWD */
-
-const RotationType_HDW = 2;
-/* unused harmony export RotationType_HDW */
-
-const RotationType_DHW = 3;
-/* unused harmony export RotationType_DHW */
-
-const RotationType_DWH = 4;
-/* unused harmony export RotationType_DWH */
-
-const RotationType_WDH = 5;
-/* unused harmony export RotationType_WDH */
-
-
-const WidthAxis = 0;
-/* harmony export (immutable) */ __webpack_exports__["d"] = WidthAxis;
-
-const HeightAxis = 1;
-/* harmony export (immutable) */ __webpack_exports__["b"] = HeightAxis;
-
-const DepthAxis = 2;
-/* harmony export (immutable) */ __webpack_exports__["a"] = DepthAxis;
-
-
-const StartPosition = [0, 0, 0];
-/* harmony export (immutable) */ __webpack_exports__["c"] = StartPosition;
-
-
-const RotationTypeStrings = {
-  [RotationType_WHD]: 'RotationType_WHD (w,h,d)',
-  [RotationType_HWD]: 'RotationType_HWD (h,w,d)',
-  [RotationType_HDW]: 'RotationType_HDW (h,d,w)',
-  [RotationType_DHW]: 'RotationType_DHW (d,h,w)',
-  [RotationType_DWH]: 'RotationType_DWH (d,w,h)',
-  [RotationType_WDH]: 'RotationType_WDH (w,d,h)'
-};
-/* unused harmony export RotationTypeStrings */
-
-
-class Item {
-  // x, y, z
-
-  constructor(name, w, h, d, wg) {
-    this.name = '';
-    this.width = 0;
-    this.height = 0;
-    this.depth = 0;
-    this.weight = 0;
-    this.rotationType = RotationType_WHD;
-    this.position = [];
-
-    this.name = name;
-    this.width = w;
-    this.height = h;
-    this.depth = d;
-    this.weight = wg;
-  }
-
-  getWidth() {
-    return this.width;
-  }
-
-  getHeight() {
-    return this.height;
-  }
-
-  getDepth() {
-    return this.depth;
-  }
-
-  getWeight() {
-    return this.weight;
-  }
-
-  getRotationType() {
-    return this.rotationType;
-  }
-
-  getRotationTypeString() {
-    return RotationTypeStrings[this.getRotationType()];
-  }
-
-  getDimension() {
-    let d;
-    switch (this.rotationType) {
-      case RotationType_WHD:
-        d = [this.getWidth(), this.getHeight(), this.getDepth()];
-        break;
-      case RotationType_HWD:
-        d = [this.getHeight(), this.getWidth(), this.getDepth()];
-        break;
-      case RotationType_HDW:
-        d = [this.getHeight(), this.getDepth(), this.getWidth()];
-        break;
-      case RotationType_DHW:
-        d = [this.getDepth(), this.getHeight(), this.getWidth()];
-        break;
-      case RotationType_DWH:
-        d = [this.getDepth(), this.getWidth(), this.getHeight()];
-        break;
-      case RotationType_WDH:
-        d = [this.getWidth(), this.getDepth(), this.getHeight()];
-        break;
-    }
-    return d;
-  }
-
-  intersect(i2) {
-    return rectIntersect(this, i2, WidthAxis, HeightAxis) && rectIntersect(this, i2, HeightAxis, DepthAxis) && rectIntersect(this, i2, WidthAxis, DepthAxis);
-  }
-
-  getVolume() {
-    return this.getWidth() * this.getHeight() * this.getDepth();
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["e"] = Item;
-
-
-const rectIntersect = (i1, i2, x, y) => {
-  let d1, d2, cx1, cy1, cx2, cy2, ix, iy;
-
-  d1 = i1.getDimension();
-  d2 = i2.getDimension();
-
-  cx1 = i1.position[x] + d1[x] / 2;
-  cy1 = i1.position[y] + d1[y] / 2;
-  cx2 = i2.position[x] + d2[x] / 2;
-  cy2 = i2.position[y] + d2[y] / 2;
-
-  ix = Math.max(cx1, cx2) - Math.min(cx1, cx2);
-  iy = Math.max(cy1, cy2) - Math.min(cy1, cy2);
-
-  return ix < (d1[x] + d2[x]) / 2 && iy < (d1[y] + d2[y]) / 2;
-};
-/* unused harmony export rectIntersect */
-
-
-/***/ }),
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */
+/***/ 17:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Item__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Packer__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Item__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Packer__ = __webpack_require__(18);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Bin", function() { return __WEBPACK_IMPORTED_MODULE_0__Bin__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Item", function() { return __WEBPACK_IMPORTED_MODULE_1__Item__["e"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Packer", function() { return __WEBPACK_IMPORTED_MODULE_2__Packer__["a"]; });
@@ -335,12 +93,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 12 */
+
+/***/ 18:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Item__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Item__ = __webpack_require__(5);
 
 
 
@@ -487,6 +246,243 @@ class Packer {
 /* harmony export (immutable) */ __webpack_exports__["a"] = Packer;
 
 
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Bin {
+
+  constructor(name, w, h, d, mw) {
+    this.name = '';
+    this.width = 0;
+    this.height = 0;
+    this.depth = 0;
+    this.maxWeight = 0;
+    this.items = [];
+
+    this.name = name;
+    this.width = w;
+    this.height = h;
+    this.depth = d;
+    this.maxWeight = mw;
+  }
+
+  getName() {
+    return this.name;
+  }
+
+  getWidth() {
+    return this.width;
+  }
+
+  getHeight() {
+    return this.height;
+  }
+
+  getDepth() {
+    return this.depth;
+  }
+
+  getMaxWeight() {
+    return this.maxWeight;
+  }
+
+  getItems() {
+    return this.items;
+  }
+
+  getVolume() {
+    return this.getWidth() * this.getHeight() * this.getDepth();
+  }
+
+  putItem(item, p) {
+    let box = this;
+    let fit = false;
+
+    item.position = p;
+    for (let i = 0; i < 6; i++) {
+      item.rotationType = i;
+      let d = item.getDimension();
+
+      if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {
+        continue;
+      }
+
+      fit = true;
+
+      for (let j = 0; j < box.items.length; j++) {
+        let _j = box.items[j];
+        if (_j.intersect(item)) {
+          fit = false;
+          break;
+        }
+      }
+
+      if (fit) {
+        box.items.push(item);
+      }
+
+      return fit;
+    }
+
+    return fit;
+  }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Bin;
+
+
+/***/ }),
+
+/***/ 5:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const RotationType_WHD = 0;
+/* unused harmony export RotationType_WHD */
+
+const RotationType_HWD = 1;
+/* unused harmony export RotationType_HWD */
+
+const RotationType_HDW = 2;
+/* unused harmony export RotationType_HDW */
+
+const RotationType_DHW = 3;
+/* unused harmony export RotationType_DHW */
+
+const RotationType_DWH = 4;
+/* unused harmony export RotationType_DWH */
+
+const RotationType_WDH = 5;
+/* unused harmony export RotationType_WDH */
+
+
+const WidthAxis = 0;
+/* harmony export (immutable) */ __webpack_exports__["d"] = WidthAxis;
+
+const HeightAxis = 1;
+/* harmony export (immutable) */ __webpack_exports__["b"] = HeightAxis;
+
+const DepthAxis = 2;
+/* harmony export (immutable) */ __webpack_exports__["a"] = DepthAxis;
+
+
+const StartPosition = [0, 0, 0];
+/* harmony export (immutable) */ __webpack_exports__["c"] = StartPosition;
+
+
+const RotationTypeStrings = {
+  [RotationType_WHD]: 'RotationType_WHD (w,h,d)',
+  [RotationType_HWD]: 'RotationType_HWD (h,w,d)',
+  [RotationType_HDW]: 'RotationType_HDW (h,d,w)',
+  [RotationType_DHW]: 'RotationType_DHW (d,h,w)',
+  [RotationType_DWH]: 'RotationType_DWH (d,w,h)',
+  [RotationType_WDH]: 'RotationType_WDH (w,d,h)'
+};
+/* unused harmony export RotationTypeStrings */
+
+
+class Item {
+  // x, y, z
+
+  constructor(name, w, h, d, wg) {
+    this.name = '';
+    this.width = 0;
+    this.height = 0;
+    this.depth = 0;
+    this.weight = 0;
+    this.rotationType = RotationType_WHD;
+    this.position = [];
+
+    this.name = name;
+    this.width = w;
+    this.height = h;
+    this.depth = d;
+    this.weight = wg;
+  }
+
+  getWidth() {
+    return this.width;
+  }
+
+  getHeight() {
+    return this.height;
+  }
+
+  getDepth() {
+    return this.depth;
+  }
+
+  getWeight() {
+    return this.weight;
+  }
+
+  getRotationType() {
+    return this.rotationType;
+  }
+
+  getRotationTypeString() {
+    return RotationTypeStrings[this.getRotationType()];
+  }
+
+  getDimension() {
+    let d;
+    switch (this.rotationType) {
+      case RotationType_WHD:
+        d = [this.getWidth(), this.getHeight(), this.getDepth()];
+        break;
+      case RotationType_HWD:
+        d = [this.getHeight(), this.getWidth(), this.getDepth()];
+        break;
+      case RotationType_HDW:
+        d = [this.getHeight(), this.getDepth(), this.getWidth()];
+        break;
+      case RotationType_DHW:
+        d = [this.getDepth(), this.getHeight(), this.getWidth()];
+        break;
+      case RotationType_DWH:
+        d = [this.getDepth(), this.getWidth(), this.getHeight()];
+        break;
+      case RotationType_WDH:
+        d = [this.getWidth(), this.getDepth(), this.getHeight()];
+        break;
+    }
+    return d;
+  }
+
+  intersect(i2) {
+    return rectIntersect(this, i2, WidthAxis, HeightAxis) && rectIntersect(this, i2, HeightAxis, DepthAxis) && rectIntersect(this, i2, WidthAxis, DepthAxis);
+  }
+
+  getVolume() {
+    return this.getWidth() * this.getHeight() * this.getDepth();
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["e"] = Item;
+
+
+const rectIntersect = (i1, i2, x, y) => {
+  let d1, d2, cx1, cy1, cx2, cy2, ix, iy;
+
+  d1 = i1.getDimension();
+  d2 = i2.getDimension();
+
+  cx1 = i1.position[x] + d1[x] / 2;
+  cy1 = i1.position[y] + d1[y] / 2;
+  cx2 = i2.position[x] + d2[x] / 2;
+  cy2 = i2.position[y] + d2[y] / 2;
+
+  ix = Math.max(cx1, cx2) - Math.min(cx1, cx2);
+  iy = Math.max(cy1, cy2) - Math.min(cy1, cy2);
+
+  return ix < (d1[x] + d2[x]) / 2 && iy < (d1[y] + d2[y]) / 2;
+};
+/* unused harmony export rectIntersect */
+
+
 /***/ })
-/******/ ]);
+
+/******/ });
 });

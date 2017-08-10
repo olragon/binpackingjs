@@ -24,7 +24,7 @@ describe('bp2d.js', function() {
       let boxes = [
         new Box(50, 50),
         new Box(10, 40),
-        new Box(50, 40),
+        new Box(50, 44),
       ];
       let remaining_boxes = [];
       boxes.forEach((box) => {
@@ -32,7 +32,6 @@ describe('bp2d.js', function() {
           remaining_boxes.push(box);
         }
       });
-
       assert.equal(bin.boxes.length, 2);
       assert.equal(bin.boxes[0], boxes[0]);
       assert.equal(bin.boxes[1], boxes[1]);
@@ -113,14 +112,14 @@ describe('bp2d.js', function() {
     });
 
     it('puts two boxes in single bin', function () {
-      let bin = new Bin(9.6, 3.1);
-      let box_1 = new Box(8, 1.5);
-      let box_2 = new Box(1, 9);
-      let packer = new Packer([bin]);
+      let { binOfSize1 } = newBins();
+      let box_1 = new Box(8000, 1500);
+      let box_2 = new Box(1000, 9000);
+      let packer = new Packer([binOfSize1]);
       let result = packer.pack([box_1, box_2]);
       
       assert.equal(result.length, 2);
-      assert.equal(bin.boxes.length, 2);
+      assert.equal(binOfSize1.boxes.length, 2);
     });
 
     it('puts two boxes in separate bins', function () {
@@ -168,7 +167,7 @@ describe('bp2d.js', function() {
       let box_2 = new Box(1000, 1000);
       let boxes = [box_1, box_2];
       let packer = new Packer([binOfSize1]);
-      let result = packer.pack(boxes);
+      let result = packer.pack(boxes, { limit: 1 });
 
       assert.equal(result.length, 1);
       assert.equal(binOfSize1.boxes.length, 1);
@@ -199,10 +198,10 @@ describe('bp2d.js', function() {
 
       assert.equal(packed_boxes.length, 3);
       assert.equal(bin_1.boxes.length, 2);
-      assert.equal(bin_1.boxes[0].label(), '40x40 at [0,0]');
-      assert.equal(bin_1.boxes[1].label(), '15x10 at [0,0]');
+      assert.equal(bin_1.boxes[0].label, '40x40 at [0,0]');
+      assert.equal(bin_1.boxes[1].label, '15x10 at [0,40]');
       assert.equal(bin_2.boxes.length, 1);
-      assert.equal(bin_2.boxes[0].label(), '50x45 at [0,0]');
+      assert.equal(bin_2.boxes[0].label, '50x45 at [0,0]');
       assert.equal(boxes[boxes.length - 1].packed, false);
     });    
 

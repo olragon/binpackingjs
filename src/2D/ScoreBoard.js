@@ -15,6 +15,11 @@ export default class ScoreBoard {
     });
   }
 
+  debug() {
+    require('console.table');
+    console.table(this.entries.map((entry) => ({ bin: entry.bin.label, box: entry.box.label, score: entry.score })));
+  }
+
   addBinEntries(bin, boxes) {
     boxes.forEach((box) => {
       let entry = new ScoreBoardEntry(bin, box);
@@ -50,7 +55,7 @@ export default class ScoreBoard {
       if (!entry.fit()) {
         continue;
       }
-      if (best === null || entry.score.compare(best.score) <= 0) {
+      if (best === null || entry.score < best.score) {
         best = entry;
       }
     }

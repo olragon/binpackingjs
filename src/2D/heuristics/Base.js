@@ -6,19 +6,19 @@ export default class Base {
     let bestScore = new Score();
     let width = box.width;
     let height = box.height;
-
+    
     freeRects.forEach((freeRect) => {
       this.tryPlaceRectIn(freeRect, box, width, height, bestScore);
       this.tryPlaceRectIn(freeRect, box, height, width, bestScore);
     });
-
+    
     return bestScore;
   }
 
   tryPlaceRectIn(freeRect, box, rectWidth, rectHeight, bestScore) {
     if (freeRect.width >= rectWidth && freeRect.height >= rectHeight) {
       let score = this.calculateScore(freeRect, rectWidth, rectHeight);
-      if (score.compare(bestScore) <= 0) {
+      if (score < bestScore) {
         box.x = freeRect.x;
         box.y = freeRect.y;
         box.width = rectWidth;

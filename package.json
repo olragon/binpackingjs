@@ -1,8 +1,8 @@
 {
-  "name": "bp3d",
-  "version": "1.1.0",
-  "description": "3D Bin Packing",
-  "main": "dist/bp3d.js",
+  "name": "binpackingjs",
+  "version": "2.0.0",
+  "description": "2D, 3D, 4D Bin Packing",
+  "main": "dist/BinPacking.min.js",
   "scripts": {
     "build": "WEBPACK_ENV=build webpack",
     "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
@@ -15,6 +15,7 @@
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-preset-stage-1": "^6.24.1",
+    "console.table": "^0.8.0",
     "uglify-es": "^3.0.27",
     "uglifyjs-webpack-plugin": "1.0.0-beta.2",
     "webpack": "^3.4.1"

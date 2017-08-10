@@ -18,6 +18,7 @@ module.exports = {
   entry: {
     BP2D: './2D',
     BP3D: './3D',
+    BinPacking: './index'
   },
   output: {
     path: __dirname + "/dist",

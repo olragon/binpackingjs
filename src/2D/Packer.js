@@ -13,11 +13,13 @@ export default class Packer {
   pack(boxes, options = {}) {
     let packedBoxes = [];
     let entry;
+    
     boxes = boxes.filter((box) => !box.packed);
     if (boxes.length === 0) return packedBoxes;
 
-    let limit = options.limit || 100;
+    let limit = options.limit || Score.MAX_INT;
     let board = new ScoreBoard(this.bins, boxes);
+    
     while(entry = board.bestFit()) {
       entry.bin.insert(entry.box);
       board.removeBox(entry.box);
@@ -27,7 +29,6 @@ export default class Packer {
         break;
       }
     };
-
     return packedBoxes;
   }
 

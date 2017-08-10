@@ -2,7 +2,6 @@ export default class Box {
 
   width = null
   height = null
-  area = null
   x = 0
   y = 0
   packed = false
@@ -10,7 +9,6 @@ export default class Box {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.area = this.width * this.height;
   }
 
   rotate() {
@@ -19,8 +17,12 @@ export default class Box {
     this.height = width;
   }
 
-  label() {
+  get label() {
     return `${this.width}x${this.height} at [${this.x},${this.y}]`;
+  }
+
+  get area() {
+    return this.width * this.height;
   }
 
 }

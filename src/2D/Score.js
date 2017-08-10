@@ -1,21 +1,19 @@
 export default class Score {
 
   static MAX_INT = Number.MAX_SAFE_INTEGER;
-  score_1 = 0;
-  score_2 = 0;
+  score_1 = Score.MAX_INT;
+  score_2 = Score.MAX_INT;
 
   constructor(score_1, score_2) {
-    this.score_1 = score_1 || 0;
-    this.score_2 = score_2 || 0;
+    if (typeof score_1 != 'undefined') this.score_1 = score_1;
+    if (typeof score_2 != 'undefined') this.score_2 = score_2;
   }
 
-  compare(other) {
-    if (this.score_1 > other.score_1 || (this.score_1 === other.score_1 && this.score_2 > other.score_2))
-      return -1;
-    else if (this.score_1 < other.score_1 || (this.score_1 === other.score_1 && this.score_2 < other.score_2))
-      return 1;
-    else
-      return 0;
+  /**
+   * Lower is better
+   */
+  valueOf() {
+    return (this.score_1 + this.score_2);
   }
 
   assign(other) {
@@ -24,7 +22,7 @@ export default class Score {
   }
 
   isBlank() {
-    return this.score_1 === 0;
+    return this.score_1 === Score.MAX_INT;
   }
 
   decreaseBy(delta) {

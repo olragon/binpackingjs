@@ -1,4 +1,5 @@
 import BestShortSideFit from './heuristics/BestShortSideFit';
+import Box from './Box';
 
 export default class Bin {
 
@@ -13,7 +14,10 @@ export default class Bin {
     this.height = height
     this.freeRectangles = [new FreeSpaceBox(width, height)]
     this.heuristic = heuristic || new BestShortSideFit();
-    this.area = width * height;
+  }
+
+  get area() {
+    return this.width * this.height;
   }
 
   get efficiency() {
@@ -24,11 +28,16 @@ export default class Bin {
     return boxesArea * 100 / this.area;
   }
 
+  get label() {
+    return `${this.width}x${this.height} ${this.efficiency}%`;
+  }
+
   insert(box) {
     if (box.packed) return false;
     
     this.heuristic.findPositionForNewNode(box, this.freeRectangles);
     if (!box.packed) return false;
+
     let numRectanglesToProcess = this.freeRectangles.length;
     let i = 0;
     
@@ -44,20 +53,18 @@ export default class Bin {
     
     this.pruneFreeList();
     this.boxes.push(box);
-    
+
     return true;
   }
 
   scoreFor(box) {
-    return this.heuristic.findPositionForNewNode({...box}, this.freeRectangles);
+    let copyBox = new Box(box.width, box.height);
+    let score = this.heuristic.findPositionForNewNode(copyBox, this.freeRectangles);
+    return score;
   }
 
   isLargerThan(box) {
     return (this.width >= box.width && this.height >= box.height) || (this.height >= box.width && this.width >= box.height);
-  }
-
-  label() {
-    return `${this.width}x${this.height} ${this.efficiency}%`;
   }
 
   splitFreeNode(freeNode, usedNode) {
@@ -76,7 +83,7 @@ export default class Bin {
   }
 
   trySplitFreeNodeVertically(freeNode, usedNode) {
-    if (usedNode.x < freeNode.x + freeNode.width && usedNode.x + usedNode.width < freeNode.x) {
+    if (usedNode.x < freeNode.x + freeNode.width && usedNode.x + usedNode.width > freeNode.x) {
       this.tryLeaveFreeSpaceAtTop(freeNode, usedNode);
       this.tryLeaveFreeSpaceAtBottom(freeNode, usedNode);
     }
