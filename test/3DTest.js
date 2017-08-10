@@ -1,9 +1,11 @@
 const assert = require('assert');
-const BinPacking = require('../dist/BP3D');
+const BinPacking = require('../dist/BinPacking').BP3D;
 
-const Item = BinPacking.Item;
-const Bin = BinPacking.Bin;
-const Packer = BinPacking.Packer;
+const {
+  Item,
+  Bin,
+  Packer
+} = BinPacking;
 
 const testDatas = [
   {

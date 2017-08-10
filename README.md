@@ -13,11 +13,9 @@ binpackingjs is 2D, 3D, 4D well tested JavaScript Bin Packing library.
 ## 3D Bin Packing
 
 ```
-const BinPacking = require('binpackingjs').3D;
+const BinPacking3D = require('binpackingjs').BP3D;
 
-const Item = BinPacking.Item;
-const Bin = BinPacking.Bin;
-const Packer = BinPacking.Packer;
+const { Item, Bin, Packer } = BinPacking3D;
 
 let bin1 = new Bin("Le petite box", 296, 296, 8, 1000);
 let item1 = new Item("Item 1", 250, 250, 2, 200);
@@ -46,8 +44,8 @@ console.log(packer.unfitItems)
 ## 2D Bin Packing
 
 ```
-const BinPacking = require('binpackingjs').2D;
-const { Bin, Box, Packer } = BinPacking;
+const BinPacking2D = require('binpackingjs').BP2D;
+const { Bin, Box, Packer } = BinPacking2D;
 
 let bin_1 = new Bin(100, 50);
 let bin_2 = new Bin(50, 50);

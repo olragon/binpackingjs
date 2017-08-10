@@ -2084,16 +2084,16 @@ exports.BP3D = exports.BP2D = undefined;
 
 var _D = __webpack_require__(6);
 
-var _D2 = _interopRequireDefault(_D);
+var BP2D = _interopRequireWildcard(_D);
 
-var _D3 = __webpack_require__(17);
+var _D2 = __webpack_require__(17);
 
-var _D4 = _interopRequireDefault(_D3);
+var BP3D = _interopRequireWildcard(_D2);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-exports.BP2D = _D2.default;
-exports.BP3D = _D4.default;
+exports.BP2D = BP2D;
+exports.BP3D = BP3D;
 
 /***/ })
 /******/ ]);

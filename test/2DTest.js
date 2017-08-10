@@ -1,6 +1,6 @@
 const assert = require('assert');
-const BP2D = require('../dist/BP2D');
-const BestAreaFit = require('../dist/BP2D');
+const BP2D = require('../dist/BinPacking').BP2D;
+
 const {
   Bin,
   Box,
