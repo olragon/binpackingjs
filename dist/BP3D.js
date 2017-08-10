@@ -76,185 +76,234 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ({
 
 /***/ 17:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Item__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Packer__ = __webpack_require__(18);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Bin", function() { return __WEBPACK_IMPORTED_MODULE_0__Bin__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Item", function() { return __WEBPACK_IMPORTED_MODULE_1__Item__["e"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Packer", function() { return __WEBPACK_IMPORTED_MODULE_2__Packer__["a"]; });
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Packer = exports.Item = exports.Bin = undefined;
 
+var _Bin = __webpack_require__(4);
 
+var _Bin2 = _interopRequireDefault(_Bin);
 
+var _Item = __webpack_require__(5);
+
+var _Item2 = _interopRequireDefault(_Item);
+
+var _Packer = __webpack_require__(18);
+
+var _Packer2 = _interopRequireDefault(_Packer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.Bin = _Bin2.default;
+exports.Item = _Item2.default;
+exports.Packer = _Packer2.default;
 
 /***/ }),
 
 /***/ 18:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Item__ = __webpack_require__(5);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-class Packer {
-  constructor() {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Bin = __webpack_require__(4);
+
+var _Bin2 = _interopRequireDefault(_Bin);
+
+var _Item = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Packer = function () {
+  function Packer() {
+    _classCallCheck(this, Packer);
+
     this.bins = [];
     this.items = [];
     this.unfitItems = [];
   }
 
-  addBin(bin) {
-    this.bins.push(bin);
-  }
-
-  addItem(item) {
-    this.items.push(item);
-  }
-
-  findFittedBin(i) {
-    for (let _i = 0; _i < this.bins.length; _i++) {
-      let b = this.bins[_i];
-
-      if (!b.putItem(i, __WEBPACK_IMPORTED_MODULE_1__Item__["c" /* StartPosition */])) {
-        continue;
-      }
-
-      if (b.items.length === 1 && b.items[0] === i) {
-        b.items = [];
-      }
-
-      return b;
+  _createClass(Packer, [{
+    key: 'addBin',
+    value: function addBin(bin) {
+      this.bins.push(bin);
     }
-    return null;
-  }
+  }, {
+    key: 'addItem',
+    value: function addItem(item) {
+      this.items.push(item);
+    }
+  }, {
+    key: 'findFittedBin',
+    value: function findFittedBin(i) {
+      for (var _i = 0; _i < this.bins.length; _i++) {
+        var b = this.bins[_i];
 
-  getBiggerBinThan(b) {
-    let v = b.getVolume();
-    for (let _i = 0; _i < this.bins; _i++) {
-      let b2 = this.bins[_i];
-      if (b2.getVolume() > v) {
-        return b2;
+        if (!b.putItem(i, _Item.StartPosition)) {
+          continue;
+        }
+
+        if (b.items.length === 1 && b.items[0] === i) {
+          b.items = [];
+        }
+
+        return b;
       }
+      return null;
     }
-    return null;
-  }
-
-  unfitItem() {
-    if (this.items.length === 0) {
-      return;
-    }
-    this.unfitItems.push(this.items[0]);
-    this.items.splice(0, 1);
-  }
-
-  packToBin(b, items) {
-    let fitted = false;
-    let b2 = null;
-    let unpacked = [];
-    let fit = b.putItem(items[0], __WEBPACK_IMPORTED_MODULE_1__Item__["c" /* StartPosition */]);
-
-    if (!fit) {
-      let b2 = this.getBiggerBinThan(b);
-      if (b2) {
-        return this.packToBin(b2, items);
-      }
-      return this.items;
-    }
-
-    // Pack unpacked items.
-    for (let _i = 1; _i < this.items.length; _i++) {
-      let item = this.items[_i];
-
-      // Try available pivots in current bin that are not intersect with
-      // existing items in current bin.
-      lookup: for (let _pt = 0; _pt < 3; _pt++) {
-        for (let _j = 0; _j < b.items.length; _j++) {
-          let pv;
-          let ib = b.items[_j];
-          switch (_pt) {
-            case __WEBPACK_IMPORTED_MODULE_1__Item__["d" /* WidthAxis */]:
-              pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
-              break;
-            case __WEBPACK_IMPORTED_MODULE_1__Item__["b" /* HeightAxis */]:
-              pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
-              break;
-            case __WEBPACK_IMPORTED_MODULE_1__Item__["a" /* DepthAxis */]:
-              pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
-              break;
-          }
-
-          if (b.putItem(item, pv)) {
-            fitted = true;
-            break lookup;
-          }
+  }, {
+    key: 'getBiggerBinThan',
+    value: function getBiggerBinThan(b) {
+      var v = b.getVolume();
+      for (var _i = 0; _i < this.bins; _i++) {
+        var b2 = this.bins[_i];
+        if (b2.getVolume() > v) {
+          return b2;
         }
       }
+      return null;
+    }
+  }, {
+    key: 'unfitItem',
+    value: function unfitItem() {
+      if (this.items.length === 0) {
+        return;
+      }
+      this.unfitItems.push(this.items[0]);
+      this.items.splice(0, 1);
+    }
+  }, {
+    key: 'packToBin',
+    value: function packToBin(b, items) {
+      var fitted = false;
+      var b2 = null;
+      var unpacked = [];
+      var fit = b.putItem(items[0], _Item.StartPosition);
 
-      if (!fitted) {
-        while (b2 !== null) {
-          b2 = this.getBiggerBinThan(b);
-          if (b2) {
-            b2.items.push(item);
-            let left = this.packToBin(b2, b2.items);
-            if (left.length === 0) {
-              b = b2;
+      if (!fit) {
+        var _b = this.getBiggerBinThan(b);
+        if (_b) {
+          return this.packToBin(_b, items);
+        }
+        return this.items;
+      }
+
+      // Pack unpacked items.
+      for (var _i = 1; _i < this.items.length; _i++) {
+        var item = this.items[_i];
+
+        // Try available pivots in current bin that are not intersect with
+        // existing items in current bin.
+        lookup: for (var _pt = 0; _pt < 3; _pt++) {
+          for (var _j = 0; _j < b.items.length; _j++) {
+            var pv = void 0;
+            var ib = b.items[_j];
+            switch (_pt) {
+              case _Item.WidthAxis:
+                pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
+                break;
+              case _Item.HeightAxis:
+                pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
+                break;
+              case _Item.DepthAxis:
+                pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
+                break;
+            }
+
+            if (b.putItem(item, pv)) {
               fitted = true;
-              break;
+              break lookup;
             }
           }
         }
 
         if (!fitted) {
-          unpacked.push(item);
+          while (b2 !== null) {
+            b2 = this.getBiggerBinThan(b);
+            if (b2) {
+              b2.items.push(item);
+              var left = this.packToBin(b2, b2.items);
+              if (left.length === 0) {
+                b = b2;
+                fitted = true;
+                break;
+              }
+            }
+          }
+
+          if (!fitted) {
+            unpacked.push(item);
+          }
         }
       }
+
+      return unpacked;
     }
+  }, {
+    key: 'pack',
+    value: function pack() {
+      this.bins.sort(function (a, b) {
+        return a.getVolume() > b.getVolume();
+      });
 
-    return unpacked;
-  }
+      this.items.sort(function (a, b) {
+        return a.getVolume() > b.getVolume();
+      });
 
-  pack() {
-    this.bins.sort((a, b) => {
-      return a.getVolume() > b.getVolume();
-    });
+      while (this.items.length > 0) {
+        var bin = this.findFittedBin(this.items[0]);
 
-    this.items.sort((a, b) => {
-      return a.getVolume() > b.getVolume();
-    });
+        if (bin === null) {
+          this.unfitItem();
+          continue;
+        }
 
-    while (this.items.length > 0) {
-      let bin = this.findFittedBin(this.items[0]);
-
-      if (bin === null) {
-        this.unfitItem();
-        continue;
+        this.items = this.packToBin(bin, this.items);
       }
 
-      this.items = this.packToBin(bin, this.items);
+      return null;
     }
+  }]);
 
-    return null;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Packer;
+  return Packer;
+}();
 
+exports.default = Packer;
 
 /***/ }),
 
 /***/ 4:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-class Bin {
 
-  constructor(name, w, h, d, mw) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Bin = function () {
+  function Bin(name, w, h, d, mw) {
+    _classCallCheck(this, Bin);
+
     this.name = '';
     this.width = 0;
     this.height = 0;
@@ -269,125 +318,123 @@ class Bin {
     this.maxWeight = mw;
   }
 
-  getName() {
-    return this.name;
-  }
+  _createClass(Bin, [{
+    key: 'getName',
+    value: function getName() {
+      return this.name;
+    }
+  }, {
+    key: 'getWidth',
+    value: function getWidth() {
+      return this.width;
+    }
+  }, {
+    key: 'getHeight',
+    value: function getHeight() {
+      return this.height;
+    }
+  }, {
+    key: 'getDepth',
+    value: function getDepth() {
+      return this.depth;
+    }
+  }, {
+    key: 'getMaxWeight',
+    value: function getMaxWeight() {
+      return this.maxWeight;
+    }
+  }, {
+    key: 'getItems',
+    value: function getItems() {
+      return this.items;
+    }
+  }, {
+    key: 'getVolume',
+    value: function getVolume() {
+      return this.getWidth() * this.getHeight() * this.getDepth();
+    }
+  }, {
+    key: 'putItem',
+    value: function putItem(item, p) {
+      var box = this;
+      var fit = false;
 
-  getWidth() {
-    return this.width;
-  }
+      item.position = p;
+      for (var i = 0; i < 6; i++) {
+        item.rotationType = i;
+        var d = item.getDimension();
 
-  getHeight() {
-    return this.height;
-  }
-
-  getDepth() {
-    return this.depth;
-  }
-
-  getMaxWeight() {
-    return this.maxWeight;
-  }
-
-  getItems() {
-    return this.items;
-  }
-
-  getVolume() {
-    return this.getWidth() * this.getHeight() * this.getDepth();
-  }
-
-  putItem(item, p) {
-    let box = this;
-    let fit = false;
-
-    item.position = p;
-    for (let i = 0; i < 6; i++) {
-      item.rotationType = i;
-      let d = item.getDimension();
-
-      if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {
-        continue;
-      }
-
-      fit = true;
-
-      for (let j = 0; j < box.items.length; j++) {
-        let _j = box.items[j];
-        if (_j.intersect(item)) {
-          fit = false;
-          break;
+        if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {
+          continue;
         }
-      }
 
-      if (fit) {
-        box.items.push(item);
+        fit = true;
+
+        for (var j = 0; j < box.items.length; j++) {
+          var _j = box.items[j];
+          if (_j.intersect(item)) {
+            fit = false;
+            break;
+          }
+        }
+
+        if (fit) {
+          box.items.push(item);
+        }
+
+        return fit;
       }
 
       return fit;
     }
+  }]);
 
-    return fit;
-  }
+  return Bin;
+}();
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Bin;
-
+exports.default = Bin;
 
 /***/ }),
 
 /***/ 5:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-const RotationType_WHD = 0;
-/* unused harmony export RotationType_WHD */
-
-const RotationType_HWD = 1;
-/* unused harmony export RotationType_HWD */
-
-const RotationType_HDW = 2;
-/* unused harmony export RotationType_HDW */
-
-const RotationType_DHW = 3;
-/* unused harmony export RotationType_DHW */
-
-const RotationType_DWH = 4;
-/* unused harmony export RotationType_DWH */
-
-const RotationType_WDH = 5;
-/* unused harmony export RotationType_WDH */
 
 
-const WidthAxis = 0;
-/* harmony export (immutable) */ __webpack_exports__["d"] = WidthAxis;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-const HeightAxis = 1;
-/* harmony export (immutable) */ __webpack_exports__["b"] = HeightAxis;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-const DepthAxis = 2;
-/* harmony export (immutable) */ __webpack_exports__["a"] = DepthAxis;
+var _RotationTypeStrings;
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-const StartPosition = [0, 0, 0];
-/* harmony export (immutable) */ __webpack_exports__["c"] = StartPosition;
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var RotationType_WHD = exports.RotationType_WHD = 0;
+var RotationType_HWD = exports.RotationType_HWD = 1;
+var RotationType_HDW = exports.RotationType_HDW = 2;
+var RotationType_DHW = exports.RotationType_DHW = 3;
+var RotationType_DWH = exports.RotationType_DWH = 4;
+var RotationType_WDH = exports.RotationType_WDH = 5;
 
-const RotationTypeStrings = {
-  [RotationType_WHD]: 'RotationType_WHD (w,h,d)',
-  [RotationType_HWD]: 'RotationType_HWD (h,w,d)',
-  [RotationType_HDW]: 'RotationType_HDW (h,d,w)',
-  [RotationType_DHW]: 'RotationType_DHW (d,h,w)',
-  [RotationType_DWH]: 'RotationType_DWH (d,w,h)',
-  [RotationType_WDH]: 'RotationType_WDH (w,d,h)'
-};
-/* unused harmony export RotationTypeStrings */
+var WidthAxis = exports.WidthAxis = 0;
+var HeightAxis = exports.HeightAxis = 1;
+var DepthAxis = exports.DepthAxis = 2;
 
+var StartPosition = exports.StartPosition = [0, 0, 0];
 
-class Item {
+var RotationTypeStrings = exports.RotationTypeStrings = (_RotationTypeStrings = {}, _defineProperty(_RotationTypeStrings, RotationType_WHD, 'RotationType_WHD (w,h,d)'), _defineProperty(_RotationTypeStrings, RotationType_HWD, 'RotationType_HWD (h,w,d)'), _defineProperty(_RotationTypeStrings, RotationType_HDW, 'RotationType_HDW (h,d,w)'), _defineProperty(_RotationTypeStrings, RotationType_DHW, 'RotationType_DHW (d,h,w)'), _defineProperty(_RotationTypeStrings, RotationType_DWH, 'RotationType_DWH (d,w,h)'), _defineProperty(_RotationTypeStrings, RotationType_WDH, 'RotationType_WDH (w,d,h)'), _RotationTypeStrings);
+
+var Item = function () {
   // x, y, z
 
-  constructor(name, w, h, d, wg) {
+  function Item(name, w, h, d, wg) {
+    _classCallCheck(this, Item);
+
     this.name = '';
     this.width = 0;
     this.height = 0;
@@ -403,68 +450,87 @@ class Item {
     this.weight = wg;
   }
 
-  getWidth() {
-    return this.width;
-  }
-
-  getHeight() {
-    return this.height;
-  }
-
-  getDepth() {
-    return this.depth;
-  }
-
-  getWeight() {
-    return this.weight;
-  }
-
-  getRotationType() {
-    return this.rotationType;
-  }
-
-  getRotationTypeString() {
-    return RotationTypeStrings[this.getRotationType()];
-  }
-
-  getDimension() {
-    let d;
-    switch (this.rotationType) {
-      case RotationType_WHD:
-        d = [this.getWidth(), this.getHeight(), this.getDepth()];
-        break;
-      case RotationType_HWD:
-        d = [this.getHeight(), this.getWidth(), this.getDepth()];
-        break;
-      case RotationType_HDW:
-        d = [this.getHeight(), this.getDepth(), this.getWidth()];
-        break;
-      case RotationType_DHW:
-        d = [this.getDepth(), this.getHeight(), this.getWidth()];
-        break;
-      case RotationType_DWH:
-        d = [this.getDepth(), this.getWidth(), this.getHeight()];
-        break;
-      case RotationType_WDH:
-        d = [this.getWidth(), this.getDepth(), this.getHeight()];
-        break;
+  _createClass(Item, [{
+    key: 'getWidth',
+    value: function getWidth() {
+      return this.width;
     }
-    return d;
-  }
+  }, {
+    key: 'getHeight',
+    value: function getHeight() {
+      return this.height;
+    }
+  }, {
+    key: 'getDepth',
+    value: function getDepth() {
+      return this.depth;
+    }
+  }, {
+    key: 'getWeight',
+    value: function getWeight() {
+      return this.weight;
+    }
+  }, {
+    key: 'getRotationType',
+    value: function getRotationType() {
+      return this.rotationType;
+    }
+  }, {
+    key: 'getRotationTypeString',
+    value: function getRotationTypeString() {
+      return RotationTypeStrings[this.getRotationType()];
+    }
+  }, {
+    key: 'getDimension',
+    value: function getDimension() {
+      var d = void 0;
+      switch (this.rotationType) {
+        case RotationType_WHD:
+          d = [this.getWidth(), this.getHeight(), this.getDepth()];
+          break;
+        case RotationType_HWD:
+          d = [this.getHeight(), this.getWidth(), this.getDepth()];
+          break;
+        case RotationType_HDW:
+          d = [this.getHeight(), this.getDepth(), this.getWidth()];
+          break;
+        case RotationType_DHW:
+          d = [this.getDepth(), this.getHeight(), this.getWidth()];
+          break;
+        case RotationType_DWH:
+          d = [this.getDepth(), this.getWidth(), this.getHeight()];
+          break;
+        case RotationType_WDH:
+          d = [this.getWidth(), this.getDepth(), this.getHeight()];
+          break;
+      }
+      return d;
+    }
+  }, {
+    key: 'intersect',
+    value: function intersect(i2) {
+      return rectIntersect(this, i2, WidthAxis, HeightAxis) && rectIntersect(this, i2, HeightAxis, DepthAxis) && rectIntersect(this, i2, WidthAxis, DepthAxis);
+    }
+  }, {
+    key: 'getVolume',
+    value: function getVolume() {
+      return this.getWidth() * this.getHeight() * this.getDepth();
+    }
+  }]);
 
-  intersect(i2) {
-    return rectIntersect(this, i2, WidthAxis, HeightAxis) && rectIntersect(this, i2, HeightAxis, DepthAxis) && rectIntersect(this, i2, WidthAxis, DepthAxis);
-  }
+  return Item;
+}();
 
-  getVolume() {
-    return this.getWidth() * this.getHeight() * this.getDepth();
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["e"] = Item;
-
-
-const rectIntersect = (i1, i2, x, y) => {
-  let d1, d2, cx1, cy1, cx2, cy2, ix, iy;
+exports.default = Item;
+var rectIntersect = exports.rectIntersect = function rectIntersect(i1, i2, x, y) {
+  var d1 = void 0,
+      d2 = void 0,
+      cx1 = void 0,
+      cy1 = void 0,
+      cx2 = void 0,
+      cy2 = void 0,
+      ix = void 0,
+      iy = void 0;
 
   d1 = i1.getDimension();
   d2 = i2.getDimension();
@@ -479,8 +545,6 @@ const rectIntersect = (i1, i2, x, y) => {
 
   return ix < (d1[x] + d2[x]) / 2 && iy < (d1[y] + d2[y]) / 2;
 };
-/* unused harmony export rectIntersect */
-
 
 /***/ })
 

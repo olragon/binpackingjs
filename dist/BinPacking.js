@@ -75,12 +75,23 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-class Score {
 
-  constructor(score_1, score_2) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Score = function () {
+  function Score(score_1, score_2) {
+    _classCallCheck(this, Score);
+
     this.score_1 = Score.MAX_INT;
     this.score_2 = Score.MAX_INT;
 
@@ -91,106 +102,182 @@ class Score {
   /**
    * Lower is better
    */
-  valueOf() {
-    return this.score_1 + this.score_2;
-  }
 
-  assign(other) {
-    this.score_1 = other.score_1;
-    this.score_2 = other.score_2;
-  }
 
-  isBlank() {
-    return this.score_1 === Score.MAX_INT;
-  }
+  _createClass(Score, [{
+    key: 'valueOf',
+    value: function valueOf() {
+      return this.score_1 + this.score_2;
+    }
+  }, {
+    key: 'assign',
+    value: function assign(other) {
+      this.score_1 = other.score_1;
+      this.score_2 = other.score_2;
+    }
+  }, {
+    key: 'isBlank',
+    value: function isBlank() {
+      return this.score_1 === Score.MAX_INT;
+    }
+  }, {
+    key: 'decreaseBy',
+    value: function decreaseBy(delta) {
+      this.score_1 += delta;
+      this.score_2 += delta;
+    }
+  }]);
 
-  decreaseBy(delta) {
-    this.score_1 += delta;
-    this.score_2 += delta;
-  }
-
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Score;
+  return Score;
+}();
 
 Score.MAX_INT = Number.MAX_SAFE_INTEGER;
+exports.default = Score;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Score__ = __webpack_require__(0);
 
 
-class Base {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-  findPositionForNewNode(box, freeRects) {
-    let bestScore = new __WEBPACK_IMPORTED_MODULE_0__Score__["a" /* default */]();
-    let width = box.width;
-    let height = box.height;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    freeRects.forEach(freeRect => {
-      this.tryPlaceRectIn(freeRect, box, width, height, bestScore);
-      this.tryPlaceRectIn(freeRect, box, height, width, bestScore);
-    });
+var _Score = __webpack_require__(0);
 
-    return bestScore;
+var _Score2 = _interopRequireDefault(_Score);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Base = function () {
+  function Base() {
+    _classCallCheck(this, Base);
   }
 
-  tryPlaceRectIn(freeRect, box, rectWidth, rectHeight, bestScore) {
-    if (freeRect.width >= rectWidth && freeRect.height >= rectHeight) {
-      let score = this.calculateScore(freeRect, rectWidth, rectHeight);
-      if (score < bestScore) {
-        box.x = freeRect.x;
-        box.y = freeRect.y;
-        box.width = rectWidth;
-        box.height = rectHeight;
-        box.packed = true;
-        bestScore.assign(score);
+  _createClass(Base, [{
+    key: "findPositionForNewNode",
+    value: function findPositionForNewNode(box, freeRects) {
+      var _this = this;
+
+      var bestScore = new _Score2.default();
+      var width = box.width;
+      var height = box.height;
+
+      freeRects.forEach(function (freeRect) {
+        _this.tryPlaceRectIn(freeRect, box, width, height, bestScore);
+        _this.tryPlaceRectIn(freeRect, box, height, width, bestScore);
+      });
+
+      return bestScore;
+    }
+  }, {
+    key: "tryPlaceRectIn",
+    value: function tryPlaceRectIn(freeRect, box, rectWidth, rectHeight, bestScore) {
+      if (freeRect.width >= rectWidth && freeRect.height >= rectHeight) {
+        var score = this.calculateScore(freeRect, rectWidth, rectHeight);
+        if (score < bestScore) {
+          box.x = freeRect.x;
+          box.y = freeRect.y;
+          box.width = rectWidth;
+          box.height = rectHeight;
+          box.packed = true;
+          bestScore.assign(score);
+        }
       }
     }
-  }
+  }, {
+    key: "calculateScore",
+    value: function calculateScore(freeRect, rectWidth, rectHeight) {
+      throw "NotImplementedError";
+    }
+  }]);
 
-  calculateScore(freeRect, rectWidth, rectHeight) {
-    throw "NotImplementedError";
-  }
+  return Base;
+}();
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Base;
-
+exports.default = Base;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Base__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Score__ = __webpack_require__(0);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-class BestShortSideFit extends __WEBPACK_IMPORTED_MODULE_0__Base__["a" /* default */] {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  calculateScore(freeRect, rectWidth, rectHeight) {
-    let leftOverHoriz = Math.abs(freeRect.width - rectWidth);
-    let leftOverVert = Math.abs(freeRect.height - rectHeight);
-    let args = [leftOverHoriz, leftOverVert].sort((a, b) => a - b);
-    let score = new __WEBPACK_IMPORTED_MODULE_1__Score__["a" /* default */](args[0], args[1]);
-    return score;
+var _Base2 = __webpack_require__(1);
+
+var _Base3 = _interopRequireDefault(_Base2);
+
+var _Score = __webpack_require__(0);
+
+var _Score2 = _interopRequireDefault(_Score);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BestShortSideFit = function (_Base) {
+  _inherits(BestShortSideFit, _Base);
+
+  function BestShortSideFit() {
+    _classCallCheck(this, BestShortSideFit);
+
+    return _possibleConstructorReturn(this, (BestShortSideFit.__proto__ || Object.getPrototypeOf(BestShortSideFit)).apply(this, arguments));
   }
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = BestShortSideFit;
+  _createClass(BestShortSideFit, [{
+    key: 'calculateScore',
+    value: function calculateScore(freeRect, rectWidth, rectHeight) {
+      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);
+      var leftOverVert = Math.abs(freeRect.height - rectHeight);
+      var args = [leftOverHoriz, leftOverVert].sort(function (a, b) {
+        return a - b;
+      });
+      var score = new _Score2.default(args[0], args[1]);
+      return score;
+    }
+  }]);
 
+  return BestShortSideFit;
+}(_Base3.default);
+
+exports.default = BestShortSideFit;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-class Box {
 
-  constructor(width, height) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Box = function () {
+  function Box(width, height) {
+    _classCallCheck(this, Box);
+
     this.width = null;
     this.height = null;
     this.x = 0;
@@ -201,32 +288,51 @@ class Box {
     this.height = height;
   }
 
-  rotate() {
-    let { width, height } = this;
-    this.width = height;
-    this.height = width;
-  }
+  _createClass(Box, [{
+    key: "rotate",
+    value: function rotate() {
+      var width = this.width,
+          height = this.height;
 
-  get label() {
-    return `${this.width}x${this.height} at [${this.x},${this.y}]`;
-  }
+      this.width = height;
+      this.height = width;
+    }
+  }, {
+    key: "label",
+    get: function get() {
+      return this.width + "x" + this.height + " at [" + this.x + "," + this.y + "]";
+    }
+  }, {
+    key: "area",
+    get: function get() {
+      return this.width * this.height;
+    }
+  }]);
 
-  get area() {
-    return this.width * this.height;
-  }
+  return Box;
+}();
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Box;
-
+exports.default = Box;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-class Bin {
 
-  constructor(name, w, h, d, mw) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Bin = function () {
+  function Bin(name, w, h, d, mw) {
+    _classCallCheck(this, Bin);
+
     this.name = '';
     this.width = 0;
     this.height = 0;
@@ -241,124 +347,122 @@ class Bin {
     this.maxWeight = mw;
   }
 
-  getName() {
-    return this.name;
-  }
+  _createClass(Bin, [{
+    key: 'getName',
+    value: function getName() {
+      return this.name;
+    }
+  }, {
+    key: 'getWidth',
+    value: function getWidth() {
+      return this.width;
+    }
+  }, {
+    key: 'getHeight',
+    value: function getHeight() {
+      return this.height;
+    }
+  }, {
+    key: 'getDepth',
+    value: function getDepth() {
+      return this.depth;
+    }
+  }, {
+    key: 'getMaxWeight',
+    value: function getMaxWeight() {
+      return this.maxWeight;
+    }
+  }, {
+    key: 'getItems',
+    value: function getItems() {
+      return this.items;
+    }
+  }, {
+    key: 'getVolume',
+    value: function getVolume() {
+      return this.getWidth() * this.getHeight() * this.getDepth();
+    }
+  }, {
+    key: 'putItem',
+    value: function putItem(item, p) {
+      var box = this;
+      var fit = false;
 
-  getWidth() {
-    return this.width;
-  }
+      item.position = p;
+      for (var i = 0; i < 6; i++) {
+        item.rotationType = i;
+        var d = item.getDimension();
 
-  getHeight() {
-    return this.height;
-  }
-
-  getDepth() {
-    return this.depth;
-  }
-
-  getMaxWeight() {
-    return this.maxWeight;
-  }
-
-  getItems() {
-    return this.items;
-  }
-
-  getVolume() {
-    return this.getWidth() * this.getHeight() * this.getDepth();
-  }
-
-  putItem(item, p) {
-    let box = this;
-    let fit = false;
-
-    item.position = p;
-    for (let i = 0; i < 6; i++) {
-      item.rotationType = i;
-      let d = item.getDimension();
-
-      if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {
-        continue;
-      }
-
-      fit = true;
-
-      for (let j = 0; j < box.items.length; j++) {
-        let _j = box.items[j];
-        if (_j.intersect(item)) {
-          fit = false;
-          break;
+        if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {
+          continue;
         }
-      }
 
-      if (fit) {
-        box.items.push(item);
+        fit = true;
+
+        for (var j = 0; j < box.items.length; j++) {
+          var _j = box.items[j];
+          if (_j.intersect(item)) {
+            fit = false;
+            break;
+          }
+        }
+
+        if (fit) {
+          box.items.push(item);
+        }
+
+        return fit;
       }
 
       return fit;
     }
+  }]);
 
-    return fit;
-  }
+  return Bin;
+}();
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Bin;
-
+exports.default = Bin;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-const RotationType_WHD = 0;
-/* unused harmony export RotationType_WHD */
-
-const RotationType_HWD = 1;
-/* unused harmony export RotationType_HWD */
-
-const RotationType_HDW = 2;
-/* unused harmony export RotationType_HDW */
-
-const RotationType_DHW = 3;
-/* unused harmony export RotationType_DHW */
-
-const RotationType_DWH = 4;
-/* unused harmony export RotationType_DWH */
-
-const RotationType_WDH = 5;
-/* unused harmony export RotationType_WDH */
 
 
-const WidthAxis = 0;
-/* harmony export (immutable) */ __webpack_exports__["d"] = WidthAxis;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-const HeightAxis = 1;
-/* harmony export (immutable) */ __webpack_exports__["b"] = HeightAxis;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-const DepthAxis = 2;
-/* harmony export (immutable) */ __webpack_exports__["a"] = DepthAxis;
+var _RotationTypeStrings;
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-const StartPosition = [0, 0, 0];
-/* harmony export (immutable) */ __webpack_exports__["c"] = StartPosition;
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var RotationType_WHD = exports.RotationType_WHD = 0;
+var RotationType_HWD = exports.RotationType_HWD = 1;
+var RotationType_HDW = exports.RotationType_HDW = 2;
+var RotationType_DHW = exports.RotationType_DHW = 3;
+var RotationType_DWH = exports.RotationType_DWH = 4;
+var RotationType_WDH = exports.RotationType_WDH = 5;
 
-const RotationTypeStrings = {
-  [RotationType_WHD]: 'RotationType_WHD (w,h,d)',
-  [RotationType_HWD]: 'RotationType_HWD (h,w,d)',
-  [RotationType_HDW]: 'RotationType_HDW (h,d,w)',
-  [RotationType_DHW]: 'RotationType_DHW (d,h,w)',
-  [RotationType_DWH]: 'RotationType_DWH (d,w,h)',
-  [RotationType_WDH]: 'RotationType_WDH (w,d,h)'
-};
-/* unused harmony export RotationTypeStrings */
+var WidthAxis = exports.WidthAxis = 0;
+var HeightAxis = exports.HeightAxis = 1;
+var DepthAxis = exports.DepthAxis = 2;
 
+var StartPosition = exports.StartPosition = [0, 0, 0];
 
-class Item {
+var RotationTypeStrings = exports.RotationTypeStrings = (_RotationTypeStrings = {}, _defineProperty(_RotationTypeStrings, RotationType_WHD, 'RotationType_WHD (w,h,d)'), _defineProperty(_RotationTypeStrings, RotationType_HWD, 'RotationType_HWD (h,w,d)'), _defineProperty(_RotationTypeStrings, RotationType_HDW, 'RotationType_HDW (h,d,w)'), _defineProperty(_RotationTypeStrings, RotationType_DHW, 'RotationType_DHW (d,h,w)'), _defineProperty(_RotationTypeStrings, RotationType_DWH, 'RotationType_DWH (d,w,h)'), _defineProperty(_RotationTypeStrings, RotationType_WDH, 'RotationType_WDH (w,d,h)'), _RotationTypeStrings);
+
+var Item = function () {
   // x, y, z
 
-  constructor(name, w, h, d, wg) {
+  function Item(name, w, h, d, wg) {
+    _classCallCheck(this, Item);
+
     this.name = '';
     this.width = 0;
     this.height = 0;
@@ -374,68 +478,87 @@ class Item {
     this.weight = wg;
   }
 
-  getWidth() {
-    return this.width;
-  }
-
-  getHeight() {
-    return this.height;
-  }
-
-  getDepth() {
-    return this.depth;
-  }
-
-  getWeight() {
-    return this.weight;
-  }
-
-  getRotationType() {
-    return this.rotationType;
-  }
-
-  getRotationTypeString() {
-    return RotationTypeStrings[this.getRotationType()];
-  }
-
-  getDimension() {
-    let d;
-    switch (this.rotationType) {
-      case RotationType_WHD:
-        d = [this.getWidth(), this.getHeight(), this.getDepth()];
-        break;
-      case RotationType_HWD:
-        d = [this.getHeight(), this.getWidth(), this.getDepth()];
-        break;
-      case RotationType_HDW:
-        d = [this.getHeight(), this.getDepth(), this.getWidth()];
-        break;
-      case RotationType_DHW:
-        d = [this.getDepth(), this.getHeight(), this.getWidth()];
-        break;
-      case RotationType_DWH:
-        d = [this.getDepth(), this.getWidth(), this.getHeight()];
-        break;
-      case RotationType_WDH:
-        d = [this.getWidth(), this.getDepth(), this.getHeight()];
-        break;
+  _createClass(Item, [{
+    key: 'getWidth',
+    value: function getWidth() {
+      return this.width;
     }
-    return d;
-  }
+  }, {
+    key: 'getHeight',
+    value: function getHeight() {
+      return this.height;
+    }
+  }, {
+    key: 'getDepth',
+    value: function getDepth() {
+      return this.depth;
+    }
+  }, {
+    key: 'getWeight',
+    value: function getWeight() {
+      return this.weight;
+    }
+  }, {
+    key: 'getRotationType',
+    value: function getRotationType() {
+      return this.rotationType;
+    }
+  }, {
+    key: 'getRotationTypeString',
+    value: function getRotationTypeString() {
+      return RotationTypeStrings[this.getRotationType()];
+    }
+  }, {
+    key: 'getDimension',
+    value: function getDimension() {
+      var d = void 0;
+      switch (this.rotationType) {
+        case RotationType_WHD:
+          d = [this.getWidth(), this.getHeight(), this.getDepth()];
+          break;
+        case RotationType_HWD:
+          d = [this.getHeight(), this.getWidth(), this.getDepth()];
+          break;
+        case RotationType_HDW:
+          d = [this.getHeight(), this.getDepth(), this.getWidth()];
+          break;
+        case RotationType_DHW:
+          d = [this.getDepth(), this.getHeight(), this.getWidth()];
+          break;
+        case RotationType_DWH:
+          d = [this.getDepth(), this.getWidth(), this.getHeight()];
+          break;
+        case RotationType_WDH:
+          d = [this.getWidth(), this.getDepth(), this.getHeight()];
+          break;
+      }
+      return d;
+    }
+  }, {
+    key: 'intersect',
+    value: function intersect(i2) {
+      return rectIntersect(this, i2, WidthAxis, HeightAxis) && rectIntersect(this, i2, HeightAxis, DepthAxis) && rectIntersect(this, i2, WidthAxis, DepthAxis);
+    }
+  }, {
+    key: 'getVolume',
+    value: function getVolume() {
+      return this.getWidth() * this.getHeight() * this.getDepth();
+    }
+  }]);
 
-  intersect(i2) {
-    return rectIntersect(this, i2, WidthAxis, HeightAxis) && rectIntersect(this, i2, HeightAxis, DepthAxis) && rectIntersect(this, i2, WidthAxis, DepthAxis);
-  }
+  return Item;
+}();
 
-  getVolume() {
-    return this.getWidth() * this.getHeight() * this.getDepth();
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["e"] = Item;
-
-
-const rectIntersect = (i1, i2, x, y) => {
-  let d1, d2, cx1, cy1, cx2, cy2, ix, iy;
+exports.default = Item;
+var rectIntersect = exports.rectIntersect = function rectIntersect(i1, i2, x, y) {
+  var d1 = void 0,
+      d2 = void 0,
+      cx1 = void 0,
+      cy1 = void 0,
+      cx2 = void 0,
+      cy2 = void 0,
+      ix = void 0,
+      iy = void 0;
 
   d1 = i1.getDimension();
   d2 = i2.getDimension();
@@ -450,45 +573,76 @@ const rectIntersect = (i1, i2, x, y) => {
 
   return ix < (d1[x] + d2[x]) / 2 && iy < (d1[y] + d2[y]) / 2;
 };
-/* unused harmony export rectIntersect */
-
 
 /***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Box__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Packer__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__heuristics__ = __webpack_require__(13);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Bin", function() { return __WEBPACK_IMPORTED_MODULE_0__Bin__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Box", function() { return __WEBPACK_IMPORTED_MODULE_1__Box__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Packer", function() { return __WEBPACK_IMPORTED_MODULE_2__Packer__["a"]; });
-/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "heuristics", function() { return __WEBPACK_IMPORTED_MODULE_3__heuristics__; });
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.heuristics = exports.Packer = exports.Box = exports.Bin = undefined;
 
+var _Bin = __webpack_require__(7);
 
+var _Bin2 = _interopRequireDefault(_Bin);
 
+var _Box = __webpack_require__(3);
 
+var _Box2 = _interopRequireDefault(_Box);
+
+var _Packer = __webpack_require__(8);
+
+var _Packer2 = _interopRequireDefault(_Packer);
+
+var _heuristics = __webpack_require__(13);
+
+var heuristics = _interopRequireWildcard(_heuristics);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.Bin = _Bin2.default;
+exports.Box = _Box2.default;
+exports.Packer = _Packer2.default;
+exports.heuristics = heuristics;
 
 /***/ }),
 /* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__heuristics_BestShortSideFit__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Box__ = __webpack_require__(3);
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FreeSpaceBox = undefined;
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _BestShortSideFit = __webpack_require__(2);
 
+var _BestShortSideFit2 = _interopRequireDefault(_BestShortSideFit);
 
-class Bin {
+var _Box = __webpack_require__(3);
 
-  constructor(width, height, heuristic) {
+var _Box2 = _interopRequireDefault(_Box);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Bin = function () {
+  function Bin(width, height, heuristic) {
+    _classCallCheck(this, Bin);
+
     this.width = null;
     this.height = null;
     this.boxes = [];
@@ -498,313 +652,413 @@ class Bin {
     this.width = width;
     this.height = height;
     this.freeRectangles = [new FreeSpaceBox(width, height)];
-    this.heuristic = heuristic || new __WEBPACK_IMPORTED_MODULE_0__heuristics_BestShortSideFit__["a" /* default */]();
+    this.heuristic = heuristic || new _BestShortSideFit2.default();
   }
 
-  get area() {
-    return this.width * this.height;
-  }
+  _createClass(Bin, [{
+    key: 'insert',
+    value: function insert(box) {
+      if (box.packed) return false;
 
-  get efficiency() {
-    let boxesArea = 0;
-    this.boxes.forEach(box => {
-      boxesArea += box.area;
-    });
-    return boxesArea * 100 / this.area;
-  }
+      this.heuristic.findPositionForNewNode(box, this.freeRectangles);
+      if (!box.packed) return false;
 
-  get label() {
-    return `${this.width}x${this.height} ${this.efficiency}%`;
-  }
+      var numRectanglesToProcess = this.freeRectangles.length;
+      var i = 0;
 
-  insert(box) {
-    if (box.packed) return false;
-
-    this.heuristic.findPositionForNewNode(box, this.freeRectangles);
-    if (!box.packed) return false;
-
-    let numRectanglesToProcess = this.freeRectangles.length;
-    let i = 0;
-
-    while (i < numRectanglesToProcess) {
-      if (this.splitFreeNode(this.freeRectangles[i], box)) {
-        this.freeRectangles.splice(i, 1);
-        numRectanglesToProcess--;
-      } else {
-        i++;
-      }
-    }
-
-    this.pruneFreeList();
-    this.boxes.push(box);
-
-    return true;
-  }
-
-  scoreFor(box) {
-    let copyBox = new __WEBPACK_IMPORTED_MODULE_1__Box__["a" /* default */](box.width, box.height);
-    let score = this.heuristic.findPositionForNewNode(copyBox, this.freeRectangles);
-    return score;
-  }
-
-  isLargerThan(box) {
-    return this.width >= box.width && this.height >= box.height || this.height >= box.width && this.width >= box.height;
-  }
-
-  splitFreeNode(freeNode, usedNode) {
-    // Test with SAT if the rectangles even intersect.
-    if (usedNode.x >= freeNode.x + freeNode.width || usedNode.x + usedNode.width <= freeNode.x || usedNode.y >= freeNode.y + freeNode.height || usedNode.y + usedNode.height <= freeNode.y) {
-      return false;
-    }
-
-    this.trySplitFreeNodeVertically(freeNode, usedNode);
-    this.trySplitFreeNodeHorizontally(freeNode, usedNode);
-
-    return true;
-  }
-
-  trySplitFreeNodeVertically(freeNode, usedNode) {
-    if (usedNode.x < freeNode.x + freeNode.width && usedNode.x + usedNode.width > freeNode.x) {
-      this.tryLeaveFreeSpaceAtTop(freeNode, usedNode);
-      this.tryLeaveFreeSpaceAtBottom(freeNode, usedNode);
-    }
-  }
-
-  tryLeaveFreeSpaceAtTop(freeNode, usedNode) {
-    if (usedNode.y > freeNode.y && usedNode.y < freeNode.y + freeNode.height) {
-      let newNode = _extends({}, freeNode);
-      newNode.height = usedNode.y - newNode.y;
-      this.freeRectangles.push(newNode);
-    }
-  }
-
-  tryLeaveFreeSpaceAtBottom(freeNode, usedNode) {
-    if (usedNode.y + usedNode.height < freeNode.y + freeNode.height) {
-      let newNode = _extends({}, freeNode);
-      newNode.y = usedNode.y + usedNode.height;
-      newNode.height = freeNode.y + freeNode.height - (usedNode.y + usedNode.height);
-      this.freeRectangles.push(newNode);
-    }
-  }
-
-  trySplitFreeNodeHorizontally(freeNode, usedNode) {
-    if (usedNode.y < freeNode.y + freeNode.height && usedNode.y + usedNode.height > freeNode.y) {
-      this.tryLeaveFreeSpaceOnLeft(freeNode, usedNode);
-      this.tryLeaveFreeSpaceOnRight(freeNode, usedNode);
-    }
-  }
-
-  tryLeaveFreeSpaceOnLeft(freeNode, usedNode) {
-    if (usedNode.x > freeNode.x && usedNode.x < freeNode.x + freeNode.width) {
-      let newNode = _extends({}, freeNode);
-      newNode.width = usedNode.x - newNode.y;
-      this.freeRectangles.push(newNode);
-    }
-  }
-
-  tryLeaveFreeSpaceOnRight(freeNode, usedNode) {
-    if (usedNode.x + usedNode.width < freeNode.x + freeNode.width) {
-      let newNode = _extends({}, freeNode);
-      newNode.x = usedNode.x + usedNode.width;
-      newNode.width = freeNode.x + freeNode.width - (usedNode.x + usedNode.width);
-      this.freeRectangles.push(newNode);
-    }
-  }
-
-  /**
-   * Goes through the free rectangle list and removes any redundant entries.
-   */
-  pruneFreeList() {
-    let i = 0;
-    while (i < this.freeRectangles.length) {
-      let j = i + 1;
-      if (j === this.freeRectangles.length) {
-        break;
-      }
-      while (j < this.freeRectangles.length) {
-        if (this.isContainedIn(this.freeRectangles[i], this.freeRectangles[j])) {
+      while (i < numRectanglesToProcess) {
+        if (this.splitFreeNode(this.freeRectangles[i], box)) {
           this.freeRectangles.splice(i, 1);
-          i--;
+          numRectanglesToProcess--;
+        } else {
+          i++;
+        }
+      }
+
+      this.pruneFreeList();
+      this.boxes.push(box);
+
+      return true;
+    }
+  }, {
+    key: 'scoreFor',
+    value: function scoreFor(box) {
+      var copyBox = new _Box2.default(box.width, box.height);
+      var score = this.heuristic.findPositionForNewNode(copyBox, this.freeRectangles);
+      return score;
+    }
+  }, {
+    key: 'isLargerThan',
+    value: function isLargerThan(box) {
+      return this.width >= box.width && this.height >= box.height || this.height >= box.width && this.width >= box.height;
+    }
+  }, {
+    key: 'splitFreeNode',
+    value: function splitFreeNode(freeNode, usedNode) {
+      // Test with SAT if the rectangles even intersect.
+      if (usedNode.x >= freeNode.x + freeNode.width || usedNode.x + usedNode.width <= freeNode.x || usedNode.y >= freeNode.y + freeNode.height || usedNode.y + usedNode.height <= freeNode.y) {
+        return false;
+      }
+
+      this.trySplitFreeNodeVertically(freeNode, usedNode);
+      this.trySplitFreeNodeHorizontally(freeNode, usedNode);
+
+      return true;
+    }
+  }, {
+    key: 'trySplitFreeNodeVertically',
+    value: function trySplitFreeNodeVertically(freeNode, usedNode) {
+      if (usedNode.x < freeNode.x + freeNode.width && usedNode.x + usedNode.width > freeNode.x) {
+        this.tryLeaveFreeSpaceAtTop(freeNode, usedNode);
+        this.tryLeaveFreeSpaceAtBottom(freeNode, usedNode);
+      }
+    }
+  }, {
+    key: 'tryLeaveFreeSpaceAtTop',
+    value: function tryLeaveFreeSpaceAtTop(freeNode, usedNode) {
+      if (usedNode.y > freeNode.y && usedNode.y < freeNode.y + freeNode.height) {
+        var newNode = _extends({}, freeNode);
+        newNode.height = usedNode.y - newNode.y;
+        this.freeRectangles.push(newNode);
+      }
+    }
+  }, {
+    key: 'tryLeaveFreeSpaceAtBottom',
+    value: function tryLeaveFreeSpaceAtBottom(freeNode, usedNode) {
+      if (usedNode.y + usedNode.height < freeNode.y + freeNode.height) {
+        var newNode = _extends({}, freeNode);
+        newNode.y = usedNode.y + usedNode.height;
+        newNode.height = freeNode.y + freeNode.height - (usedNode.y + usedNode.height);
+        this.freeRectangles.push(newNode);
+      }
+    }
+  }, {
+    key: 'trySplitFreeNodeHorizontally',
+    value: function trySplitFreeNodeHorizontally(freeNode, usedNode) {
+      if (usedNode.y < freeNode.y + freeNode.height && usedNode.y + usedNode.height > freeNode.y) {
+        this.tryLeaveFreeSpaceOnLeft(freeNode, usedNode);
+        this.tryLeaveFreeSpaceOnRight(freeNode, usedNode);
+      }
+    }
+  }, {
+    key: 'tryLeaveFreeSpaceOnLeft',
+    value: function tryLeaveFreeSpaceOnLeft(freeNode, usedNode) {
+      if (usedNode.x > freeNode.x && usedNode.x < freeNode.x + freeNode.width) {
+        var newNode = _extends({}, freeNode);
+        newNode.width = usedNode.x - newNode.y;
+        this.freeRectangles.push(newNode);
+      }
+    }
+  }, {
+    key: 'tryLeaveFreeSpaceOnRight',
+    value: function tryLeaveFreeSpaceOnRight(freeNode, usedNode) {
+      if (usedNode.x + usedNode.width < freeNode.x + freeNode.width) {
+        var newNode = _extends({}, freeNode);
+        newNode.x = usedNode.x + usedNode.width;
+        newNode.width = freeNode.x + freeNode.width - (usedNode.x + usedNode.width);
+        this.freeRectangles.push(newNode);
+      }
+    }
+
+    /**
+     * Goes through the free rectangle list and removes any redundant entries.
+     */
+
+  }, {
+    key: 'pruneFreeList',
+    value: function pruneFreeList() {
+      var i = 0;
+      while (i < this.freeRectangles.length) {
+        var j = i + 1;
+        if (j === this.freeRectangles.length) {
           break;
         }
-        if (this.isContainedIn(this.freeRectangles[j], this.freeRectangles[i])) {
-          this.freeRectangles.splice(j, 1);
-        } else {
-          j++;
+        while (j < this.freeRectangles.length) {
+          if (this.isContainedIn(this.freeRectangles[i], this.freeRectangles[j])) {
+            this.freeRectangles.splice(i, 1);
+            i--;
+            break;
+          }
+          if (this.isContainedIn(this.freeRectangles[j], this.freeRectangles[i])) {
+            this.freeRectangles.splice(j, 1);
+          } else {
+            j++;
+          }
+          i++;
         }
-        i++;
       }
     }
-  }
+  }, {
+    key: 'isContainedIn',
+    value: function isContainedIn(rectA, rectB) {
+      return rectA.x >= rectB.x && rectA.y >= rectB.y && rectA.x + rectA.width <= rectB.x + rectB.width && rectA.y + rectA.height <= rectB.y + rectB.height;
+    }
+  }, {
+    key: 'area',
+    get: function get() {
+      return this.width * this.height;
+    }
+  }, {
+    key: 'efficiency',
+    get: function get() {
+      var boxesArea = 0;
+      this.boxes.forEach(function (box) {
+        boxesArea += box.area;
+      });
+      return boxesArea * 100 / this.area;
+    }
+  }, {
+    key: 'label',
+    get: function get() {
+      return this.width + 'x' + this.height + ' ' + this.efficiency + '%';
+    }
+  }]);
 
-  isContainedIn(rectA, rectB) {
-    return rectA.x >= rectB.x && rectA.y >= rectB.y && rectA.x + rectA.width <= rectB.x + rectB.width && rectA.y + rectA.height <= rectB.y + rectB.height;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Bin;
+  return Bin;
+}();
 
+exports.default = Bin;
 
-class FreeSpaceBox {
+var FreeSpaceBox = exports.FreeSpaceBox = function FreeSpaceBox(width, height) {
+  _classCallCheck(this, FreeSpaceBox);
 
-  constructor(width, height) {
-    this.x = 0;
-    this.y = 0;
-    this.width = null;
-    this.height = null;
+  this.x = 0;
+  this.y = 0;
+  this.width = null;
+  this.height = null;
 
-    this.width = width;
-    this.height = height;
-  }
-
-}
-/* unused harmony export FreeSpaceBox */
-
+  this.width = width;
+  this.height = height;
+};
 
 /***/ }),
 /* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Score__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ScoreBoard__ = __webpack_require__(9);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-class Packer {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  constructor(bins) {
+var _Score = __webpack_require__(0);
+
+var _Score2 = _interopRequireDefault(_Score);
+
+var _ScoreBoard = __webpack_require__(9);
+
+var _ScoreBoard2 = _interopRequireDefault(_ScoreBoard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Packer = function () {
+  function Packer(bins) {
+    _classCallCheck(this, Packer);
+
     this.bins = [];
     this.unpackedBoxes = [];
 
     this.bins = bins;
   }
 
-  pack(boxes, options = {}) {
-    let packedBoxes = [];
-    let entry;
+  _createClass(Packer, [{
+    key: 'pack',
+    value: function pack(boxes) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    boxes = boxes.filter(box => !box.packed);
-    if (boxes.length === 0) return packedBoxes;
+      var packedBoxes = [];
+      var entry = void 0;
 
-    let limit = options.limit || __WEBPACK_IMPORTED_MODULE_0__Score__["a" /* default */].MAX_INT;
-    let board = new __WEBPACK_IMPORTED_MODULE_1__ScoreBoard__["a" /* default */](this.bins, boxes);
+      boxes = boxes.filter(function (box) {
+        return !box.packed;
+      });
+      if (boxes.length === 0) return packedBoxes;
 
-    while (entry = board.bestFit()) {
-      entry.bin.insert(entry.box);
-      board.removeBox(entry.box);
-      board.recalculateBin(entry.bin);
-      packedBoxes.push(entry.box);
-      if (packedBoxes.length >= limit) {
-        break;
-      }
-    };
-    return packedBoxes;
-  }
+      var limit = options.limit || _Score2.default.MAX_INT;
+      var board = new _ScoreBoard2.default(this.bins, boxes);
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Packer;
+      while (entry = board.bestFit()) {
+        entry.bin.insert(entry.box);
+        board.removeBox(entry.box);
+        board.recalculateBin(entry.bin);
+        packedBoxes.push(entry.box);
+        if (packedBoxes.length >= limit) {
+          break;
+        }
+      };
+      return packedBoxes;
+    }
+  }]);
 
+  return Packer;
+}();
+
+exports.default = Packer;
 
 /***/ }),
 /* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ScoreBoardEntry__ = __webpack_require__(10);
-// #       box_1 box_2 box_3 ...
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // #       box_1 box_2 box_3 ...
 // # bin_1  100   200    0
 // # bin_2   0     5     0
 // # bin_3   9    100    0
 // # ...
 
 
-class ScoreBoard {
+var _ScoreBoardEntry = __webpack_require__(10);
 
-  constructor(bins, boxes) {
+var _ScoreBoardEntry2 = _interopRequireDefault(_ScoreBoardEntry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ScoreBoard = function () {
+  function ScoreBoard(bins, boxes) {
+    var _this = this;
+
+    _classCallCheck(this, ScoreBoard);
+
     this.entries = [];
 
-    bins.forEach(bin => {
-      this.addBinEntries(bin, boxes);
+    bins.forEach(function (bin) {
+      _this.addBinEntries(bin, boxes);
     });
   }
 
-  debug() {
-    __webpack_require__(11);
-    console.table(this.entries.map(entry => ({ bin: entry.bin.label, box: entry.box.label, score: entry.score })));
-  }
-
-  addBinEntries(bin, boxes) {
-    boxes.forEach(box => {
-      let entry = new __WEBPACK_IMPORTED_MODULE_0__ScoreBoardEntry__["a" /* default */](bin, box);
-      entry.calculate();
-      this.entries.push(entry);
-    });
-  }
-
-  any() {
-    return this.boxes.some(box => box);
-  }
-
-  largestNotFitingBox() {
-    let unfit = null;
-    let fittingBoxes = this.entries.filter(entry => entry.fit).map(entry => entry.box);
-
-    this.entries.forEach(entry => {
-      if (!this.fittingBoxes.contains(entry.box)) {
-        return;
-      }
-      if (unfit === null || unfit.box.area < entry.box.area) {
-        this.unfit = entry;
-      }
-    });
-
-    return unfit.box ? unfit : false;
-  }
-
-  bestFit() {
-    let best = null;
-    for (let i = 0; i < this.entries.length; i++) {
-      let entry = this.entries[i];
-      if (!entry.fit()) {
-        continue;
-      }
-      if (best === null || entry.score < best.score) {
-        best = entry;
-      }
+  _createClass(ScoreBoard, [{
+    key: 'debug',
+    value: function debug() {
+      __webpack_require__(11);
+      console.table(this.entries.map(function (entry) {
+        return { bin: entry.bin.label, box: entry.box.label, score: entry.score };
+      }));
     }
-    return best;
-  }
+  }, {
+    key: 'addBinEntries',
+    value: function addBinEntries(bin, boxes) {
+      var _this2 = this;
 
-  removeBox(box) {
-    this.entries = this.entries.filter(entry => {
-      return entry.box !== box;
-    });
-  }
+      boxes.forEach(function (box) {
+        var entry = new _ScoreBoardEntry2.default(bin, box);
+        entry.calculate();
+        _this2.entries.push(entry);
+      });
+    }
+  }, {
+    key: 'any',
+    value: function any() {
+      return this.boxes.some(function (box) {
+        return box;
+      });
+    }
+  }, {
+    key: 'largestNotFitingBox',
+    value: function largestNotFitingBox() {
+      var _this3 = this;
 
-  addBin(bin) {
-    this.addBinEntries(bin, this.currentBoxes());
-  }
+      var unfit = null;
+      var fittingBoxes = this.entries.filter(function (entry) {
+        return entry.fit;
+      }).map(function (entry) {
+        return entry.box;
+      });
 
-  recalculateBin(bin) {
-    this.entries.filter(entry => entry.bin === bin).forEach(entry => entry.calculate());
-  }
+      this.entries.forEach(function (entry) {
+        if (!_this3.fittingBoxes.contains(entry.box)) {
+          return;
+        }
+        if (unfit === null || unfit.box.area < entry.box.area) {
+          _this3.unfit = entry;
+        }
+      });
 
-  currentBoxes() {
-    return [...new Set(this.entries.map(entry => entry.box))];
-  }
+      return unfit.box ? unfit : false;
+    }
+  }, {
+    key: 'bestFit',
+    value: function bestFit() {
+      var best = null;
+      for (var i = 0; i < this.entries.length; i++) {
+        var entry = this.entries[i];
+        if (!entry.fit()) {
+          continue;
+        }
+        if (best === null || entry.score < best.score) {
+          best = entry;
+        }
+      }
+      return best;
+    }
+  }, {
+    key: 'removeBox',
+    value: function removeBox(box) {
+      this.entries = this.entries.filter(function (entry) {
+        return entry.box !== box;
+      });
+    }
+  }, {
+    key: 'addBin',
+    value: function addBin(bin) {
+      this.addBinEntries(bin, this.currentBoxes());
+    }
+  }, {
+    key: 'recalculateBin',
+    value: function recalculateBin(bin) {
+      this.entries.filter(function (entry) {
+        return entry.bin === bin;
+      }).forEach(function (entry) {
+        return entry.calculate();
+      });
+    }
+  }, {
+    key: 'currentBoxes',
+    value: function currentBoxes() {
+      return [].concat(_toConsumableArray(new Set(this.entries.map(function (entry) {
+        return entry.box;
+      }))));
+    }
+  }]);
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ScoreBoard;
+  return ScoreBoard;
+}();
 
+exports.default = ScoreBoard;
 
 /***/ }),
 /* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-class ScoreBoardEntry {
 
-  constructor(bin, box) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ScoreBoardEntry = function () {
+  function ScoreBoardEntry(bin, box) {
+    _classCallCheck(this, ScoreBoardEntry);
+
     this.bin = null;
     this.box = null;
     this.score = null;
@@ -813,18 +1067,23 @@ class ScoreBoardEntry {
     this.box = box;
   }
 
-  calculate() {
-    this.score = this.bin.scoreFor(this.box);
-    return this.score;
-  }
+  _createClass(ScoreBoardEntry, [{
+    key: "calculate",
+    value: function calculate() {
+      this.score = this.bin.scoreFor(this.box);
+      return this.score;
+    }
+  }, {
+    key: "fit",
+    value: function fit() {
+      return !this.score.isBlank();
+    }
+  }]);
 
-  fit() {
-    return !this.score.isBlank();
-  }
+  return ScoreBoardEntry;
+}();
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = ScoreBoardEntry;
-
+exports.default = ScoreBoardEntry;
 
 /***/ }),
 /* 11 */
@@ -1395,276 +1654,446 @@ Table.prototype.log = function() {
 
 /***/ }),
 /* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BestAreaFit__ = __webpack_require__(14);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BestAreaFit", function() { return __WEBPACK_IMPORTED_MODULE_0__BestAreaFit__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BestLongSideFit__ = __webpack_require__(15);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BestLongSideFit", function() { return __WEBPACK_IMPORTED_MODULE_1__BestLongSideFit__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__BestShortSideFit__ = __webpack_require__(2);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BestShort", function() { return __WEBPACK_IMPORTED_MODULE_2__BestShortSideFit__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BottomLeft__ = __webpack_require__(16);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BottomLeft", function() { return __WEBPACK_IMPORTED_MODULE_3__BottomLeft__["a"]; });
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _BestAreaFit = __webpack_require__(14);
 
+Object.defineProperty(exports, 'BestAreaFit', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_BestAreaFit).default;
+  }
+});
+
+var _BestLongSideFit = __webpack_require__(15);
+
+Object.defineProperty(exports, 'BestLongSideFit', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_BestLongSideFit).default;
+  }
+});
+
+var _BestShortSideFit = __webpack_require__(2);
+
+Object.defineProperty(exports, 'BestShort', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_BestShortSideFit).default;
+  }
+});
+
+var _BottomLeft = __webpack_require__(16);
+
+Object.defineProperty(exports, 'BottomLeft', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_BottomLeft).default;
+  }
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 /* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Base__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Score__ = __webpack_require__(0);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-class BestAreaFit extends __WEBPACK_IMPORTED_MODULE_0__Base__["a" /* default */] {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  calculateScore(freeRect, rectWidth, rectHeight) {
-    let areaFit = freeRect.width * freeRect.height - rectWidth * rectHeight;
-    let leftOverHoriz = Math.abs(freeRect.width - rectWidth);
-    let leftOverVert = Math.abs(freeRect.height - rectHeight);
-    let shortSideFit = Math.min(leftOverHoriz, leftOverVert);
-    return new __WEBPACK_IMPORTED_MODULE_1__Score__["a" /* default */](areaFit, shortSideFit);
+var _Base2 = __webpack_require__(1);
+
+var _Base3 = _interopRequireDefault(_Base2);
+
+var _Score = __webpack_require__(0);
+
+var _Score2 = _interopRequireDefault(_Score);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BestAreaFit = function (_Base) {
+  _inherits(BestAreaFit, _Base);
+
+  function BestAreaFit() {
+    _classCallCheck(this, BestAreaFit);
+
+    return _possibleConstructorReturn(this, (BestAreaFit.__proto__ || Object.getPrototypeOf(BestAreaFit)).apply(this, arguments));
   }
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = BestAreaFit;
+  _createClass(BestAreaFit, [{
+    key: 'calculateScore',
+    value: function calculateScore(freeRect, rectWidth, rectHeight) {
+      var areaFit = freeRect.width * freeRect.height - rectWidth * rectHeight;
+      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);
+      var leftOverVert = Math.abs(freeRect.height - rectHeight);
+      var shortSideFit = Math.min(leftOverHoriz, leftOverVert);
+      return new _Score2.default(areaFit, shortSideFit);
+    }
+  }]);
 
+  return BestAreaFit;
+}(_Base3.default);
+
+exports.default = BestAreaFit;
 
 /***/ }),
 /* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Base__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Score__ = __webpack_require__(0);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-class BestLongSideFit extends __WEBPACK_IMPORTED_MODULE_0__Base__["a" /* default */] {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  calculateScore(freeRect, rectWidth, rectHeight) {
-    let leftOverHoriz = Math.abs(freeRect.width - rectWidth);
-    let leftOverVert = Math.abs(freeRect.height - rectHeight);
-    let args = [leftOverHoriz, leftOverVert].sort((a, b) => a - b).reverse();
-    return new __WEBPACK_IMPORTED_MODULE_1__Score__["a" /* default */](args[0], args[1]);
+var _Base2 = __webpack_require__(1);
+
+var _Base3 = _interopRequireDefault(_Base2);
+
+var _Score = __webpack_require__(0);
+
+var _Score2 = _interopRequireDefault(_Score);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BestLongSideFit = function (_Base) {
+  _inherits(BestLongSideFit, _Base);
+
+  function BestLongSideFit() {
+    _classCallCheck(this, BestLongSideFit);
+
+    return _possibleConstructorReturn(this, (BestLongSideFit.__proto__ || Object.getPrototypeOf(BestLongSideFit)).apply(this, arguments));
   }
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = BestLongSideFit;
+  _createClass(BestLongSideFit, [{
+    key: 'calculateScore',
+    value: function calculateScore(freeRect, rectWidth, rectHeight) {
+      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);
+      var leftOverVert = Math.abs(freeRect.height - rectHeight);
+      var args = [leftOverHoriz, leftOverVert].sort(function (a, b) {
+        return a - b;
+      }).reverse();
+      return new _Score2.default(args[0], args[1]);
+    }
+  }]);
 
+  return BestLongSideFit;
+}(_Base3.default);
+
+exports.default = BestLongSideFit;
 
 /***/ }),
 /* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Base__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Score__ = __webpack_require__(0);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-class BottomLeft extends __WEBPACK_IMPORTED_MODULE_0__Base__["a" /* default */] {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  calculateScore(freeRect, rectWidth, rectHeight) {
-    let topSideY = freeRect.y + rectHeight;
-    return new __WEBPACK_IMPORTED_MODULE_1__Score__["a" /* default */](topSideY, freeRect.x);
+var _Base2 = __webpack_require__(1);
+
+var _Base3 = _interopRequireDefault(_Base2);
+
+var _Score = __webpack_require__(0);
+
+var _Score2 = _interopRequireDefault(_Score);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BottomLeft = function (_Base) {
+  _inherits(BottomLeft, _Base);
+
+  function BottomLeft() {
+    _classCallCheck(this, BottomLeft);
+
+    return _possibleConstructorReturn(this, (BottomLeft.__proto__ || Object.getPrototypeOf(BottomLeft)).apply(this, arguments));
   }
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = BottomLeft;
+  _createClass(BottomLeft, [{
+    key: 'calculateScore',
+    value: function calculateScore(freeRect, rectWidth, rectHeight) {
+      var topSideY = freeRect.y + rectHeight;
+      return new _Score2.default(topSideY, freeRect.x);
+    }
+  }]);
 
+  return BottomLeft;
+}(_Base3.default);
+
+exports.default = BottomLeft;
 
 /***/ }),
 /* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Item__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Packer__ = __webpack_require__(18);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Bin", function() { return __WEBPACK_IMPORTED_MODULE_0__Bin__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Item", function() { return __WEBPACK_IMPORTED_MODULE_1__Item__["e"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Packer", function() { return __WEBPACK_IMPORTED_MODULE_2__Packer__["a"]; });
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Packer = exports.Item = exports.Bin = undefined;
 
+var _Bin = __webpack_require__(4);
 
+var _Bin2 = _interopRequireDefault(_Bin);
 
+var _Item = __webpack_require__(5);
+
+var _Item2 = _interopRequireDefault(_Item);
+
+var _Packer = __webpack_require__(18);
+
+var _Packer2 = _interopRequireDefault(_Packer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.Bin = _Bin2.default;
+exports.Item = _Item2.default;
+exports.Packer = _Packer2.default;
 
 /***/ }),
 /* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Bin__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Item__ = __webpack_require__(5);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-class Packer {
-  constructor() {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Bin = __webpack_require__(4);
+
+var _Bin2 = _interopRequireDefault(_Bin);
+
+var _Item = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Packer = function () {
+  function Packer() {
+    _classCallCheck(this, Packer);
+
     this.bins = [];
     this.items = [];
     this.unfitItems = [];
   }
 
-  addBin(bin) {
-    this.bins.push(bin);
-  }
-
-  addItem(item) {
-    this.items.push(item);
-  }
-
-  findFittedBin(i) {
-    for (let _i = 0; _i < this.bins.length; _i++) {
-      let b = this.bins[_i];
-
-      if (!b.putItem(i, __WEBPACK_IMPORTED_MODULE_1__Item__["c" /* StartPosition */])) {
-        continue;
-      }
-
-      if (b.items.length === 1 && b.items[0] === i) {
-        b.items = [];
-      }
-
-      return b;
+  _createClass(Packer, [{
+    key: 'addBin',
+    value: function addBin(bin) {
+      this.bins.push(bin);
     }
-    return null;
-  }
+  }, {
+    key: 'addItem',
+    value: function addItem(item) {
+      this.items.push(item);
+    }
+  }, {
+    key: 'findFittedBin',
+    value: function findFittedBin(i) {
+      for (var _i = 0; _i < this.bins.length; _i++) {
+        var b = this.bins[_i];
 
-  getBiggerBinThan(b) {
-    let v = b.getVolume();
-    for (let _i = 0; _i < this.bins; _i++) {
-      let b2 = this.bins[_i];
-      if (b2.getVolume() > v) {
-        return b2;
+        if (!b.putItem(i, _Item.StartPosition)) {
+          continue;
+        }
+
+        if (b.items.length === 1 && b.items[0] === i) {
+          b.items = [];
+        }
+
+        return b;
       }
+      return null;
     }
-    return null;
-  }
-
-  unfitItem() {
-    if (this.items.length === 0) {
-      return;
-    }
-    this.unfitItems.push(this.items[0]);
-    this.items.splice(0, 1);
-  }
-
-  packToBin(b, items) {
-    let fitted = false;
-    let b2 = null;
-    let unpacked = [];
-    let fit = b.putItem(items[0], __WEBPACK_IMPORTED_MODULE_1__Item__["c" /* StartPosition */]);
-
-    if (!fit) {
-      let b2 = this.getBiggerBinThan(b);
-      if (b2) {
-        return this.packToBin(b2, items);
-      }
-      return this.items;
-    }
-
-    // Pack unpacked items.
-    for (let _i = 1; _i < this.items.length; _i++) {
-      let item = this.items[_i];
-
-      // Try available pivots in current bin that are not intersect with
-      // existing items in current bin.
-      lookup: for (let _pt = 0; _pt < 3; _pt++) {
-        for (let _j = 0; _j < b.items.length; _j++) {
-          let pv;
-          let ib = b.items[_j];
-          switch (_pt) {
-            case __WEBPACK_IMPORTED_MODULE_1__Item__["d" /* WidthAxis */]:
-              pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
-              break;
-            case __WEBPACK_IMPORTED_MODULE_1__Item__["b" /* HeightAxis */]:
-              pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
-              break;
-            case __WEBPACK_IMPORTED_MODULE_1__Item__["a" /* DepthAxis */]:
-              pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
-              break;
-          }
-
-          if (b.putItem(item, pv)) {
-            fitted = true;
-            break lookup;
-          }
+  }, {
+    key: 'getBiggerBinThan',
+    value: function getBiggerBinThan(b) {
+      var v = b.getVolume();
+      for (var _i = 0; _i < this.bins; _i++) {
+        var b2 = this.bins[_i];
+        if (b2.getVolume() > v) {
+          return b2;
         }
       }
+      return null;
+    }
+  }, {
+    key: 'unfitItem',
+    value: function unfitItem() {
+      if (this.items.length === 0) {
+        return;
+      }
+      this.unfitItems.push(this.items[0]);
+      this.items.splice(0, 1);
+    }
+  }, {
+    key: 'packToBin',
+    value: function packToBin(b, items) {
+      var fitted = false;
+      var b2 = null;
+      var unpacked = [];
+      var fit = b.putItem(items[0], _Item.StartPosition);
 
-      if (!fitted) {
-        while (b2 !== null) {
-          b2 = this.getBiggerBinThan(b);
-          if (b2) {
-            b2.items.push(item);
-            let left = this.packToBin(b2, b2.items);
-            if (left.length === 0) {
-              b = b2;
+      if (!fit) {
+        var _b = this.getBiggerBinThan(b);
+        if (_b) {
+          return this.packToBin(_b, items);
+        }
+        return this.items;
+      }
+
+      // Pack unpacked items.
+      for (var _i = 1; _i < this.items.length; _i++) {
+        var item = this.items[_i];
+
+        // Try available pivots in current bin that are not intersect with
+        // existing items in current bin.
+        lookup: for (var _pt = 0; _pt < 3; _pt++) {
+          for (var _j = 0; _j < b.items.length; _j++) {
+            var pv = void 0;
+            var ib = b.items[_j];
+            switch (_pt) {
+              case _Item.WidthAxis:
+                pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
+                break;
+              case _Item.HeightAxis:
+                pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
+                break;
+              case _Item.DepthAxis:
+                pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
+                break;
+            }
+
+            if (b.putItem(item, pv)) {
               fitted = true;
-              break;
+              break lookup;
             }
           }
         }
 
         if (!fitted) {
-          unpacked.push(item);
+          while (b2 !== null) {
+            b2 = this.getBiggerBinThan(b);
+            if (b2) {
+              b2.items.push(item);
+              var left = this.packToBin(b2, b2.items);
+              if (left.length === 0) {
+                b = b2;
+                fitted = true;
+                break;
+              }
+            }
+          }
+
+          if (!fitted) {
+            unpacked.push(item);
+          }
         }
       }
+
+      return unpacked;
     }
+  }, {
+    key: 'pack',
+    value: function pack() {
+      this.bins.sort(function (a, b) {
+        return a.getVolume() > b.getVolume();
+      });
 
-    return unpacked;
-  }
+      this.items.sort(function (a, b) {
+        return a.getVolume() > b.getVolume();
+      });
 
-  pack() {
-    this.bins.sort((a, b) => {
-      return a.getVolume() > b.getVolume();
-    });
+      while (this.items.length > 0) {
+        var bin = this.findFittedBin(this.items[0]);
 
-    this.items.sort((a, b) => {
-      return a.getVolume() > b.getVolume();
-    });
+        if (bin === null) {
+          this.unfitItem();
+          continue;
+        }
 
-    while (this.items.length > 0) {
-      let bin = this.findFittedBin(this.items[0]);
-
-      if (bin === null) {
-        this.unfitItem();
-        continue;
+        this.items = this.packToBin(bin, this.items);
       }
 
-      this.items = this.packToBin(bin, this.items);
+      return null;
     }
+  }]);
 
-    return null;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Packer;
+  return Packer;
+}();
 
+exports.default = Packer;
 
 /***/ }),
 /* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__2D__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__3D__ = __webpack_require__(17);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BP2D", function() { return __WEBPACK_IMPORTED_MODULE_0__2D__["default"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BP3D", function() { return __WEBPACK_IMPORTED_MODULE_1__3D__["default"]; });
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BP3D = exports.BP2D = undefined;
 
+var _D = __webpack_require__(6);
 
+var _D2 = _interopRequireDefault(_D);
+
+var _D3 = __webpack_require__(17);
+
+var _D4 = _interopRequireDefault(_D3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.BP2D = _D2.default;
+exports.BP3D = _D4.default;
 
 /***/ })
 /******/ ]);
