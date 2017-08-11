@@ -791,7 +791,7 @@ var Bin = function () {
   }, {
     key: 'isContainedIn',
     value: function isContainedIn(rectA, rectB) {
-      return rectA.x >= rectB.x && rectA.y >= rectB.y && rectA.x + rectA.width <= rectB.x + rectB.width && rectA.y + rectA.height <= rectB.y + rectB.height;
+      return rectA && rectB && rectA.x >= rectB.x && rectA.y >= rectB.y && rectA.x + rectA.width <= rectB.x + rectB.width && rectA.y + rectA.height <= rectB.y + rectB.height;
     }
   }, {
     key: 'area',

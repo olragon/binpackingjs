@@ -203,7 +203,22 @@ describe('bp2d.js', function() {
       assert.equal(bin_2.boxes.length, 1);
       assert.equal(bin_2.boxes[0].label, '50x45 at [0,0]');
       assert.equal(boxes[boxes.length - 1].packed, false);
-    });    
+    });
+
+    it('can work with float', function () {
+      let bin_1 = new Bin(1, 1);
+      let bin_2 = new Bin(1/2, 1/2);
+      let boxes = [
+        new Box(1/5, 1/7), // Should be added last (smaller)
+        new Box(1/5, 1/2), // Fits in bin_2 better than in bin_1
+        new Box(1/4, 1/4),
+        new Box(1/2, 1/2), // Too large to fit
+      ];
+      let packer = new Packer([bin_1, bin_2]);
+      let packed_boxes = packer.pack(boxes);
+      
+      assert.equal(packed_boxes.length, 4);
+    });
 
   });
 

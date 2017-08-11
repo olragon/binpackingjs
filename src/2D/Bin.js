@@ -157,7 +157,8 @@ export default class Bin {
   }
 
   isContainedIn(rectA, rectB) {
-    return rectA.x >= rectB.x && rectA.y >= rectB.y &&
+    return rectA && rectB &&
+      rectA.x >= rectB.x && rectA.y >= rectB.y &&
       rectA.x + rectA.width <= rectB.x + rectB.width &&
       rectA.y + rectA.height <= rectB.y + rectB.height;
   }
