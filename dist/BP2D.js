@@ -487,7 +487,7 @@ var Bin = function () {
     value: function tryLeaveFreeSpaceOnLeft(freeNode, usedNode) {
       if (usedNode.x > freeNode.x && usedNode.x < freeNode.x + freeNode.width) {
         var newNode = _extends({}, freeNode);
-        newNode.width = usedNode.x - newNode.y;
+        newNode.width = usedNode.x - newNode.x;
         this.freeRectangles.push(newNode);
       }
     }
@@ -533,6 +533,7 @@ var Bin = function () {
   }, {
     key: 'isContainedIn',
     value: function isContainedIn(rectA, rectB) {
+      if (!rectA || !rectB) return true;
       return rectA && rectB && rectA.x >= rectB.x && rectA.y >= rectB.y && rectA.x + rectA.width <= rectB.x + rectB.width && rectA.y + rectA.height <= rectB.y + rectB.height;
     }
   }, {
@@ -1425,7 +1426,7 @@ Object.defineProperty(exports, 'BestLongSideFit', {
 
 var _BestShortSideFit = __webpack_require__(2);
 
-Object.defineProperty(exports, 'BestShort', {
+Object.defineProperty(exports, 'BestShortSideFit', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_BestShortSideFit).default;

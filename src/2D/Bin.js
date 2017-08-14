@@ -116,7 +116,7 @@ export default class Bin {
   tryLeaveFreeSpaceOnLeft(freeNode, usedNode) {
     if (usedNode.x > freeNode.x && usedNode.x < freeNode.x + freeNode.width) {
       let newNode = {...freeNode};
-      newNode.width = usedNode.x - newNode.y;
+      newNode.width = usedNode.x - newNode.x;
       this.freeRectangles.push(newNode);
     }
   }
@@ -157,6 +157,7 @@ export default class Bin {
   }
 
   isContainedIn(rectA, rectB) {
+    if (!rectA || !rectB) return true;
     return rectA && rectB &&
       rectA.x >= rectB.x && rectA.y >= rectB.y &&
       rectA.x + rectA.width <= rectB.x + rectB.width &&
