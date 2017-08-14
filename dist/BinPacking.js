@@ -791,7 +791,6 @@ var Bin = function () {
   }, {
     key: 'isContainedIn',
     value: function isContainedIn(rectA, rectB) {
-      if (!rectA || !rectB) return true;
       return rectA && rectB && rectA.x >= rectB.x && rectA.y >= rectB.y && rectA.x + rectA.width <= rectB.x + rectB.width && rectA.y + rectA.height <= rectB.y + rectB.height;
     }
   }, {
@@ -882,7 +881,7 @@ var Packer = function () {
 
       var limit = options.limit || _Score2.default.MAX_INT;
       var board = new _ScoreBoard2.default(this.bins, boxes);
-
+      var r = 0;
       while (entry = board.bestFit()) {
         entry.bin.insert(entry.box);
         board.removeBox(entry.box);

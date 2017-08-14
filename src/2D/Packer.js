@@ -19,7 +19,7 @@ export default class Packer {
 
     let limit = options.limit || Score.MAX_INT;
     let board = new ScoreBoard(this.bins, boxes);
-    
+    let r = 0;
     while(entry = board.bestFit()) {
       entry.bin.insert(entry.box);
       board.removeBox(entry.box);

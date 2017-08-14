@@ -157,7 +157,6 @@ export default class Bin {
   }
 
   isContainedIn(rectA, rectB) {
-    if (!rectA || !rectB) return true;
     return rectA && rectB &&
       rectA.x >= rectB.x && rectA.y >= rectB.y &&
       rectA.x + rectA.width <= rectB.x + rectB.width &&
