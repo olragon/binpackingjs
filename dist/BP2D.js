@@ -633,6 +633,11 @@ var Packer = function () {
           break;
         }
       };
+
+      this.unpackedBoxes = boxes.filter(function (box) {
+        return !box.packed;
+      });
+
       return packedBoxes;
     }
   }]);

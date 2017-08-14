@@ -29,6 +29,11 @@ export default class Packer {
         break;
       }
     };
+
+    this.unpackedBoxes = boxes.filter((box) => {
+      return !box.packed;
+    });
+
     return packedBoxes;
   }
 
