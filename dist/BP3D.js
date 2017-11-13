@@ -189,7 +189,6 @@ var Packer = function () {
   }, {
     key: 'packToBin',
     value: function packToBin(b, items) {
-      var fitted = false;
       var b2 = null;
       var unpacked = [];
       var fit = b.putItem(items[0], _Item.StartPosition);
@@ -204,6 +203,7 @@ var Packer = function () {
 
       // Pack unpacked items.
       for (var _i = 1; _i < this.items.length; _i++) {
+        var fitted = false;
         var item = this.items[_i];
 
         // Try available pivots in current bin that are not intersect with
@@ -354,10 +354,22 @@ var Bin = function () {
       return this.getWidth() * this.getHeight() * this.getDepth();
     }
   }, {
+    key: 'getPackedWeight',
+    value: function getPackedWeight() {
+      return this.items.reduce(function (weight, item) {
+        return weight + item.getWeight();
+      }, 0);
+    }
+  }, {
     key: 'putItem',
     value: function putItem(item, p) {
       var box = this;
       var fit = false;
+
+      var maxWeight = box.getMaxWeight();
+      if (maxWeight && item.getWeight() + box.getPackedWeight() > maxWeight) {
+        return false;
+      }
 
       item.position = p;
       for (var i = 0; i < 6; i++) {
@@ -550,3 +562,4 @@ var rectIntersect = exports.rectIntersect = function rectIntersect(i1, i2, x, y)
 
 /******/ });
 });
+//# sourceMappingURL=BP3D.js.map
