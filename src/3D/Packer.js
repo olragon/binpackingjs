@@ -58,7 +58,6 @@ export default class Packer {
   }
 
   packToBin(b, items) {
-    let fitted = false;
     let b2 = null;
     let unpacked = [];
     let fit = b.putItem(items[0], StartPosition);
@@ -73,6 +72,7 @@ export default class Packer {
 
     // Pack unpacked items.
     for (let _i=1; _i < this.items.length; _i++) {
+      let fitted = false;
       let item = this.items[_i];
 
       // Try available pivots in current bin that are not intersect with
