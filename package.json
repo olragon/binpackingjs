@@ -22,6 +22,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "console.table": "^0.8.0",
+    "mocha": "^4.0.1",
     "uglify-es": "^3.0.27",
     "uglifyjs-webpack-plugin": "1.0.0-beta.2",
     "webpack": "^3.5.2"
