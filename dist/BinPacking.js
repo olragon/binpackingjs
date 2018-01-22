@@ -7,7 +7,7 @@
 		exports["BinPacking"] = factory();
 	else
 		root["BinPacking"] = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2115,4 +2115,3 @@ exports.BP3D = BP3D;
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=BinPacking.js.map

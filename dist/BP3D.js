@@ -7,7 +7,7 @@
 		exports["BinPacking"] = factory();
 	else
 		root["BinPacking"] = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -562,4 +562,3 @@ var rectIntersect = exports.rectIntersect = function rectIntersect(i1, i2, x, y)
 
 /******/ });
 });
-//# sourceMappingURL=BP3D.js.map

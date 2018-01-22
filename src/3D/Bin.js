@@ -52,11 +52,6 @@ export default class Bin {
     let box = this;
     let fit = false;
 
-    const maxWeight = box.getMaxWeight();
-    if ( maxWeight && item.getWeight() + box.getPackedWeight() > maxWeight ) {
-      return false;
-    }
-
     item.position = p;
     for (let i=0; i<6; i++) {
       item.rotationType = i;

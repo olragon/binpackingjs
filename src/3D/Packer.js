@@ -75,28 +75,31 @@ export default class Packer {
       let fitted = false;
       let item = this.items[_i];
 
-      // Try available pivots in current bin that are not intersect with
-      // existing items in current bin.
-      lookup:
-      for (let _pt=0; _pt < 3; _pt++) {
-        for (let _j=0; _j < b.items.length; _j++) {
-          let pv;
-          let ib = b.items[_j];
-          switch (_pt) {
-            case WidthAxis:
-              pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
-              break;
-            case HeightAxis:
-              pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
-              break;
-            case DepthAxis:
-              pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
-              break;
-          }
+      const maxWeight = b.getMaxWeight();
+      if ( ! maxWeight || item.getWeight() + b.getPackedWeight() <= maxWeight ) {
+        // Try available pivots in current bin that are not intersect with
+        // existing items in current bin.
+        lookup:
+        for (let _pt=0; _pt < 3; _pt++) {
+          for (let _j=0; _j < b.items.length; _j++) {
+            let pv;
+            let ib = b.items[_j];
+            switch (_pt) {
+              case WidthAxis:
+                pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
+                break;
+              case HeightAxis:
+                pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
+                break;
+              case DepthAxis:
+                pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
+                break;
+            }
 
-          if (b.putItem(item, pv)) {
-            fitted = true;
-            break lookup;
+            if (b.putItem(item, pv)) {
+              fitted = true;
+              break lookup;
+            }
           }
         }
       }
