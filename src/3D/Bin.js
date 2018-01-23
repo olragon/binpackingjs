@@ -48,6 +48,11 @@ export default class Bin {
     return this.items.reduce( ( weight, item ) => weight + item.getWeight(), 0 );
   }
 
+  weighItem(item) {
+    const maxWeight = this.getMaxWeight();
+    return ! maxWeight || item.getWeight() + this.getPackedWeight() <= maxWeight;
+  }
+
   putItem(item, p) {
     let box = this;
     let fit = false;

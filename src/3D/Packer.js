@@ -25,7 +25,7 @@ export default class Packer {
     for (let _i=0; _i<this.bins.length; _i++) {
       let b = this.bins[_i];
 
-      if (!b.putItem(i, StartPosition)) {
+      if (!b.weighItem(i) || !b.putItem(i, StartPosition)) {
         continue;
       }
 
@@ -60,7 +60,7 @@ export default class Packer {
   packToBin(b, items) {
     let b2 = null;
     let unpacked = [];
-    let fit = b.putItem(items[0], StartPosition);
+    let fit = b.weighItem(items[0]) && b.putItem(items[0], StartPosition);
 
     if (!fit) {
       let b2 = this.getBiggerBinThan(b);
@@ -75,8 +75,7 @@ export default class Packer {
       let fitted = false;
       let item = this.items[_i];
 
-      const maxWeight = b.getMaxWeight();
-      if ( ! maxWeight || item.getWeight() + b.getPackedWeight() <= maxWeight ) {
+      if (b.weighItem(item)) {
         // Try available pivots in current bin that are not intersect with
         // existing items in current bin.
         lookup:

@@ -390,6 +390,12 @@ var Bin = function () {
       }, 0);
     }
   }, {
+    key: 'weighItem',
+    value: function weighItem(item) {
+      var maxWeight = this.getMaxWeight();
+      return !maxWeight || item.getWeight() + this.getPackedWeight() <= maxWeight;
+    }
+  }, {
     key: 'putItem',
     value: function putItem(item, p) {
       var box = this;
@@ -1951,7 +1957,7 @@ var Packer = function () {
       for (var _i = 0; _i < this.bins.length; _i++) {
         var b = this.bins[_i];
 
-        if (!b.putItem(i, _Item.StartPosition)) {
+        if (!b.weighItem(i) || !b.putItem(i, _Item.StartPosition)) {
           continue;
         }
 
@@ -1989,7 +1995,7 @@ var Packer = function () {
     value: function packToBin(b, items) {
       var b2 = null;
       var unpacked = [];
-      var fit = b.putItem(items[0], _Item.StartPosition);
+      var fit = b.weighItem(items[0]) && b.putItem(items[0], _Item.StartPosition);
 
       if (!fit) {
         var _b = this.getBiggerBinThan(b);
@@ -2004,8 +2010,7 @@ var Packer = function () {
         var fitted = false;
         var item = this.items[_i];
 
-        var maxWeight = b.getMaxWeight();
-        if (!maxWeight || item.getWeight() + b.getPackedWeight() <= maxWeight) {
+        if (b.weighItem(item)) {
           // Try available pivots in current bin that are not intersect with
           // existing items in current bin.
           lookup: for (var _pt = 0; _pt < 3; _pt++) {
