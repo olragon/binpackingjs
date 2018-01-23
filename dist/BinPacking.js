@@ -395,11 +395,6 @@ var Bin = function () {
       var box = this;
       var fit = false;
 
-      var maxWeight = box.getMaxWeight();
-      if (maxWeight && item.getWeight() + box.getPackedWeight() > maxWeight) {
-        return false;
-      }
-
       item.position = p;
       for (var i = 0; i < 6; i++) {
         item.rotationType = i;
@@ -2009,27 +2004,30 @@ var Packer = function () {
         var fitted = false;
         var item = this.items[_i];
 
-        // Try available pivots in current bin that are not intersect with
-        // existing items in current bin.
-        lookup: for (var _pt = 0; _pt < 3; _pt++) {
-          for (var _j = 0; _j < b.items.length; _j++) {
-            var pv = void 0;
-            var ib = b.items[_j];
-            switch (_pt) {
-              case _Item.WidthAxis:
-                pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
-                break;
-              case _Item.HeightAxis:
-                pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
-                break;
-              case _Item.DepthAxis:
-                pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
-                break;
-            }
+        var maxWeight = b.getMaxWeight();
+        if (!maxWeight || item.getWeight() + b.getPackedWeight() <= maxWeight) {
+          // Try available pivots in current bin that are not intersect with
+          // existing items in current bin.
+          lookup: for (var _pt = 0; _pt < 3; _pt++) {
+            for (var _j = 0; _j < b.items.length; _j++) {
+              var pv = void 0;
+              var ib = b.items[_j];
+              switch (_pt) {
+                case _Item.WidthAxis:
+                  pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
+                  break;
+                case _Item.HeightAxis:
+                  pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
+                  break;
+                case _Item.DepthAxis:
+                  pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
+                  break;
+              }
 
-            if (b.putItem(item, pv)) {
-              fitted = true;
-              break lookup;
+              if (b.putItem(item, pv)) {
+                fitted = true;
+                break lookup;
+              }
             }
           }
         }
