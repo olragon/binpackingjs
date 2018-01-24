@@ -25,7 +25,7 @@ export default class Packer {
     for (let _i=0; _i<this.bins.length; _i++) {
       let b = this.bins[_i];
 
-      if (!b.putItem(i, StartPosition)) {
+      if (!b.weighItem(i) || !b.putItem(i, StartPosition)) {
         continue;
       }
 
@@ -58,10 +58,9 @@ export default class Packer {
   }
 
   packToBin(b, items) {
-    let fitted = false;
     let b2 = null;
     let unpacked = [];
-    let fit = b.putItem(items[0], StartPosition);
+    let fit = b.weighItem(items[0]) && b.putItem(items[0], StartPosition);
 
     if (!fit) {
       let b2 = this.getBiggerBinThan(b);
@@ -73,30 +72,33 @@ export default class Packer {
 
     // Pack unpacked items.
     for (let _i=1; _i < this.items.length; _i++) {
+      let fitted = false;
       let item = this.items[_i];
 
-      // Try available pivots in current bin that are not intersect with
-      // existing items in current bin.
-      lookup:
-      for (let _pt=0; _pt < 3; _pt++) {
-        for (let _j=0; _j < b.items.length; _j++) {
-          let pv;
-          let ib = b.items[_j];
-          switch (_pt) {
-            case WidthAxis:
-              pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
-              break;
-            case HeightAxis:
-              pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
-              break;
-            case DepthAxis:
-              pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
-              break;
-          }
+      if (b.weighItem(item)) {
+        // Try available pivots in current bin that are not intersect with
+        // existing items in current bin.
+        lookup:
+        for (let _pt=0; _pt < 3; _pt++) {
+          for (let _j=0; _j < b.items.length; _j++) {
+            let pv;
+            let ib = b.items[_j];
+            switch (_pt) {
+              case WidthAxis:
+                pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
+                break;
+              case HeightAxis:
+                pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
+                break;
+              case DepthAxis:
+                pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
+                break;
+            }
 
-          if (b.putItem(item, pv)) {
-            fitted = true;
-            break lookup;
+            if (b.putItem(item, pv)) {
+              fitted = true;
+              break lookup;
+            }
           }
         }
       }

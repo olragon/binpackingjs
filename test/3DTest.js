@@ -58,6 +58,24 @@ const testDatas = [
     }
   },
   {
+    name: 'Test three items don\'t fit into smaller bin due to weight.',
+    bins: [
+      new Bin("1. Le petite box", 296, 296, 8, 1000),
+      new Bin("2. Le grande box", 2960, 2960, 80, 10000),
+    ],
+    items: [
+      new Item("Item 1", 250, 250, 2, 2000),
+      new Item("Item 2", 250, 250, 2, 2000),
+      new Item("Item 3", 250, 250, 2, 2000),
+    ],
+    expectation: function (packer) {
+      return packer.bins[0].name === '1. Le petite box'
+        && packer.bins[0].items.length === 0
+        && packer.bins[1].items.length === 3
+        && packer.unfitItems.length === 0;
+    }
+  },
+  {
     name: '1 bin with 7 items fit into.',
     bins: [
       new Bin("Bin 1", 220, 160, 100, 110),
@@ -74,6 +92,21 @@ const testDatas = [
     expectation: function (packer) {
       return packer.bins[0].items.length === 7
         && packer.unfitItems.length === 0;
+    }
+  },
+  {
+    name: 'Two items fit but item in between does not.',
+    bins: [
+      new Bin("Bin 1", 100, 100, 100, 1000),
+    ],
+    items: [
+      new Item("Item 1", 50, 100, 100, 100),
+      new Item("Item 2", 100, 100, 100, 100),
+      new Item("Item 3", 50, 100, 100, 100),
+    ],
+    expectation: function (packer) {
+      return packer.bins[0].items.length === 2
+        && packer.unfitItems.length === 1;
     }
   }
 ];

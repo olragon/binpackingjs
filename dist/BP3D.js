@@ -7,7 +7,7 @@
 		exports["BinPacking"] = factory();
 	else
 		root["BinPacking"] = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -153,7 +153,7 @@ var Packer = function () {
       for (var _i = 0; _i < this.bins.length; _i++) {
         var b = this.bins[_i];
 
-        if (!b.putItem(i, _Item.StartPosition)) {
+        if (!b.weighItem(i) || !b.putItem(i, _Item.StartPosition)) {
           continue;
         }
 
@@ -189,10 +189,9 @@ var Packer = function () {
   }, {
     key: 'packToBin',
     value: function packToBin(b, items) {
-      var fitted = false;
       var b2 = null;
       var unpacked = [];
-      var fit = b.putItem(items[0], _Item.StartPosition);
+      var fit = b.weighItem(items[0]) && b.putItem(items[0], _Item.StartPosition);
 
       if (!fit) {
         var _b = this.getBiggerBinThan(b);
@@ -204,29 +203,32 @@ var Packer = function () {
 
       // Pack unpacked items.
       for (var _i = 1; _i < this.items.length; _i++) {
+        var fitted = false;
         var item = this.items[_i];
 
-        // Try available pivots in current bin that are not intersect with
-        // existing items in current bin.
-        lookup: for (var _pt = 0; _pt < 3; _pt++) {
-          for (var _j = 0; _j < b.items.length; _j++) {
-            var pv = void 0;
-            var ib = b.items[_j];
-            switch (_pt) {
-              case _Item.WidthAxis:
-                pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
-                break;
-              case _Item.HeightAxis:
-                pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
-                break;
-              case _Item.DepthAxis:
-                pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
-                break;
-            }
+        if (b.weighItem(item)) {
+          // Try available pivots in current bin that are not intersect with
+          // existing items in current bin.
+          lookup: for (var _pt = 0; _pt < 3; _pt++) {
+            for (var _j = 0; _j < b.items.length; _j++) {
+              var pv = void 0;
+              var ib = b.items[_j];
+              switch (_pt) {
+                case _Item.WidthAxis:
+                  pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
+                  break;
+                case _Item.HeightAxis:
+                  pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
+                  break;
+                case _Item.DepthAxis:
+                  pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
+                  break;
+              }
 
-            if (b.putItem(item, pv)) {
-              fitted = true;
-              break lookup;
+              if (b.putItem(item, pv)) {
+                fitted = true;
+                break lookup;
+              }
             }
           }
         }
@@ -352,6 +354,19 @@ var Bin = function () {
     key: 'getVolume',
     value: function getVolume() {
       return this.getWidth() * this.getHeight() * this.getDepth();
+    }
+  }, {
+    key: 'getPackedWeight',
+    value: function getPackedWeight() {
+      return this.items.reduce(function (weight, item) {
+        return weight + item.getWeight();
+      }, 0);
+    }
+  }, {
+    key: 'weighItem',
+    value: function weighItem(item) {
+      var maxWeight = this.getMaxWeight();
+      return !maxWeight || item.getWeight() + this.getPackedWeight() <= maxWeight;
     }
   }, {
     key: 'putItem',
