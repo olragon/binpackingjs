@@ -1,5 +1,5 @@
 const assert = require('assert');
-const BinPacking = require('../dist/BinPacking').BP3D;
+const BinPacking = require('../src').BP3D;
 
 const {
   Item,
