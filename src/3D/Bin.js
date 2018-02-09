@@ -1,3 +1,5 @@
+import { factoredInteger } from './util';
+
 export default class Bin {
 
   name = '';
@@ -8,12 +10,12 @@ export default class Bin {
 
   items = [];
 
-  constructor(name, w, h, d, mw) {
+  constructor(name, w, h, d, mw, p = 3) {
     this.name = name;
-    this.width = w;
-    this.height = h;
-    this.depth = d;
-    this.maxWeight = mw;
+    this.width = factoredInteger( w, p );
+    this.height = factoredInteger( h, p );
+    this.depth = factoredInteger( d, p );
+    this.maxWeight = factoredInteger( mw, p );
   }
 
   getName() {
