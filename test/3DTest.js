@@ -22,15 +22,15 @@ const testDatas = [
     }
   },
   {
-    name: 'Test three items fit into smaller bin.',
+    name: 'Test three items fit into smaller bin after being rotated.',
     bins: [
       new Bin("1. Le petite box", 296, 296, 8, 1000),
       new Bin("2. Le grande box", 2960, 2960, 80, 10000),
     ],
     items: [
       new Item("Item 1", 250, 250, 2, 200),
-      new Item("Item 2", 250, 250, 2, 200),
-      new Item("Item 3", 250, 250, 2, 200),
+      new Item("Item 2", 250, 2, 250, 200),
+      new Item("Item 3", 2, 250, 250, 200),
     ],
     expectation: function (packer) {
       return packer.bins[0].name === '1. Le petite box'
