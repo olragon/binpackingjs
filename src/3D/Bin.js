@@ -10,12 +10,12 @@ export default class Bin {
 
   items = [];
 
-  constructor(name, w, h, d, mw, p = 3) {
+  constructor(name, w, h, d, mw) {
     this.name = name;
-    this.width = factoredInteger( w, p );
-    this.height = factoredInteger( h, p );
-    this.depth = factoredInteger( d, p );
-    this.maxWeight = factoredInteger( mw, p );
+    this.width = factoredInteger( w );
+    this.height = factoredInteger( h );
+    this.depth = factoredInteger( d );
+    this.maxWeight = factoredInteger( mw );
   }
 
   getName() {

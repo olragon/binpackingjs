@@ -1,6 +1,11 @@
 /**
- * Factor a number by the given value and round to the nearest whole number
+ * Precision to retain in factoredInteger()
  */
-export const factoredInteger = ( value, factor ) => (
-    Math.round( value * ( 10 ** factor ) )
+const FACTOR = 5;
+
+/**
+ * Factor a number by FACTOR and round to the nearest whole number
+ */
+export const factoredInteger = ( value ) => (
+    Math.round( value * ( 10 ** FACTOR ) )
 );

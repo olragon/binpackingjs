@@ -33,12 +33,12 @@ export default class Item {
   rotationType = RotationType_WHD;
   position = []; // x, y, z
 
-  constructor(name, w, h, d, wg, p = 3) {
+  constructor(name, w, h, d, wg) {
     this.name = name;
-    this.width = factoredInteger( w, p );
-    this.height = factoredInteger( h, p );
-    this.depth = factoredInteger( d, p );
-    this.weight = factoredInteger( wg, p );
+    this.width = factoredInteger( w );
+    this.height = factoredInteger( h );
+    this.depth = factoredInteger( d );
+    this.weight = factoredInteger( wg );
   }
 
   getWidth() {
