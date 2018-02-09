@@ -1,3 +1,5 @@
+import { factoredInteger } from './util';
+
 export const RotationType_WHD = 0;
 export const RotationType_HWD = 1;
 export const RotationType_HDW = 2;
@@ -31,12 +33,12 @@ export default class Item {
   rotationType = RotationType_WHD;
   position = []; // x, y, z
 
-  constructor(name, w, h, d, wg) {
+  constructor(name, w, h, d, wg, p = 3) {
     this.name = name;
-    this.width = w;
-    this.height = h;
-    this.depth = d;
-    this.weight = wg;
+    this.width = factoredInteger( w, p );
+    this.height = factoredInteger( h, p );
+    this.depth = factoredInteger( d, p );
+    this.weight = factoredInteger( wg, p );
   }
 
   getWidth() {
