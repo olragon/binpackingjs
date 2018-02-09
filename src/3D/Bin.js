@@ -78,9 +78,8 @@ export default class Bin {
 
       if (fit) {
         box.items.push(item);
+        return fit;
       }
-
-      return fit;
     }
 
     return fit;
