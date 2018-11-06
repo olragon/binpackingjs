@@ -121,7 +121,22 @@ const testDatas = [
       return packer.bins[0].items.length === 2
         && packer.unfitItems.length === 1;
     }
-  }
+  },
+  {
+    name: 'First item fits without rotation but needs to be rotated to fit all items.',
+    bins: [
+      new Bin('USPS Medium Flat Rate Box (Top Loading)', 11, 8.5, 5.5, 1500),
+    ],
+    items: [
+      new Item('Item 1', 8.1, 5.2, 5.2, 20),
+      new Item('Item 2', 8.1, 5.2, 5.2, 20),
+    ],
+    expectation: function (packer) {
+
+      return packer.bins[0].items.length === 2
+        && packer.unfitItems.length === 0;
+    }
+  },
 ];
 
 describe('bp3d.js', function() {
