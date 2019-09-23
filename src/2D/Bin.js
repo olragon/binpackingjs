@@ -58,7 +58,7 @@ export default class Bin {
   }
 
   scoreFor(box) {
-    let copyBox = new Box(box.width, box.height);
+    let copyBox = new Box(box.width, box.height, box.constrainRotation);
     let score = this.heuristic.findPositionForNewNode(copyBox, this.freeRectangles);
     return score;
   }

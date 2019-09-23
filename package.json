@@ -8,12 +8,14 @@
 	},
 	"main": "dist/BinPacking.min.js",
 	"scripts": {
-		"build": "WEBPACK_ENV=build webpack",
-		"dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
+		"build": "webpack",
+		"dev": "webpack --progress --colors --watch",
 		"test": "mocha ./test/*.js",
 		"test-dev": "mocha --watch ./test/*.js"
 	},
-	"browserslist": [ "defaults" ],
+	"browserslist": [
+		"defaults"
+	],
 	"author": "Long Nguyen",
 	"license": "MIT",
 	"devDependencies": {
@@ -25,7 +27,7 @@
 		"console.table": "^0.10.0",
 		"mocha": "^6.2.0",
 		"uglifyjs-webpack-plugin": "2.2.0",
-		"webpack": "^4.38.0",
-		"webpack-cli": "^3.3.6"
+		"webpack": "4.38.0",
+		"webpack-cli": "3.3.6"
 	}
 }

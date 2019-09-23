@@ -6,12 +6,14 @@ export default class Base {
     let bestScore = new Score();
     let width = box.width;
     let height = box.height;
-    
+
     freeRects.forEach((freeRect) => {
       this.tryPlaceRectIn(freeRect, box, width, height, bestScore);
-      this.tryPlaceRectIn(freeRect, box, height, width, bestScore);
+      if (!box.constrainRotation) {
+        this.tryPlaceRectIn(freeRect, box, height, width, bestScore);
+      }
     });
-    
+
     return bestScore;
   }
 

@@ -2,13 +2,17 @@ export default class Box {
 
   width = null
   height = null
+  constrainRotation = false
   x = 0
   y = 0
   packed = false
 
-  constructor(width, height) {
+  constructor(width, height, constrainRotation = false) {
     this.width = width;
     this.height = height;
+
+    // Avoid the packer to try the rotated dimensions
+    this.constrainRotation = constrainRotation;
   }
 
   rotate() {

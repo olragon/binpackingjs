@@ -3,7 +3,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 let libraryName = 'BinPacking',
 	plugins = [],
 	outputFile;
-const env = process.env.WEBPACK_ENV;
+const env = "build";
 
 if (env === 'build') {
 	plugins.push(
