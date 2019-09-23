@@ -9,7 +9,6 @@ export default class Base {
 
     freeRects.forEach((freeRect) => {
       this.tryPlaceRectIn(freeRect, box, width, height, bestScore);
-      console.error("La rotation est autorisée: " + box.constrainRotation);
       if (!box.constrainRotation) {
         this.tryPlaceRectIn(freeRect, box, height, width, bestScore);
       }
