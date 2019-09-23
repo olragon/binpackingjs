@@ -7,7 +7,7 @@
 		exports["BinPacking"] = factory();
 	else
 		root["BinPacking"] = factory();
-})(typeof self !== 'undefined' ? self : this, function() {
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -46,12 +46,32 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -69,2052 +89,352 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./index.js");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ "../node_modules/base64-js/index.js":
+/*!******************************************!*\
+  !*** ../node_modules/base64-js/index.js ***!
+  \******************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Score = function () {
-  function Score(score_1, score_2) {
-    _classCallCheck(this, Score);
-
-    this.score_1 = Score.MAX_INT;
-    this.score_2 = Score.MAX_INT;
-
-    if (typeof score_1 != 'undefined') this.score_1 = score_1;
-    if (typeof score_2 != 'undefined') this.score_2 = score_2;
-  }
-
-  /**
-   * Lower is better
-   */
-
-
-  _createClass(Score, [{
-    key: 'valueOf',
-    value: function valueOf() {
-      return this.score_1 + this.score_2;
-    }
-  }, {
-    key: 'assign',
-    value: function assign(other) {
-      this.score_1 = other.score_1;
-      this.score_2 = other.score_2;
-    }
-  }, {
-    key: 'isBlank',
-    value: function isBlank() {
-      return this.score_1 === Score.MAX_INT;
-    }
-  }, {
-    key: 'decreaseBy',
-    value: function decreaseBy(delta) {
-      this.score_1 += delta;
-      this.score_2 += delta;
-    }
-  }]);
-
-  return Score;
-}();
-
-Score.MAX_INT = Number.MAX_SAFE_INTEGER;
-exports.default = Score;
+eval("\n\nexports.byteLength = byteLength\nexports.toByteArray = toByteArray\nexports.fromByteArray = fromByteArray\n\nvar lookup = []\nvar revLookup = []\nvar Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array\n\nvar code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'\nfor (var i = 0, len = code.length; i < len; ++i) {\n  lookup[i] = code[i]\n  revLookup[code.charCodeAt(i)] = i\n}\n\n// Support decoding URL-safe base64 strings, as Node.js does.\n// See: https://en.wikipedia.org/wiki/Base64#URL_applications\nrevLookup['-'.charCodeAt(0)] = 62\nrevLookup['_'.charCodeAt(0)] = 63\n\nfunction getLens (b64) {\n  var len = b64.length\n\n  if (len % 4 > 0) {\n    throw new Error('Invalid string. Length must be a multiple of 4')\n  }\n\n  // Trim off extra bytes after placeholder bytes are found\n  // See: https://github.com/beatgammit/base64-js/issues/42\n  var validLen = b64.indexOf('=')\n  if (validLen === -1) validLen = len\n\n  var placeHoldersLen = validLen === len\n    ? 0\n    : 4 - (validLen % 4)\n\n  return [validLen, placeHoldersLen]\n}\n\n// base64 is 4/3 + up to two characters of the original data\nfunction byteLength (b64) {\n  var lens = getLens(b64)\n  var validLen = lens[0]\n  var placeHoldersLen = lens[1]\n  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen\n}\n\nfunction _byteLength (b64, validLen, placeHoldersLen) {\n  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen\n}\n\nfunction toByteArray (b64) {\n  var tmp\n  var lens = getLens(b64)\n  var validLen = lens[0]\n  var placeHoldersLen = lens[1]\n\n  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))\n\n  var curByte = 0\n\n  // if there are placeholders, only get up to the last complete 4 chars\n  var len = placeHoldersLen > 0\n    ? validLen - 4\n    : validLen\n\n  var i\n  for (i = 0; i < len; i += 4) {\n    tmp =\n      (revLookup[b64.charCodeAt(i)] << 18) |\n      (revLookup[b64.charCodeAt(i + 1)] << 12) |\n      (revLookup[b64.charCodeAt(i + 2)] << 6) |\n      revLookup[b64.charCodeAt(i + 3)]\n    arr[curByte++] = (tmp >> 16) & 0xFF\n    arr[curByte++] = (tmp >> 8) & 0xFF\n    arr[curByte++] = tmp & 0xFF\n  }\n\n  if (placeHoldersLen === 2) {\n    tmp =\n      (revLookup[b64.charCodeAt(i)] << 2) |\n      (revLookup[b64.charCodeAt(i + 1)] >> 4)\n    arr[curByte++] = tmp & 0xFF\n  }\n\n  if (placeHoldersLen === 1) {\n    tmp =\n      (revLookup[b64.charCodeAt(i)] << 10) |\n      (revLookup[b64.charCodeAt(i + 1)] << 4) |\n      (revLookup[b64.charCodeAt(i + 2)] >> 2)\n    arr[curByte++] = (tmp >> 8) & 0xFF\n    arr[curByte++] = tmp & 0xFF\n  }\n\n  return arr\n}\n\nfunction tripletToBase64 (num) {\n  return lookup[num >> 18 & 0x3F] +\n    lookup[num >> 12 & 0x3F] +\n    lookup[num >> 6 & 0x3F] +\n    lookup[num & 0x3F]\n}\n\nfunction encodeChunk (uint8, start, end) {\n  var tmp\n  var output = []\n  for (var i = start; i < end; i += 3) {\n    tmp =\n      ((uint8[i] << 16) & 0xFF0000) +\n      ((uint8[i + 1] << 8) & 0xFF00) +\n      (uint8[i + 2] & 0xFF)\n    output.push(tripletToBase64(tmp))\n  }\n  return output.join('')\n}\n\nfunction fromByteArray (uint8) {\n  var tmp\n  var len = uint8.length\n  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes\n  var parts = []\n  var maxChunkLength = 16383 // must be multiple of 3\n\n  // go through the array every three bytes, we'll deal with trailing stuff later\n  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {\n    parts.push(encodeChunk(\n      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)\n    ))\n  }\n\n  // pad the end with zeros, but make sure to not forget the extra bytes\n  if (extraBytes === 1) {\n    tmp = uint8[len - 1]\n    parts.push(\n      lookup[tmp >> 2] +\n      lookup[(tmp << 4) & 0x3F] +\n      '=='\n    )\n  } else if (extraBytes === 2) {\n    tmp = (uint8[len - 2] << 8) + uint8[len - 1]\n    parts.push(\n      lookup[tmp >> 10] +\n      lookup[(tmp >> 4) & 0x3F] +\n      lookup[(tmp << 2) & 0x3F] +\n      '='\n    )\n  }\n\n  return parts.join('')\n}\n\n\n//# sourceURL=webpack://BinPacking/../node_modules/base64-js/index.js?");
 
 /***/ }),
-/* 1 */
+
+/***/ "../node_modules/buffer/index.js":
+/*!***************************************!*\
+  !*** ../node_modules/buffer/index.js ***!
+  \***************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Score = __webpack_require__(0);
-
-var _Score2 = _interopRequireDefault(_Score);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Base = function () {
-  function Base() {
-    _classCallCheck(this, Base);
-  }
-
-  _createClass(Base, [{
-    key: "findPositionForNewNode",
-    value: function findPositionForNewNode(box, freeRects) {
-      var _this = this;
-
-      var bestScore = new _Score2.default();
-      var width = box.width;
-      var height = box.height;
-
-      freeRects.forEach(function (freeRect) {
-        _this.tryPlaceRectIn(freeRect, box, width, height, bestScore);
-        _this.tryPlaceRectIn(freeRect, box, height, width, bestScore);
-      });
-
-      return bestScore;
-    }
-  }, {
-    key: "tryPlaceRectIn",
-    value: function tryPlaceRectIn(freeRect, box, rectWidth, rectHeight, bestScore) {
-      if (freeRect.width >= rectWidth && freeRect.height >= rectHeight) {
-        var score = this.calculateScore(freeRect, rectWidth, rectHeight);
-        if (score < bestScore) {
-          box.x = freeRect.x;
-          box.y = freeRect.y;
-          box.width = rectWidth;
-          box.height = rectHeight;
-          box.packed = true;
-          bestScore.assign(score);
-        }
-      }
-    }
-  }, {
-    key: "calculateScore",
-    value: function calculateScore(freeRect, rectWidth, rectHeight) {
-      throw "NotImplementedError";
-    }
-  }]);
-
-  return Base;
-}();
-
-exports.default = Base;
+eval("/* WEBPACK VAR INJECTION */(function(global) {/*!\n * The buffer module from node.js, for the browser.\n *\n * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>\n * @license  MIT\n */\n/* eslint-disable no-proto */\n\n\n\nvar base64 = __webpack_require__(/*! base64-js */ \"../node_modules/base64-js/index.js\")\nvar ieee754 = __webpack_require__(/*! ieee754 */ \"../node_modules/ieee754/index.js\")\nvar isArray = __webpack_require__(/*! isarray */ \"../node_modules/isarray/index.js\")\n\nexports.Buffer = Buffer\nexports.SlowBuffer = SlowBuffer\nexports.INSPECT_MAX_BYTES = 50\n\n/**\n * If `Buffer.TYPED_ARRAY_SUPPORT`:\n *   === true    Use Uint8Array implementation (fastest)\n *   === false   Use Object implementation (most compatible, even IE6)\n *\n * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,\n * Opera 11.6+, iOS 4.2+.\n *\n * Due to various browser bugs, sometimes the Object implementation will be used even\n * when the browser supports typed arrays.\n *\n * Note:\n *\n *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,\n *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.\n *\n *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.\n *\n *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of\n *     incorrect length in some situations.\n\n * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they\n * get the Object implementation, which is slower but behaves correctly.\n */\nBuffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined\n  ? global.TYPED_ARRAY_SUPPORT\n  : typedArraySupport()\n\n/*\n * Export kMaxLength after typed array support is determined.\n */\nexports.kMaxLength = kMaxLength()\n\nfunction typedArraySupport () {\n  try {\n    var arr = new Uint8Array(1)\n    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}\n    return arr.foo() === 42 && // typed array instances can be augmented\n        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`\n        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`\n  } catch (e) {\n    return false\n  }\n}\n\nfunction kMaxLength () {\n  return Buffer.TYPED_ARRAY_SUPPORT\n    ? 0x7fffffff\n    : 0x3fffffff\n}\n\nfunction createBuffer (that, length) {\n  if (kMaxLength() < length) {\n    throw new RangeError('Invalid typed array length')\n  }\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    // Return an augmented `Uint8Array` instance, for best performance\n    that = new Uint8Array(length)\n    that.__proto__ = Buffer.prototype\n  } else {\n    // Fallback: Return an object instance of the Buffer class\n    if (that === null) {\n      that = new Buffer(length)\n    }\n    that.length = length\n  }\n\n  return that\n}\n\n/**\n * The Buffer constructor returns instances of `Uint8Array` that have their\n * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of\n * `Uint8Array`, so the returned instances will have all the node `Buffer` methods\n * and the `Uint8Array` methods. Square bracket notation works as expected -- it\n * returns a single octet.\n *\n * The `Uint8Array` prototype remains unmodified.\n */\n\nfunction Buffer (arg, encodingOrOffset, length) {\n  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {\n    return new Buffer(arg, encodingOrOffset, length)\n  }\n\n  // Common case.\n  if (typeof arg === 'number') {\n    if (typeof encodingOrOffset === 'string') {\n      throw new Error(\n        'If encoding is specified then the first argument must be a string'\n      )\n    }\n    return allocUnsafe(this, arg)\n  }\n  return from(this, arg, encodingOrOffset, length)\n}\n\nBuffer.poolSize = 8192 // not used by this implementation\n\n// TODO: Legacy, not needed anymore. Remove in next major version.\nBuffer._augment = function (arr) {\n  arr.__proto__ = Buffer.prototype\n  return arr\n}\n\nfunction from (that, value, encodingOrOffset, length) {\n  if (typeof value === 'number') {\n    throw new TypeError('\"value\" argument must not be a number')\n  }\n\n  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {\n    return fromArrayBuffer(that, value, encodingOrOffset, length)\n  }\n\n  if (typeof value === 'string') {\n    return fromString(that, value, encodingOrOffset)\n  }\n\n  return fromObject(that, value)\n}\n\n/**\n * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError\n * if value is a number.\n * Buffer.from(str[, encoding])\n * Buffer.from(array)\n * Buffer.from(buffer)\n * Buffer.from(arrayBuffer[, byteOffset[, length]])\n **/\nBuffer.from = function (value, encodingOrOffset, length) {\n  return from(null, value, encodingOrOffset, length)\n}\n\nif (Buffer.TYPED_ARRAY_SUPPORT) {\n  Buffer.prototype.__proto__ = Uint8Array.prototype\n  Buffer.__proto__ = Uint8Array\n  if (typeof Symbol !== 'undefined' && Symbol.species &&\n      Buffer[Symbol.species] === Buffer) {\n    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97\n    Object.defineProperty(Buffer, Symbol.species, {\n      value: null,\n      configurable: true\n    })\n  }\n}\n\nfunction assertSize (size) {\n  if (typeof size !== 'number') {\n    throw new TypeError('\"size\" argument must be a number')\n  } else if (size < 0) {\n    throw new RangeError('\"size\" argument must not be negative')\n  }\n}\n\nfunction alloc (that, size, fill, encoding) {\n  assertSize(size)\n  if (size <= 0) {\n    return createBuffer(that, size)\n  }\n  if (fill !== undefined) {\n    // Only pay attention to encoding if it's a string. This\n    // prevents accidentally sending in a number that would\n    // be interpretted as a start offset.\n    return typeof encoding === 'string'\n      ? createBuffer(that, size).fill(fill, encoding)\n      : createBuffer(that, size).fill(fill)\n  }\n  return createBuffer(that, size)\n}\n\n/**\n * Creates a new filled Buffer instance.\n * alloc(size[, fill[, encoding]])\n **/\nBuffer.alloc = function (size, fill, encoding) {\n  return alloc(null, size, fill, encoding)\n}\n\nfunction allocUnsafe (that, size) {\n  assertSize(size)\n  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)\n  if (!Buffer.TYPED_ARRAY_SUPPORT) {\n    for (var i = 0; i < size; ++i) {\n      that[i] = 0\n    }\n  }\n  return that\n}\n\n/**\n * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.\n * */\nBuffer.allocUnsafe = function (size) {\n  return allocUnsafe(null, size)\n}\n/**\n * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.\n */\nBuffer.allocUnsafeSlow = function (size) {\n  return allocUnsafe(null, size)\n}\n\nfunction fromString (that, string, encoding) {\n  if (typeof encoding !== 'string' || encoding === '') {\n    encoding = 'utf8'\n  }\n\n  if (!Buffer.isEncoding(encoding)) {\n    throw new TypeError('\"encoding\" must be a valid string encoding')\n  }\n\n  var length = byteLength(string, encoding) | 0\n  that = createBuffer(that, length)\n\n  var actual = that.write(string, encoding)\n\n  if (actual !== length) {\n    // Writing a hex string, for example, that contains invalid characters will\n    // cause everything after the first invalid character to be ignored. (e.g.\n    // 'abxxcd' will be treated as 'ab')\n    that = that.slice(0, actual)\n  }\n\n  return that\n}\n\nfunction fromArrayLike (that, array) {\n  var length = array.length < 0 ? 0 : checked(array.length) | 0\n  that = createBuffer(that, length)\n  for (var i = 0; i < length; i += 1) {\n    that[i] = array[i] & 255\n  }\n  return that\n}\n\nfunction fromArrayBuffer (that, array, byteOffset, length) {\n  array.byteLength // this throws if `array` is not a valid ArrayBuffer\n\n  if (byteOffset < 0 || array.byteLength < byteOffset) {\n    throw new RangeError('\\'offset\\' is out of bounds')\n  }\n\n  if (array.byteLength < byteOffset + (length || 0)) {\n    throw new RangeError('\\'length\\' is out of bounds')\n  }\n\n  if (byteOffset === undefined && length === undefined) {\n    array = new Uint8Array(array)\n  } else if (length === undefined) {\n    array = new Uint8Array(array, byteOffset)\n  } else {\n    array = new Uint8Array(array, byteOffset, length)\n  }\n\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    // Return an augmented `Uint8Array` instance, for best performance\n    that = array\n    that.__proto__ = Buffer.prototype\n  } else {\n    // Fallback: Return an object instance of the Buffer class\n    that = fromArrayLike(that, array)\n  }\n  return that\n}\n\nfunction fromObject (that, obj) {\n  if (Buffer.isBuffer(obj)) {\n    var len = checked(obj.length) | 0\n    that = createBuffer(that, len)\n\n    if (that.length === 0) {\n      return that\n    }\n\n    obj.copy(that, 0, 0, len)\n    return that\n  }\n\n  if (obj) {\n    if ((typeof ArrayBuffer !== 'undefined' &&\n        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {\n      if (typeof obj.length !== 'number' || isnan(obj.length)) {\n        return createBuffer(that, 0)\n      }\n      return fromArrayLike(that, obj)\n    }\n\n    if (obj.type === 'Buffer' && isArray(obj.data)) {\n      return fromArrayLike(that, obj.data)\n    }\n  }\n\n  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')\n}\n\nfunction checked (length) {\n  // Note: cannot use `length < kMaxLength()` here because that fails when\n  // length is NaN (which is otherwise coerced to zero.)\n  if (length >= kMaxLength()) {\n    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +\n                         'size: 0x' + kMaxLength().toString(16) + ' bytes')\n  }\n  return length | 0\n}\n\nfunction SlowBuffer (length) {\n  if (+length != length) { // eslint-disable-line eqeqeq\n    length = 0\n  }\n  return Buffer.alloc(+length)\n}\n\nBuffer.isBuffer = function isBuffer (b) {\n  return !!(b != null && b._isBuffer)\n}\n\nBuffer.compare = function compare (a, b) {\n  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {\n    throw new TypeError('Arguments must be Buffers')\n  }\n\n  if (a === b) return 0\n\n  var x = a.length\n  var y = b.length\n\n  for (var i = 0, len = Math.min(x, y); i < len; ++i) {\n    if (a[i] !== b[i]) {\n      x = a[i]\n      y = b[i]\n      break\n    }\n  }\n\n  if (x < y) return -1\n  if (y < x) return 1\n  return 0\n}\n\nBuffer.isEncoding = function isEncoding (encoding) {\n  switch (String(encoding).toLowerCase()) {\n    case 'hex':\n    case 'utf8':\n    case 'utf-8':\n    case 'ascii':\n    case 'latin1':\n    case 'binary':\n    case 'base64':\n    case 'ucs2':\n    case 'ucs-2':\n    case 'utf16le':\n    case 'utf-16le':\n      return true\n    default:\n      return false\n  }\n}\n\nBuffer.concat = function concat (list, length) {\n  if (!isArray(list)) {\n    throw new TypeError('\"list\" argument must be an Array of Buffers')\n  }\n\n  if (list.length === 0) {\n    return Buffer.alloc(0)\n  }\n\n  var i\n  if (length === undefined) {\n    length = 0\n    for (i = 0; i < list.length; ++i) {\n      length += list[i].length\n    }\n  }\n\n  var buffer = Buffer.allocUnsafe(length)\n  var pos = 0\n  for (i = 0; i < list.length; ++i) {\n    var buf = list[i]\n    if (!Buffer.isBuffer(buf)) {\n      throw new TypeError('\"list\" argument must be an Array of Buffers')\n    }\n    buf.copy(buffer, pos)\n    pos += buf.length\n  }\n  return buffer\n}\n\nfunction byteLength (string, encoding) {\n  if (Buffer.isBuffer(string)) {\n    return string.length\n  }\n  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&\n      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {\n    return string.byteLength\n  }\n  if (typeof string !== 'string') {\n    string = '' + string\n  }\n\n  var len = string.length\n  if (len === 0) return 0\n\n  // Use a for loop to avoid recursion\n  var loweredCase = false\n  for (;;) {\n    switch (encoding) {\n      case 'ascii':\n      case 'latin1':\n      case 'binary':\n        return len\n      case 'utf8':\n      case 'utf-8':\n      case undefined:\n        return utf8ToBytes(string).length\n      case 'ucs2':\n      case 'ucs-2':\n      case 'utf16le':\n      case 'utf-16le':\n        return len * 2\n      case 'hex':\n        return len >>> 1\n      case 'base64':\n        return base64ToBytes(string).length\n      default:\n        if (loweredCase) return utf8ToBytes(string).length // assume utf8\n        encoding = ('' + encoding).toLowerCase()\n        loweredCase = true\n    }\n  }\n}\nBuffer.byteLength = byteLength\n\nfunction slowToString (encoding, start, end) {\n  var loweredCase = false\n\n  // No need to verify that \"this.length <= MAX_UINT32\" since it's a read-only\n  // property of a typed array.\n\n  // This behaves neither like String nor Uint8Array in that we set start/end\n  // to their upper/lower bounds if the value passed is out of range.\n  // undefined is handled specially as per ECMA-262 6th Edition,\n  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.\n  if (start === undefined || start < 0) {\n    start = 0\n  }\n  // Return early if start > this.length. Done here to prevent potential uint32\n  // coercion fail below.\n  if (start > this.length) {\n    return ''\n  }\n\n  if (end === undefined || end > this.length) {\n    end = this.length\n  }\n\n  if (end <= 0) {\n    return ''\n  }\n\n  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.\n  end >>>= 0\n  start >>>= 0\n\n  if (end <= start) {\n    return ''\n  }\n\n  if (!encoding) encoding = 'utf8'\n\n  while (true) {\n    switch (encoding) {\n      case 'hex':\n        return hexSlice(this, start, end)\n\n      case 'utf8':\n      case 'utf-8':\n        return utf8Slice(this, start, end)\n\n      case 'ascii':\n        return asciiSlice(this, start, end)\n\n      case 'latin1':\n      case 'binary':\n        return latin1Slice(this, start, end)\n\n      case 'base64':\n        return base64Slice(this, start, end)\n\n      case 'ucs2':\n      case 'ucs-2':\n      case 'utf16le':\n      case 'utf-16le':\n        return utf16leSlice(this, start, end)\n\n      default:\n        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)\n        encoding = (encoding + '').toLowerCase()\n        loweredCase = true\n    }\n  }\n}\n\n// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect\n// Buffer instances.\nBuffer.prototype._isBuffer = true\n\nfunction swap (b, n, m) {\n  var i = b[n]\n  b[n] = b[m]\n  b[m] = i\n}\n\nBuffer.prototype.swap16 = function swap16 () {\n  var len = this.length\n  if (len % 2 !== 0) {\n    throw new RangeError('Buffer size must be a multiple of 16-bits')\n  }\n  for (var i = 0; i < len; i += 2) {\n    swap(this, i, i + 1)\n  }\n  return this\n}\n\nBuffer.prototype.swap32 = function swap32 () {\n  var len = this.length\n  if (len % 4 !== 0) {\n    throw new RangeError('Buffer size must be a multiple of 32-bits')\n  }\n  for (var i = 0; i < len; i += 4) {\n    swap(this, i, i + 3)\n    swap(this, i + 1, i + 2)\n  }\n  return this\n}\n\nBuffer.prototype.swap64 = function swap64 () {\n  var len = this.length\n  if (len % 8 !== 0) {\n    throw new RangeError('Buffer size must be a multiple of 64-bits')\n  }\n  for (var i = 0; i < len; i += 8) {\n    swap(this, i, i + 7)\n    swap(this, i + 1, i + 6)\n    swap(this, i + 2, i + 5)\n    swap(this, i + 3, i + 4)\n  }\n  return this\n}\n\nBuffer.prototype.toString = function toString () {\n  var length = this.length | 0\n  if (length === 0) return ''\n  if (arguments.length === 0) return utf8Slice(this, 0, length)\n  return slowToString.apply(this, arguments)\n}\n\nBuffer.prototype.equals = function equals (b) {\n  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')\n  if (this === b) return true\n  return Buffer.compare(this, b) === 0\n}\n\nBuffer.prototype.inspect = function inspect () {\n  var str = ''\n  var max = exports.INSPECT_MAX_BYTES\n  if (this.length > 0) {\n    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')\n    if (this.length > max) str += ' ... '\n  }\n  return '<Buffer ' + str + '>'\n}\n\nBuffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {\n  if (!Buffer.isBuffer(target)) {\n    throw new TypeError('Argument must be a Buffer')\n  }\n\n  if (start === undefined) {\n    start = 0\n  }\n  if (end === undefined) {\n    end = target ? target.length : 0\n  }\n  if (thisStart === undefined) {\n    thisStart = 0\n  }\n  if (thisEnd === undefined) {\n    thisEnd = this.length\n  }\n\n  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {\n    throw new RangeError('out of range index')\n  }\n\n  if (thisStart >= thisEnd && start >= end) {\n    return 0\n  }\n  if (thisStart >= thisEnd) {\n    return -1\n  }\n  if (start >= end) {\n    return 1\n  }\n\n  start >>>= 0\n  end >>>= 0\n  thisStart >>>= 0\n  thisEnd >>>= 0\n\n  if (this === target) return 0\n\n  var x = thisEnd - thisStart\n  var y = end - start\n  var len = Math.min(x, y)\n\n  var thisCopy = this.slice(thisStart, thisEnd)\n  var targetCopy = target.slice(start, end)\n\n  for (var i = 0; i < len; ++i) {\n    if (thisCopy[i] !== targetCopy[i]) {\n      x = thisCopy[i]\n      y = targetCopy[i]\n      break\n    }\n  }\n\n  if (x < y) return -1\n  if (y < x) return 1\n  return 0\n}\n\n// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,\n// OR the last index of `val` in `buffer` at offset <= `byteOffset`.\n//\n// Arguments:\n// - buffer - a Buffer to search\n// - val - a string, Buffer, or number\n// - byteOffset - an index into `buffer`; will be clamped to an int32\n// - encoding - an optional encoding, relevant is val is a string\n// - dir - true for indexOf, false for lastIndexOf\nfunction bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {\n  // Empty buffer means no match\n  if (buffer.length === 0) return -1\n\n  // Normalize byteOffset\n  if (typeof byteOffset === 'string') {\n    encoding = byteOffset\n    byteOffset = 0\n  } else if (byteOffset > 0x7fffffff) {\n    byteOffset = 0x7fffffff\n  } else if (byteOffset < -0x80000000) {\n    byteOffset = -0x80000000\n  }\n  byteOffset = +byteOffset  // Coerce to Number.\n  if (isNaN(byteOffset)) {\n    // byteOffset: it it's undefined, null, NaN, \"foo\", etc, search whole buffer\n    byteOffset = dir ? 0 : (buffer.length - 1)\n  }\n\n  // Normalize byteOffset: negative offsets start from the end of the buffer\n  if (byteOffset < 0) byteOffset = buffer.length + byteOffset\n  if (byteOffset >= buffer.length) {\n    if (dir) return -1\n    else byteOffset = buffer.length - 1\n  } else if (byteOffset < 0) {\n    if (dir) byteOffset = 0\n    else return -1\n  }\n\n  // Normalize val\n  if (typeof val === 'string') {\n    val = Buffer.from(val, encoding)\n  }\n\n  // Finally, search either indexOf (if dir is true) or lastIndexOf\n  if (Buffer.isBuffer(val)) {\n    // Special case: looking for empty string/buffer always fails\n    if (val.length === 0) {\n      return -1\n    }\n    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)\n  } else if (typeof val === 'number') {\n    val = val & 0xFF // Search for a byte value [0-255]\n    if (Buffer.TYPED_ARRAY_SUPPORT &&\n        typeof Uint8Array.prototype.indexOf === 'function') {\n      if (dir) {\n        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)\n      } else {\n        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)\n      }\n    }\n    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)\n  }\n\n  throw new TypeError('val must be string, number or Buffer')\n}\n\nfunction arrayIndexOf (arr, val, byteOffset, encoding, dir) {\n  var indexSize = 1\n  var arrLength = arr.length\n  var valLength = val.length\n\n  if (encoding !== undefined) {\n    encoding = String(encoding).toLowerCase()\n    if (encoding === 'ucs2' || encoding === 'ucs-2' ||\n        encoding === 'utf16le' || encoding === 'utf-16le') {\n      if (arr.length < 2 || val.length < 2) {\n        return -1\n      }\n      indexSize = 2\n      arrLength /= 2\n      valLength /= 2\n      byteOffset /= 2\n    }\n  }\n\n  function read (buf, i) {\n    if (indexSize === 1) {\n      return buf[i]\n    } else {\n      return buf.readUInt16BE(i * indexSize)\n    }\n  }\n\n  var i\n  if (dir) {\n    var foundIndex = -1\n    for (i = byteOffset; i < arrLength; i++) {\n      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {\n        if (foundIndex === -1) foundIndex = i\n        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize\n      } else {\n        if (foundIndex !== -1) i -= i - foundIndex\n        foundIndex = -1\n      }\n    }\n  } else {\n    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength\n    for (i = byteOffset; i >= 0; i--) {\n      var found = true\n      for (var j = 0; j < valLength; j++) {\n        if (read(arr, i + j) !== read(val, j)) {\n          found = false\n          break\n        }\n      }\n      if (found) return i\n    }\n  }\n\n  return -1\n}\n\nBuffer.prototype.includes = function includes (val, byteOffset, encoding) {\n  return this.indexOf(val, byteOffset, encoding) !== -1\n}\n\nBuffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {\n  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)\n}\n\nBuffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {\n  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)\n}\n\nfunction hexWrite (buf, string, offset, length) {\n  offset = Number(offset) || 0\n  var remaining = buf.length - offset\n  if (!length) {\n    length = remaining\n  } else {\n    length = Number(length)\n    if (length > remaining) {\n      length = remaining\n    }\n  }\n\n  // must be an even number of digits\n  var strLen = string.length\n  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')\n\n  if (length > strLen / 2) {\n    length = strLen / 2\n  }\n  for (var i = 0; i < length; ++i) {\n    var parsed = parseInt(string.substr(i * 2, 2), 16)\n    if (isNaN(parsed)) return i\n    buf[offset + i] = parsed\n  }\n  return i\n}\n\nfunction utf8Write (buf, string, offset, length) {\n  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)\n}\n\nfunction asciiWrite (buf, string, offset, length) {\n  return blitBuffer(asciiToBytes(string), buf, offset, length)\n}\n\nfunction latin1Write (buf, string, offset, length) {\n  return asciiWrite(buf, string, offset, length)\n}\n\nfunction base64Write (buf, string, offset, length) {\n  return blitBuffer(base64ToBytes(string), buf, offset, length)\n}\n\nfunction ucs2Write (buf, string, offset, length) {\n  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)\n}\n\nBuffer.prototype.write = function write (string, offset, length, encoding) {\n  // Buffer#write(string)\n  if (offset === undefined) {\n    encoding = 'utf8'\n    length = this.length\n    offset = 0\n  // Buffer#write(string, encoding)\n  } else if (length === undefined && typeof offset === 'string') {\n    encoding = offset\n    length = this.length\n    offset = 0\n  // Buffer#write(string, offset[, length][, encoding])\n  } else if (isFinite(offset)) {\n    offset = offset | 0\n    if (isFinite(length)) {\n      length = length | 0\n      if (encoding === undefined) encoding = 'utf8'\n    } else {\n      encoding = length\n      length = undefined\n    }\n  // legacy write(string, encoding, offset, length) - remove in v0.13\n  } else {\n    throw new Error(\n      'Buffer.write(string, encoding, offset[, length]) is no longer supported'\n    )\n  }\n\n  var remaining = this.length - offset\n  if (length === undefined || length > remaining) length = remaining\n\n  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {\n    throw new RangeError('Attempt to write outside buffer bounds')\n  }\n\n  if (!encoding) encoding = 'utf8'\n\n  var loweredCase = false\n  for (;;) {\n    switch (encoding) {\n      case 'hex':\n        return hexWrite(this, string, offset, length)\n\n      case 'utf8':\n      case 'utf-8':\n        return utf8Write(this, string, offset, length)\n\n      case 'ascii':\n        return asciiWrite(this, string, offset, length)\n\n      case 'latin1':\n      case 'binary':\n        return latin1Write(this, string, offset, length)\n\n      case 'base64':\n        // Warning: maxLength not taken into account in base64Write\n        return base64Write(this, string, offset, length)\n\n      case 'ucs2':\n      case 'ucs-2':\n      case 'utf16le':\n      case 'utf-16le':\n        return ucs2Write(this, string, offset, length)\n\n      default:\n        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)\n        encoding = ('' + encoding).toLowerCase()\n        loweredCase = true\n    }\n  }\n}\n\nBuffer.prototype.toJSON = function toJSON () {\n  return {\n    type: 'Buffer',\n    data: Array.prototype.slice.call(this._arr || this, 0)\n  }\n}\n\nfunction base64Slice (buf, start, end) {\n  if (start === 0 && end === buf.length) {\n    return base64.fromByteArray(buf)\n  } else {\n    return base64.fromByteArray(buf.slice(start, end))\n  }\n}\n\nfunction utf8Slice (buf, start, end) {\n  end = Math.min(buf.length, end)\n  var res = []\n\n  var i = start\n  while (i < end) {\n    var firstByte = buf[i]\n    var codePoint = null\n    var bytesPerSequence = (firstByte > 0xEF) ? 4\n      : (firstByte > 0xDF) ? 3\n      : (firstByte > 0xBF) ? 2\n      : 1\n\n    if (i + bytesPerSequence <= end) {\n      var secondByte, thirdByte, fourthByte, tempCodePoint\n\n      switch (bytesPerSequence) {\n        case 1:\n          if (firstByte < 0x80) {\n            codePoint = firstByte\n          }\n          break\n        case 2:\n          secondByte = buf[i + 1]\n          if ((secondByte & 0xC0) === 0x80) {\n            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)\n            if (tempCodePoint > 0x7F) {\n              codePoint = tempCodePoint\n            }\n          }\n          break\n        case 3:\n          secondByte = buf[i + 1]\n          thirdByte = buf[i + 2]\n          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {\n            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)\n            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {\n              codePoint = tempCodePoint\n            }\n          }\n          break\n        case 4:\n          secondByte = buf[i + 1]\n          thirdByte = buf[i + 2]\n          fourthByte = buf[i + 3]\n          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {\n            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)\n            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {\n              codePoint = tempCodePoint\n            }\n          }\n      }\n    }\n\n    if (codePoint === null) {\n      // we did not generate a valid codePoint so insert a\n      // replacement char (U+FFFD) and advance only 1 byte\n      codePoint = 0xFFFD\n      bytesPerSequence = 1\n    } else if (codePoint > 0xFFFF) {\n      // encode to utf16 (surrogate pair dance)\n      codePoint -= 0x10000\n      res.push(codePoint >>> 10 & 0x3FF | 0xD800)\n      codePoint = 0xDC00 | codePoint & 0x3FF\n    }\n\n    res.push(codePoint)\n    i += bytesPerSequence\n  }\n\n  return decodeCodePointsArray(res)\n}\n\n// Based on http://stackoverflow.com/a/22747272/680742, the browser with\n// the lowest limit is Chrome, with 0x10000 args.\n// We go 1 magnitude less, for safety\nvar MAX_ARGUMENTS_LENGTH = 0x1000\n\nfunction decodeCodePointsArray (codePoints) {\n  var len = codePoints.length\n  if (len <= MAX_ARGUMENTS_LENGTH) {\n    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()\n  }\n\n  // Decode in chunks to avoid \"call stack size exceeded\".\n  var res = ''\n  var i = 0\n  while (i < len) {\n    res += String.fromCharCode.apply(\n      String,\n      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)\n    )\n  }\n  return res\n}\n\nfunction asciiSlice (buf, start, end) {\n  var ret = ''\n  end = Math.min(buf.length, end)\n\n  for (var i = start; i < end; ++i) {\n    ret += String.fromCharCode(buf[i] & 0x7F)\n  }\n  return ret\n}\n\nfunction latin1Slice (buf, start, end) {\n  var ret = ''\n  end = Math.min(buf.length, end)\n\n  for (var i = start; i < end; ++i) {\n    ret += String.fromCharCode(buf[i])\n  }\n  return ret\n}\n\nfunction hexSlice (buf, start, end) {\n  var len = buf.length\n\n  if (!start || start < 0) start = 0\n  if (!end || end < 0 || end > len) end = len\n\n  var out = ''\n  for (var i = start; i < end; ++i) {\n    out += toHex(buf[i])\n  }\n  return out\n}\n\nfunction utf16leSlice (buf, start, end) {\n  var bytes = buf.slice(start, end)\n  var res = ''\n  for (var i = 0; i < bytes.length; i += 2) {\n    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)\n  }\n  return res\n}\n\nBuffer.prototype.slice = function slice (start, end) {\n  var len = this.length\n  start = ~~start\n  end = end === undefined ? len : ~~end\n\n  if (start < 0) {\n    start += len\n    if (start < 0) start = 0\n  } else if (start > len) {\n    start = len\n  }\n\n  if (end < 0) {\n    end += len\n    if (end < 0) end = 0\n  } else if (end > len) {\n    end = len\n  }\n\n  if (end < start) end = start\n\n  var newBuf\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    newBuf = this.subarray(start, end)\n    newBuf.__proto__ = Buffer.prototype\n  } else {\n    var sliceLen = end - start\n    newBuf = new Buffer(sliceLen, undefined)\n    for (var i = 0; i < sliceLen; ++i) {\n      newBuf[i] = this[i + start]\n    }\n  }\n\n  return newBuf\n}\n\n/*\n * Need to make sure that buffer isn't trying to write out of bounds.\n */\nfunction checkOffset (offset, ext, length) {\n  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')\n  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')\n}\n\nBuffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) checkOffset(offset, byteLength, this.length)\n\n  var val = this[offset]\n  var mul = 1\n  var i = 0\n  while (++i < byteLength && (mul *= 0x100)) {\n    val += this[offset + i] * mul\n  }\n\n  return val\n}\n\nBuffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) {\n    checkOffset(offset, byteLength, this.length)\n  }\n\n  var val = this[offset + --byteLength]\n  var mul = 1\n  while (byteLength > 0 && (mul *= 0x100)) {\n    val += this[offset + --byteLength] * mul\n  }\n\n  return val\n}\n\nBuffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 1, this.length)\n  return this[offset]\n}\n\nBuffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 2, this.length)\n  return this[offset] | (this[offset + 1] << 8)\n}\n\nBuffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 2, this.length)\n  return (this[offset] << 8) | this[offset + 1]\n}\n\nBuffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n\n  return ((this[offset]) |\n      (this[offset + 1] << 8) |\n      (this[offset + 2] << 16)) +\n      (this[offset + 3] * 0x1000000)\n}\n\nBuffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n\n  return (this[offset] * 0x1000000) +\n    ((this[offset + 1] << 16) |\n    (this[offset + 2] << 8) |\n    this[offset + 3])\n}\n\nBuffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) checkOffset(offset, byteLength, this.length)\n\n  var val = this[offset]\n  var mul = 1\n  var i = 0\n  while (++i < byteLength && (mul *= 0x100)) {\n    val += this[offset + i] * mul\n  }\n  mul *= 0x80\n\n  if (val >= mul) val -= Math.pow(2, 8 * byteLength)\n\n  return val\n}\n\nBuffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) checkOffset(offset, byteLength, this.length)\n\n  var i = byteLength\n  var mul = 1\n  var val = this[offset + --i]\n  while (i > 0 && (mul *= 0x100)) {\n    val += this[offset + --i] * mul\n  }\n  mul *= 0x80\n\n  if (val >= mul) val -= Math.pow(2, 8 * byteLength)\n\n  return val\n}\n\nBuffer.prototype.readInt8 = function readInt8 (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 1, this.length)\n  if (!(this[offset] & 0x80)) return (this[offset])\n  return ((0xff - this[offset] + 1) * -1)\n}\n\nBuffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 2, this.length)\n  var val = this[offset] | (this[offset + 1] << 8)\n  return (val & 0x8000) ? val | 0xFFFF0000 : val\n}\n\nBuffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 2, this.length)\n  var val = this[offset + 1] | (this[offset] << 8)\n  return (val & 0x8000) ? val | 0xFFFF0000 : val\n}\n\nBuffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n\n  return (this[offset]) |\n    (this[offset + 1] << 8) |\n    (this[offset + 2] << 16) |\n    (this[offset + 3] << 24)\n}\n\nBuffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n\n  return (this[offset] << 24) |\n    (this[offset + 1] << 16) |\n    (this[offset + 2] << 8) |\n    (this[offset + 3])\n}\n\nBuffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n  return ieee754.read(this, offset, true, 23, 4)\n}\n\nBuffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n  return ieee754.read(this, offset, false, 23, 4)\n}\n\nBuffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 8, this.length)\n  return ieee754.read(this, offset, true, 52, 8)\n}\n\nBuffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 8, this.length)\n  return ieee754.read(this, offset, false, 52, 8)\n}\n\nfunction checkInt (buf, value, offset, ext, max, min) {\n  if (!Buffer.isBuffer(buf)) throw new TypeError('\"buffer\" argument must be a Buffer instance')\n  if (value > max || value < min) throw new RangeError('\"value\" argument is out of bounds')\n  if (offset + ext > buf.length) throw new RangeError('Index out of range')\n}\n\nBuffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {\n  value = +value\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) {\n    var maxBytes = Math.pow(2, 8 * byteLength) - 1\n    checkInt(this, value, offset, byteLength, maxBytes, 0)\n  }\n\n  var mul = 1\n  var i = 0\n  this[offset] = value & 0xFF\n  while (++i < byteLength && (mul *= 0x100)) {\n    this[offset + i] = (value / mul) & 0xFF\n  }\n\n  return offset + byteLength\n}\n\nBuffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {\n  value = +value\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) {\n    var maxBytes = Math.pow(2, 8 * byteLength) - 1\n    checkInt(this, value, offset, byteLength, maxBytes, 0)\n  }\n\n  var i = byteLength - 1\n  var mul = 1\n  this[offset + i] = value & 0xFF\n  while (--i >= 0 && (mul *= 0x100)) {\n    this[offset + i] = (value / mul) & 0xFF\n  }\n\n  return offset + byteLength\n}\n\nBuffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)\n  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)\n  this[offset] = (value & 0xff)\n  return offset + 1\n}\n\nfunction objectWriteUInt16 (buf, value, offset, littleEndian) {\n  if (value < 0) value = 0xffff + value + 1\n  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {\n    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>\n      (littleEndian ? i : 1 - i) * 8\n  }\n}\n\nBuffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value & 0xff)\n    this[offset + 1] = (value >>> 8)\n  } else {\n    objectWriteUInt16(this, value, offset, true)\n  }\n  return offset + 2\n}\n\nBuffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value >>> 8)\n    this[offset + 1] = (value & 0xff)\n  } else {\n    objectWriteUInt16(this, value, offset, false)\n  }\n  return offset + 2\n}\n\nfunction objectWriteUInt32 (buf, value, offset, littleEndian) {\n  if (value < 0) value = 0xffffffff + value + 1\n  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {\n    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff\n  }\n}\n\nBuffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset + 3] = (value >>> 24)\n    this[offset + 2] = (value >>> 16)\n    this[offset + 1] = (value >>> 8)\n    this[offset] = (value & 0xff)\n  } else {\n    objectWriteUInt32(this, value, offset, true)\n  }\n  return offset + 4\n}\n\nBuffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value >>> 24)\n    this[offset + 1] = (value >>> 16)\n    this[offset + 2] = (value >>> 8)\n    this[offset + 3] = (value & 0xff)\n  } else {\n    objectWriteUInt32(this, value, offset, false)\n  }\n  return offset + 4\n}\n\nBuffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) {\n    var limit = Math.pow(2, 8 * byteLength - 1)\n\n    checkInt(this, value, offset, byteLength, limit - 1, -limit)\n  }\n\n  var i = 0\n  var mul = 1\n  var sub = 0\n  this[offset] = value & 0xFF\n  while (++i < byteLength && (mul *= 0x100)) {\n    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {\n      sub = 1\n    }\n    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF\n  }\n\n  return offset + byteLength\n}\n\nBuffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) {\n    var limit = Math.pow(2, 8 * byteLength - 1)\n\n    checkInt(this, value, offset, byteLength, limit - 1, -limit)\n  }\n\n  var i = byteLength - 1\n  var mul = 1\n  var sub = 0\n  this[offset + i] = value & 0xFF\n  while (--i >= 0 && (mul *= 0x100)) {\n    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {\n      sub = 1\n    }\n    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF\n  }\n\n  return offset + byteLength\n}\n\nBuffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)\n  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)\n  if (value < 0) value = 0xff + value + 1\n  this[offset] = (value & 0xff)\n  return offset + 1\n}\n\nBuffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value & 0xff)\n    this[offset + 1] = (value >>> 8)\n  } else {\n    objectWriteUInt16(this, value, offset, true)\n  }\n  return offset + 2\n}\n\nBuffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value >>> 8)\n    this[offset + 1] = (value & 0xff)\n  } else {\n    objectWriteUInt16(this, value, offset, false)\n  }\n  return offset + 2\n}\n\nBuffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value & 0xff)\n    this[offset + 1] = (value >>> 8)\n    this[offset + 2] = (value >>> 16)\n    this[offset + 3] = (value >>> 24)\n  } else {\n    objectWriteUInt32(this, value, offset, true)\n  }\n  return offset + 4\n}\n\nBuffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)\n  if (value < 0) value = 0xffffffff + value + 1\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value >>> 24)\n    this[offset + 1] = (value >>> 16)\n    this[offset + 2] = (value >>> 8)\n    this[offset + 3] = (value & 0xff)\n  } else {\n    objectWriteUInt32(this, value, offset, false)\n  }\n  return offset + 4\n}\n\nfunction checkIEEE754 (buf, value, offset, ext, max, min) {\n  if (offset + ext > buf.length) throw new RangeError('Index out of range')\n  if (offset < 0) throw new RangeError('Index out of range')\n}\n\nfunction writeFloat (buf, value, offset, littleEndian, noAssert) {\n  if (!noAssert) {\n    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)\n  }\n  ieee754.write(buf, value, offset, littleEndian, 23, 4)\n  return offset + 4\n}\n\nBuffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {\n  return writeFloat(this, value, offset, true, noAssert)\n}\n\nBuffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {\n  return writeFloat(this, value, offset, false, noAssert)\n}\n\nfunction writeDouble (buf, value, offset, littleEndian, noAssert) {\n  if (!noAssert) {\n    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)\n  }\n  ieee754.write(buf, value, offset, littleEndian, 52, 8)\n  return offset + 8\n}\n\nBuffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {\n  return writeDouble(this, value, offset, true, noAssert)\n}\n\nBuffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {\n  return writeDouble(this, value, offset, false, noAssert)\n}\n\n// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)\nBuffer.prototype.copy = function copy (target, targetStart, start, end) {\n  if (!start) start = 0\n  if (!end && end !== 0) end = this.length\n  if (targetStart >= target.length) targetStart = target.length\n  if (!targetStart) targetStart = 0\n  if (end > 0 && end < start) end = start\n\n  // Copy 0 bytes; we're done\n  if (end === start) return 0\n  if (target.length === 0 || this.length === 0) return 0\n\n  // Fatal error conditions\n  if (targetStart < 0) {\n    throw new RangeError('targetStart out of bounds')\n  }\n  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')\n  if (end < 0) throw new RangeError('sourceEnd out of bounds')\n\n  // Are we oob?\n  if (end > this.length) end = this.length\n  if (target.length - targetStart < end - start) {\n    end = target.length - targetStart + start\n  }\n\n  var len = end - start\n  var i\n\n  if (this === target && start < targetStart && targetStart < end) {\n    // descending copy from end\n    for (i = len - 1; i >= 0; --i) {\n      target[i + targetStart] = this[i + start]\n    }\n  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {\n    // ascending copy from start\n    for (i = 0; i < len; ++i) {\n      target[i + targetStart] = this[i + start]\n    }\n  } else {\n    Uint8Array.prototype.set.call(\n      target,\n      this.subarray(start, start + len),\n      targetStart\n    )\n  }\n\n  return len\n}\n\n// Usage:\n//    buffer.fill(number[, offset[, end]])\n//    buffer.fill(buffer[, offset[, end]])\n//    buffer.fill(string[, offset[, end]][, encoding])\nBuffer.prototype.fill = function fill (val, start, end, encoding) {\n  // Handle string cases:\n  if (typeof val === 'string') {\n    if (typeof start === 'string') {\n      encoding = start\n      start = 0\n      end = this.length\n    } else if (typeof end === 'string') {\n      encoding = end\n      end = this.length\n    }\n    if (val.length === 1) {\n      var code = val.charCodeAt(0)\n      if (code < 256) {\n        val = code\n      }\n    }\n    if (encoding !== undefined && typeof encoding !== 'string') {\n      throw new TypeError('encoding must be a string')\n    }\n    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {\n      throw new TypeError('Unknown encoding: ' + encoding)\n    }\n  } else if (typeof val === 'number') {\n    val = val & 255\n  }\n\n  // Invalid ranges are not set to a default, so can range check early.\n  if (start < 0 || this.length < start || this.length < end) {\n    throw new RangeError('Out of range index')\n  }\n\n  if (end <= start) {\n    return this\n  }\n\n  start = start >>> 0\n  end = end === undefined ? this.length : end >>> 0\n\n  if (!val) val = 0\n\n  var i\n  if (typeof val === 'number') {\n    for (i = start; i < end; ++i) {\n      this[i] = val\n    }\n  } else {\n    var bytes = Buffer.isBuffer(val)\n      ? val\n      : utf8ToBytes(new Buffer(val, encoding).toString())\n    var len = bytes.length\n    for (i = 0; i < end - start; ++i) {\n      this[i + start] = bytes[i % len]\n    }\n  }\n\n  return this\n}\n\n// HELPER FUNCTIONS\n// ================\n\nvar INVALID_BASE64_RE = /[^+\\/0-9A-Za-z-_]/g\n\nfunction base64clean (str) {\n  // Node strips out invalid characters like \\n and \\t from the string, base64-js does not\n  str = stringtrim(str).replace(INVALID_BASE64_RE, '')\n  // Node converts strings with length < 2 to ''\n  if (str.length < 2) return ''\n  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not\n  while (str.length % 4 !== 0) {\n    str = str + '='\n  }\n  return str\n}\n\nfunction stringtrim (str) {\n  if (str.trim) return str.trim()\n  return str.replace(/^\\s+|\\s+$/g, '')\n}\n\nfunction toHex (n) {\n  if (n < 16) return '0' + n.toString(16)\n  return n.toString(16)\n}\n\nfunction utf8ToBytes (string, units) {\n  units = units || Infinity\n  var codePoint\n  var length = string.length\n  var leadSurrogate = null\n  var bytes = []\n\n  for (var i = 0; i < length; ++i) {\n    codePoint = string.charCodeAt(i)\n\n    // is surrogate component\n    if (codePoint > 0xD7FF && codePoint < 0xE000) {\n      // last char was a lead\n      if (!leadSurrogate) {\n        // no lead yet\n        if (codePoint > 0xDBFF) {\n          // unexpected trail\n          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)\n          continue\n        } else if (i + 1 === length) {\n          // unpaired lead\n          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)\n          continue\n        }\n\n        // valid lead\n        leadSurrogate = codePoint\n\n        continue\n      }\n\n      // 2 leads in a row\n      if (codePoint < 0xDC00) {\n        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)\n        leadSurrogate = codePoint\n        continue\n      }\n\n      // valid surrogate pair\n      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000\n    } else if (leadSurrogate) {\n      // valid bmp char, but last char was a lead\n      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)\n    }\n\n    leadSurrogate = null\n\n    // encode utf8\n    if (codePoint < 0x80) {\n      if ((units -= 1) < 0) break\n      bytes.push(codePoint)\n    } else if (codePoint < 0x800) {\n      if ((units -= 2) < 0) break\n      bytes.push(\n        codePoint >> 0x6 | 0xC0,\n        codePoint & 0x3F | 0x80\n      )\n    } else if (codePoint < 0x10000) {\n      if ((units -= 3) < 0) break\n      bytes.push(\n        codePoint >> 0xC | 0xE0,\n        codePoint >> 0x6 & 0x3F | 0x80,\n        codePoint & 0x3F | 0x80\n      )\n    } else if (codePoint < 0x110000) {\n      if ((units -= 4) < 0) break\n      bytes.push(\n        codePoint >> 0x12 | 0xF0,\n        codePoint >> 0xC & 0x3F | 0x80,\n        codePoint >> 0x6 & 0x3F | 0x80,\n        codePoint & 0x3F | 0x80\n      )\n    } else {\n      throw new Error('Invalid code point')\n    }\n  }\n\n  return bytes\n}\n\nfunction asciiToBytes (str) {\n  var byteArray = []\n  for (var i = 0; i < str.length; ++i) {\n    // Node's code seems to be doing this and not & 0x7F..\n    byteArray.push(str.charCodeAt(i) & 0xFF)\n  }\n  return byteArray\n}\n\nfunction utf16leToBytes (str, units) {\n  var c, hi, lo\n  var byteArray = []\n  for (var i = 0; i < str.length; ++i) {\n    if ((units -= 2) < 0) break\n\n    c = str.charCodeAt(i)\n    hi = c >> 8\n    lo = c % 256\n    byteArray.push(lo)\n    byteArray.push(hi)\n  }\n\n  return byteArray\n}\n\nfunction base64ToBytes (str) {\n  return base64.toByteArray(base64clean(str))\n}\n\nfunction blitBuffer (src, dst, offset, length) {\n  for (var i = 0; i < length; ++i) {\n    if ((i + offset >= dst.length) || (i >= src.length)) break\n    dst[i + offset] = src[i]\n  }\n  return i\n}\n\nfunction isnan (val) {\n  return val !== val // eslint-disable-line no-self-compare\n}\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ \"../node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack://BinPacking/../node_modules/buffer/index.js?");
 
 /***/ }),
-/* 2 */
+
+/***/ "../node_modules/clone/clone.js":
+/*!**************************************!*\
+  !*** ../node_modules/clone/clone.js ***!
+  \**************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Base2 = __webpack_require__(1);
-
-var _Base3 = _interopRequireDefault(_Base2);
-
-var _Score = __webpack_require__(0);
-
-var _Score2 = _interopRequireDefault(_Score);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BestShortSideFit = function (_Base) {
-  _inherits(BestShortSideFit, _Base);
-
-  function BestShortSideFit() {
-    _classCallCheck(this, BestShortSideFit);
-
-    return _possibleConstructorReturn(this, (BestShortSideFit.__proto__ || Object.getPrototypeOf(BestShortSideFit)).apply(this, arguments));
-  }
-
-  _createClass(BestShortSideFit, [{
-    key: 'calculateScore',
-    value: function calculateScore(freeRect, rectWidth, rectHeight) {
-      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);
-      var leftOverVert = Math.abs(freeRect.height - rectHeight);
-      var args = [leftOverHoriz, leftOverVert].sort(function (a, b) {
-        return a - b;
-      });
-      var score = new _Score2.default(args[0], args[1]);
-      return score;
-    }
-  }]);
-
-  return BestShortSideFit;
-}(_Base3.default);
-
-exports.default = BestShortSideFit;
+eval("/* WEBPACK VAR INJECTION */(function(Buffer) {var clone = (function() {\n'use strict';\n\n/**\n * Clones (copies) an Object using deep copying.\n *\n * This function supports circular references by default, but if you are certain\n * there are no circular references in your object, you can save some CPU time\n * by calling clone(obj, false).\n *\n * Caution: if `circular` is false and `parent` contains circular references,\n * your program may enter an infinite loop and crash.\n *\n * @param `parent` - the object to be cloned\n * @param `circular` - set to true if the object to be cloned may contain\n *    circular references. (optional - true by default)\n * @param `depth` - set to a number if the object is only to be cloned to\n *    a particular depth. (optional - defaults to Infinity)\n * @param `prototype` - sets the prototype to be used when cloning an object.\n *    (optional - defaults to parent prototype).\n*/\nfunction clone(parent, circular, depth, prototype) {\n  var filter;\n  if (typeof circular === 'object') {\n    depth = circular.depth;\n    prototype = circular.prototype;\n    filter = circular.filter;\n    circular = circular.circular\n  }\n  // maintain two arrays for circular references, where corresponding parents\n  // and children have the same index\n  var allParents = [];\n  var allChildren = [];\n\n  var useBuffer = typeof Buffer != 'undefined';\n\n  if (typeof circular == 'undefined')\n    circular = true;\n\n  if (typeof depth == 'undefined')\n    depth = Infinity;\n\n  // recurse this function so we don't reset allParents and allChildren\n  function _clone(parent, depth) {\n    // cloning null always returns null\n    if (parent === null)\n      return null;\n\n    if (depth == 0)\n      return parent;\n\n    var child;\n    var proto;\n    if (typeof parent != 'object') {\n      return parent;\n    }\n\n    if (clone.__isArray(parent)) {\n      child = [];\n    } else if (clone.__isRegExp(parent)) {\n      child = new RegExp(parent.source, __getRegExpFlags(parent));\n      if (parent.lastIndex) child.lastIndex = parent.lastIndex;\n    } else if (clone.__isDate(parent)) {\n      child = new Date(parent.getTime());\n    } else if (useBuffer && Buffer.isBuffer(parent)) {\n      if (Buffer.allocUnsafe) {\n        // Node.js >= 4.5.0\n        child = Buffer.allocUnsafe(parent.length);\n      } else {\n        // Older Node.js versions\n        child = new Buffer(parent.length);\n      }\n      parent.copy(child);\n      return child;\n    } else {\n      if (typeof prototype == 'undefined') {\n        proto = Object.getPrototypeOf(parent);\n        child = Object.create(proto);\n      }\n      else {\n        child = Object.create(prototype);\n        proto = prototype;\n      }\n    }\n\n    if (circular) {\n      var index = allParents.indexOf(parent);\n\n      if (index != -1) {\n        return allChildren[index];\n      }\n      allParents.push(parent);\n      allChildren.push(child);\n    }\n\n    for (var i in parent) {\n      var attrs;\n      if (proto) {\n        attrs = Object.getOwnPropertyDescriptor(proto, i);\n      }\n\n      if (attrs && attrs.set == null) {\n        continue;\n      }\n      child[i] = _clone(parent[i], depth - 1);\n    }\n\n    return child;\n  }\n\n  return _clone(parent, depth);\n}\n\n/**\n * Simple flat clone using prototype, accepts only objects, usefull for property\n * override on FLAT configuration object (no nested props).\n *\n * USE WITH CAUTION! This may not behave as you wish if you do not know how this\n * works.\n */\nclone.clonePrototype = function clonePrototype(parent) {\n  if (parent === null)\n    return null;\n\n  var c = function () {};\n  c.prototype = parent;\n  return new c();\n};\n\n// private utility functions\n\nfunction __objToStr(o) {\n  return Object.prototype.toString.call(o);\n};\nclone.__objToStr = __objToStr;\n\nfunction __isDate(o) {\n  return typeof o === 'object' && __objToStr(o) === '[object Date]';\n};\nclone.__isDate = __isDate;\n\nfunction __isArray(o) {\n  return typeof o === 'object' && __objToStr(o) === '[object Array]';\n};\nclone.__isArray = __isArray;\n\nfunction __isRegExp(o) {\n  return typeof o === 'object' && __objToStr(o) === '[object RegExp]';\n};\nclone.__isRegExp = __isRegExp;\n\nfunction __getRegExpFlags(re) {\n  var flags = '';\n  if (re.global) flags += 'g';\n  if (re.ignoreCase) flags += 'i';\n  if (re.multiline) flags += 'm';\n  return flags;\n};\nclone.__getRegExpFlags = __getRegExpFlags;\n\nreturn clone;\n})();\n\nif ( true && module.exports) {\n  module.exports = clone;\n}\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../buffer/index.js */ \"../node_modules/buffer/index.js\").Buffer))\n\n//# sourceURL=webpack://BinPacking/../node_modules/clone/clone.js?");
 
 /***/ }),
-/* 3 */
+
+/***/ "../node_modules/console.table/index.js":
+/*!**********************************************!*\
+  !*** ../node_modules/console.table/index.js ***!
+  \**********************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Box = function () {
-  function Box(width, height) {
-    _classCallCheck(this, Box);
-
-    this.width = null;
-    this.height = null;
-    this.x = 0;
-    this.y = 0;
-    this.packed = false;
-
-    this.width = width;
-    this.height = height;
-  }
-
-  _createClass(Box, [{
-    key: "rotate",
-    value: function rotate() {
-      var width = this.width,
-          height = this.height;
-
-      this.width = height;
-      this.height = width;
-    }
-  }, {
-    key: "label",
-    get: function get() {
-      return this.width + "x" + this.height + " at [" + this.x + "," + this.y + "]";
-    }
-  }, {
-    key: "area",
-    get: function get() {
-      return this.width * this.height;
-    }
-  }]);
-
-  return Box;
-}();
-
-exports.default = Box;
+eval("(function () {\n  'use strict';\n\n  function setupConsoleTable() {\n    if (typeof console === 'undefined') {\n      throw new Error('Weird, console object is undefined');\n    }\n    if (typeof console.table === 'function') {\n      // if it is not OUR function, overwrite it\n      if (console.table === consoleTable) {\n        return;\n      }\n    }\n\n    function isType(t, x) {\n      return typeof x === t;\n    }\n\n    var isString = isType.bind(null, 'string');\n\n    function isArrayOf(isTypeFn, a) {\n      return Array.isArray(a) &&\n        a.every(isTypeFn);\n    }\n\n    var isArrayOfStrings = isArrayOf.bind(null, isString);\n    var isArrayOfArrays = isArrayOf.bind(null, Array.isArray);\n\n    var Table = __webpack_require__(/*! easy-table */ \"../node_modules/easy-table/table.js\");\n\n    function arrayToString(arr) {\n      var t = new Table();\n      arr.forEach(function (record) {\n        if (typeof record === 'string' ||\n          typeof record === 'number') {\n          t.cell('item', record);\n        } else {\n          // assume plain object\n          Object.keys(record).forEach(function (property) {\n            t.cell(property, record[property]);\n          });\n        }\n        t.newRow();\n      });\n      return t.toString();\n    }\n\n    function printTableWithColumnTitles(titles, items,noConsole) {\n      var t = new Table();\n      items.forEach(function (item) {\n        item.forEach(function (value, k) {\n          t.cell(titles[k], value);\n        });\n        t.newRow();\n      });\n      var str = t.toString();\n\n      return noConsole ? str : console.log(str);\n    }\n\n    function printTitleTable(title, arr) {\n      var str = arrayToString(arr);\n      var rowLength = str.indexOf('\\n');\n      if (rowLength > 0) {\n        if (title.length > rowLength) {\n          rowLength = title.length;\n        }\n        console.log(title);\n        var sep = '-', k, line = '';\n        for (k = 0; k < rowLength; k += 1) {\n          line += sep;\n       }\n        console.log(line);\n      }\n      console.log(str);\n    }\n\n    function getTitleTable(title, arr) {\n      var str = arrayToString(arr);\n      var rowLength = str.indexOf('\\n');\n      var strToReturn = '';\n      if (rowLength > 0) {\n        if (title.length > rowLength) {\n          rowLength = title.length;\n        }\n        \n        strToReturn += title + '\\n';\n        var sep = '-', k, line = '';\n        for (k = 0; k < rowLength; k += 1) {\n          line += sep;\n        }\n\t\n        strToReturn += line + '\\n';\n      }\n\n      return strToReturn + str;\n    }\n\n    function objectToArray(obj) {\n      var keys = Object.keys(obj);\n      return keys.map(function (key) {\n        return {\n          key: key,\n          value: obj[key]\n        };\n      });\n    }\n\n    function objectToString(obj) {\n      return arrayToString(objectToArray(obj));\n    }\n\n    function consoleTable () {\n      var args = Array.prototype.slice.call(arguments);\n\n      if (args.length === 2 &&\n        typeof args[0] === 'string' &&\n        Array.isArray(args[1])) {\n\n        return printTitleTable(args[0], args[1]);\n      }\n\n      if (args.length === 2 &&\n        isArrayOfStrings(args[0]) &&\n        isArrayOfArrays(args[1])) {\n        return printTableWithColumnTitles(args[0], args[1]);\n      }\n\n      args.forEach(function (k) {\n        if (typeof k === 'string') {\n          return console.log(k);\n        } else if (Array.isArray(k)) {\n          console.log(arrayToString(k));\n        } else if (typeof k === 'object') {\n          console.log(objectToString(k));\n        }\n      });\n    }\n\n    module.exports.getTable = function(){\n      var args = Array.prototype.slice.call(arguments);\n\n      var strToReturn = '';\n\n      if (args.length === 2 &&\n        typeof args[0] === 'string' &&\n        Array.isArray(args[1])) {\n\n        return getTitleTable(args[0], args[1]);\n      }\n\n      if (args.length === 2 &&\n        isArrayOfStrings(args[0]) &&\n        isArrayOfArrays(args[1])) {\n        return printTableWithColumnTitles(args[0], args[1],true);\n      }\n\n      args.forEach(function (k,i) {\n        if (typeof k === 'string') {\n          strToReturn += k;\n\t  if (i !== args.length - 1){\n\t    strToReturn += '\\n';\n\t  }\n          return ;\n        } else if (Array.isArray(k)) {\n          strToReturn += arrayToString(k) + '\\n';\n        } else if (typeof k === 'object') {\n          strToReturn += objectToString(k);\n        }\n      });\n\n      return strToReturn;\n    };\n\n    console.table = consoleTable;\n  }\n\n  setupConsoleTable();\n}());\n\n\n//# sourceURL=webpack://BinPacking/../node_modules/console.table/index.js?");
 
 /***/ }),
-/* 4 */
+
+/***/ "../node_modules/defaults/index.js":
+/*!*****************************************!*\
+  !*** ../node_modules/defaults/index.js ***!
+  \*****************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Bin = function () {
-  function Bin(name, w, h, d, mw) {
-    _classCallCheck(this, Bin);
-
-    this.name = '';
-    this.width = 0;
-    this.height = 0;
-    this.depth = 0;
-    this.maxWeight = 0;
-    this.items = [];
-
-    this.name = name;
-    this.width = w;
-    this.height = h;
-    this.depth = d;
-    this.maxWeight = mw;
-  }
-
-  _createClass(Bin, [{
-    key: 'getName',
-    value: function getName() {
-      return this.name;
-    }
-  }, {
-    key: 'getWidth',
-    value: function getWidth() {
-      return this.width;
-    }
-  }, {
-    key: 'getHeight',
-    value: function getHeight() {
-      return this.height;
-    }
-  }, {
-    key: 'getDepth',
-    value: function getDepth() {
-      return this.depth;
-    }
-  }, {
-    key: 'getMaxWeight',
-    value: function getMaxWeight() {
-      return this.maxWeight;
-    }
-  }, {
-    key: 'getItems',
-    value: function getItems() {
-      return this.items;
-    }
-  }, {
-    key: 'getVolume',
-    value: function getVolume() {
-      return this.getWidth() * this.getHeight() * this.getDepth();
-    }
-  }, {
-    key: 'getPackedWeight',
-    value: function getPackedWeight() {
-      return this.items.reduce(function (weight, item) {
-        return weight + item.getWeight();
-      }, 0);
-    }
-  }, {
-    key: 'weighItem',
-    value: function weighItem(item) {
-      var maxWeight = this.getMaxWeight();
-      return !maxWeight || item.getWeight() + this.getPackedWeight() <= maxWeight;
-    }
-  }, {
-    key: 'putItem',
-    value: function putItem(item, p) {
-      var box = this;
-      var fit = false;
-
-      item.position = p;
-      for (var i = 0; i < 6; i++) {
-        item.rotationType = i;
-        var d = item.getDimension();
-
-        if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {
-          continue;
-        }
-
-        fit = true;
-
-        for (var j = 0; j < box.items.length; j++) {
-          var _j = box.items[j];
-          if (_j.intersect(item)) {
-            fit = false;
-            break;
-          }
-        }
-
-        if (fit) {
-          box.items.push(item);
-        }
-
-        return fit;
-      }
-
-      return fit;
-    }
-  }]);
-
-  return Bin;
-}();
-
-exports.default = Bin;
+eval("var clone = __webpack_require__(/*! clone */ \"../node_modules/clone/clone.js\");\n\nmodule.exports = function(options, defaults) {\n  options = options || {};\n\n  Object.keys(defaults).forEach(function(key) {\n    if (typeof options[key] === 'undefined') {\n      options[key] = clone(defaults[key]);\n    }\n  });\n\n  return options;\n};\n\n//# sourceURL=webpack://BinPacking/../node_modules/defaults/index.js?");
 
 /***/ }),
-/* 5 */
+
+/***/ "../node_modules/easy-table/table.js":
+/*!*******************************************!*\
+  !*** ../node_modules/easy-table/table.js ***!
+  \*******************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _RotationTypeStrings;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var RotationType_WHD = exports.RotationType_WHD = 0;
-var RotationType_HWD = exports.RotationType_HWD = 1;
-var RotationType_HDW = exports.RotationType_HDW = 2;
-var RotationType_DHW = exports.RotationType_DHW = 3;
-var RotationType_DWH = exports.RotationType_DWH = 4;
-var RotationType_WDH = exports.RotationType_WDH = 5;
-
-var WidthAxis = exports.WidthAxis = 0;
-var HeightAxis = exports.HeightAxis = 1;
-var DepthAxis = exports.DepthAxis = 2;
-
-var StartPosition = exports.StartPosition = [0, 0, 0];
-
-var RotationTypeStrings = exports.RotationTypeStrings = (_RotationTypeStrings = {}, _defineProperty(_RotationTypeStrings, RotationType_WHD, 'RotationType_WHD (w,h,d)'), _defineProperty(_RotationTypeStrings, RotationType_HWD, 'RotationType_HWD (h,w,d)'), _defineProperty(_RotationTypeStrings, RotationType_HDW, 'RotationType_HDW (h,d,w)'), _defineProperty(_RotationTypeStrings, RotationType_DHW, 'RotationType_DHW (d,h,w)'), _defineProperty(_RotationTypeStrings, RotationType_DWH, 'RotationType_DWH (d,w,h)'), _defineProperty(_RotationTypeStrings, RotationType_WDH, 'RotationType_WDH (w,d,h)'), _RotationTypeStrings);
-
-var Item = function () {
-  // x, y, z
-
-  function Item(name, w, h, d, wg) {
-    _classCallCheck(this, Item);
-
-    this.name = '';
-    this.width = 0;
-    this.height = 0;
-    this.depth = 0;
-    this.weight = 0;
-    this.rotationType = RotationType_WHD;
-    this.position = [];
-
-    this.name = name;
-    this.width = w;
-    this.height = h;
-    this.depth = d;
-    this.weight = wg;
-  }
-
-  _createClass(Item, [{
-    key: 'getWidth',
-    value: function getWidth() {
-      return this.width;
-    }
-  }, {
-    key: 'getHeight',
-    value: function getHeight() {
-      return this.height;
-    }
-  }, {
-    key: 'getDepth',
-    value: function getDepth() {
-      return this.depth;
-    }
-  }, {
-    key: 'getWeight',
-    value: function getWeight() {
-      return this.weight;
-    }
-  }, {
-    key: 'getRotationType',
-    value: function getRotationType() {
-      return this.rotationType;
-    }
-  }, {
-    key: 'getRotationTypeString',
-    value: function getRotationTypeString() {
-      return RotationTypeStrings[this.getRotationType()];
-    }
-  }, {
-    key: 'getDimension',
-    value: function getDimension() {
-      var d = void 0;
-      switch (this.rotationType) {
-        case RotationType_WHD:
-          d = [this.getWidth(), this.getHeight(), this.getDepth()];
-          break;
-        case RotationType_HWD:
-          d = [this.getHeight(), this.getWidth(), this.getDepth()];
-          break;
-        case RotationType_HDW:
-          d = [this.getHeight(), this.getDepth(), this.getWidth()];
-          break;
-        case RotationType_DHW:
-          d = [this.getDepth(), this.getHeight(), this.getWidth()];
-          break;
-        case RotationType_DWH:
-          d = [this.getDepth(), this.getWidth(), this.getHeight()];
-          break;
-        case RotationType_WDH:
-          d = [this.getWidth(), this.getDepth(), this.getHeight()];
-          break;
-      }
-      return d;
-    }
-  }, {
-    key: 'intersect',
-    value: function intersect(i2) {
-      return rectIntersect(this, i2, WidthAxis, HeightAxis) && rectIntersect(this, i2, HeightAxis, DepthAxis) && rectIntersect(this, i2, WidthAxis, DepthAxis);
-    }
-  }, {
-    key: 'getVolume',
-    value: function getVolume() {
-      return this.getWidth() * this.getHeight() * this.getDepth();
-    }
-  }]);
-
-  return Item;
-}();
-
-exports.default = Item;
-var rectIntersect = exports.rectIntersect = function rectIntersect(i1, i2, x, y) {
-  var d1 = void 0,
-      d2 = void 0,
-      cx1 = void 0,
-      cy1 = void 0,
-      cx2 = void 0,
-      cy2 = void 0,
-      ix = void 0,
-      iy = void 0;
-
-  d1 = i1.getDimension();
-  d2 = i2.getDimension();
-
-  cx1 = i1.position[x] + d1[x] / 2;
-  cy1 = i1.position[y] + d1[y] / 2;
-  cx2 = i2.position[x] + d2[x] / 2;
-  cy2 = i2.position[y] + d2[y] / 2;
-
-  ix = Math.max(cx1, cx2) - Math.min(cx1, cx2);
-  iy = Math.max(cy1, cy2) - Math.min(cy1, cy2);
-
-  return ix < (d1[x] + d2[x]) / 2 && iy < (d1[y] + d2[y]) / 2;
-};
+eval("var wcwidth\n\ntry {\n  wcwidth = __webpack_require__(/*! wcwidth */ \"../node_modules/wcwidth/index.js\")\n} catch(e) {}\n\nmodule.exports = Table\n\nfunction Table() {\n  this.rows = []\n  this.row = {__printers : {}}\n}\n\n/**\n * Push the current row to the table and start a new one\n *\n * @returns {Table} `this`\n */\n\nTable.prototype.newRow = function() {\n  this.rows.push(this.row)\n  this.row = {__printers : {}}\n  return this\n}\n\n/**\n * Write cell in the current row\n *\n * @param {String} col          - Column name\n * @param {Any} val             - Cell value\n * @param {Function} [printer]  - Printer function to format the value\n * @returns {Table} `this`\n */\n\nTable.prototype.cell = function(col, val, printer) {\n  this.row[col] = val\n  this.row.__printers[col] = printer || string\n  return this\n}\n\n/**\n * String to separate columns\n */\n\nTable.prototype.separator = '  '\n\nfunction string(val) {\n  return val === undefined ? '' : ''+val\n}\n\nfunction length(str) {\n  var s = str.replace(/\\u001b\\[\\d+m/g, '')\n  return wcwidth == null ? s.length : wcwidth(s)\n}\n\n/**\n * Default printer\n */\n\nTable.string = string\n\n/**\n * Create a printer which right aligns the content by padding with `ch` on the left\n *\n * @param {String} ch\n * @returns {Function}\n */\n\nTable.leftPadder = leftPadder\n\nfunction leftPadder(ch) {\n  return function(val, width) {\n    var str = string(val)\n    var len = length(str)\n    var pad = width > len ? Array(width - len + 1).join(ch) : ''\n    return pad + str\n  }\n}\n\n/**\n * Printer which right aligns the content\n */\n\nvar padLeft = Table.padLeft = leftPadder(' ')\n\n/**\n * Create a printer which pads with `ch` on the right\n *\n * @param {String} ch\n * @returns {Function}\n */\n\nTable.rightPadder = rightPadder\n\nfunction rightPadder(ch) {\n  return function padRight(val, width) {\n    var str = string(val)\n    var len = length(str)\n    var pad = width > len ? Array(width - len + 1).join(ch) : ''\n    return str + pad\n  }\n}\n\nvar padRight = rightPadder(' ')\n\n/**\n * Create a printer for numbers\n *\n * Will do right alignment and optionally fix the number of digits after decimal point\n *\n * @param {Number} [digits] - Number of digits for fixpoint notation\n * @returns {Function}\n */\n\nTable.number = function(digits) {\n  return function(val, width) {\n    if (val == null) return ''\n    if (typeof val != 'number')\n      throw new Error(''+val + ' is not a number')\n    var str = digits == null ? val+'' : val.toFixed(digits)\n    return padLeft(str, width)\n  }\n}\n\nfunction each(row, fn) {\n  for(var key in row) {\n    if (key == '__printers') continue\n    fn(key, row[key])\n  }\n}\n\n/**\n * Get list of columns in printing order\n *\n * @returns {string[]}\n */\n\nTable.prototype.columns = function() {\n  var cols = {}\n  for(var i = 0; i < 2; i++) { // do 2 times\n    this.rows.forEach(function(row) {\n      var idx = 0\n      each(row, function(key) {\n        idx = Math.max(idx, cols[key] || 0)\n        cols[key] = idx\n        idx++\n      })\n    })\n  }\n  return Object.keys(cols).sort(function(a, b) {\n    return cols[a] - cols[b]\n  })\n}\n\n/**\n * Format just rows, i.e. print the table without headers and totals\n *\n * @returns {String} String representaion of the table\n */\n\nTable.prototype.print = function() {\n  var cols = this.columns()\n  var separator = this.separator\n  var widths = {}\n  var out = ''\n\n  // Calc widths\n  this.rows.forEach(function(row) {\n    each(row, function(key, val) {\n      var str = row.__printers[key].call(row, val)\n      widths[key] = Math.max(length(str), widths[key] || 0)\n    })\n  })\n\n  // Now print\n  this.rows.forEach(function(row) {\n    var line = ''\n    cols.forEach(function(key) {\n      var width = widths[key]\n      var str = row.hasOwnProperty(key)\n        ? ''+row.__printers[key].call(row, row[key], width)\n        : ''\n      line += padRight(str, width) + separator\n    })\n    line = line.slice(0, -separator.length)\n    out += line + '\\n'\n  })\n\n  return out\n}\n\n/**\n * Format the table\n *\n * @returns {String}\n */\n\nTable.prototype.toString = function() {\n  var cols = this.columns()\n  var out = new Table()\n\n  // copy options\n  out.separator = this.separator\n\n  // Write header\n  cols.forEach(function(col) {\n    out.cell(col, col)\n  })\n  out.newRow()\n  out.pushDelimeter(cols)\n\n  // Write body\n  out.rows = out.rows.concat(this.rows)\n\n  // Totals\n  if (this.totals && this.rows.length) {\n    out.pushDelimeter(cols)\n    this.forEachTotal(out.cell.bind(out))\n    out.newRow()\n  }\n\n  return out.print()\n}\n\n/**\n * Push delimeter row to the table (with each cell filled with dashs during printing)\n *\n * @param {String[]} [cols]\n * @returns {Table} `this`\n */\n\nTable.prototype.pushDelimeter = function(cols) {\n  cols = cols || this.columns()\n  cols.forEach(function(col) {\n    this.cell(col, undefined, leftPadder('-'))\n  }, this)\n  return this.newRow()\n}\n\n/**\n * Compute all totals and yield the results to `cb`\n *\n * @param {Function} cb - Callback function with signature `(column, value, printer)`\n */\n\nTable.prototype.forEachTotal = function(cb) {\n  for(var key in this.totals) {\n    var aggr = this.totals[key]\n    var acc = aggr.init\n    var len = this.rows.length\n    this.rows.forEach(function(row, idx) {\n      acc = aggr.reduce.call(row, acc, row[key], idx, len)\n    })\n    cb(key, acc, aggr.printer)\n  }\n}\n\n/**\n * Format the table so that each row represents column and each column represents row\n *\n * @param {Object} [opts]\n * @param {String} [ops.separator] - Column separation string\n * @param {Function} [opts.namePrinter] - Printer to format column names\n * @returns {String}\n */\n\nTable.prototype.printTransposed = function(opts) {\n  opts = opts || {}\n  var out = new Table\n  out.separator = opts.separator || this.separator\n  this.columns().forEach(function(col) {\n    out.cell(0, col, opts.namePrinter)\n    this.rows.forEach(function(row, idx) {\n      out.cell(idx+1, row[col], row.__printers[col])\n    })\n    out.newRow()\n  }, this)\n  return out.print()\n}\n\n/**\n * Sort the table\n *\n * @param {Function|string[]} [cmp] - Either compare function or a list of columns to sort on\n * @returns {Table} `this`\n */\n\nTable.prototype.sort = function(cmp) {\n  if (typeof cmp == 'function') {\n    this.rows.sort(cmp)\n    return this\n  }\n\n  var keys = Array.isArray(cmp) ? cmp : this.columns()\n\n  var comparators = keys.map(function(key) {\n    var order = 'asc'\n    var m = /(.*)\\|\\s*(asc|des)\\s*$/.exec(key)\n    if (m) {\n      key = m[1]\n      order = m[2]\n    }\n    return function (a, b) {\n      return order == 'asc'\n        ? compare(a[key], b[key])\n        : compare(b[key], a[key])\n    }\n  })\n\n  return this.sort(function(a, b) {\n    for (var i = 0; i < comparators.length; i++) {\n      var order = comparators[i](a, b)\n      if (order != 0) return order\n    }\n    return 0\n  })\n}\n\nfunction compare(a, b) {\n  if (a === b) return 0\n  if (a === undefined) return 1\n  if (b === undefined) return -1\n  if (a === null) return 1\n  if (b === null) return -1\n  if (a > b) return 1\n  if (a < b) return -1\n  return compare(String(a), String(b))\n}\n\n/**\n * Add a total for the column\n *\n * @param {String} col - column name\n * @param {Object} [opts]\n * @param {Function} [opts.reduce = sum] - reduce(acc, val, idx, length) function to compute the total value\n * @param {Function} [opts.printer = padLeft] - Printer to format the total cell\n * @param {Any} [opts.init = 0] - Initial value for reduction\n * @returns {Table} `this`\n */\n\nTable.prototype.total = function(col, opts) {\n  opts = opts || {}\n  this.totals = this.totals || {}\n  this.totals[col] = {\n    reduce: opts.reduce || Table.aggr.sum,\n    printer: opts.printer || padLeft,\n    init: opts.init == null ? 0 : opts.init\n  }\n  return this\n}\n\n/**\n * Predefined helpers for totals\n */\n\nTable.aggr = {}\n\n/**\n * Create a printer which formats the value with `printer`,\n * adds the `prefix` to it and right aligns the whole thing\n *\n * @param {String} prefix\n * @param {Function} printer\n * @returns {printer}\n */\n\nTable.aggr.printer = function(prefix, printer) {\n  printer = printer || string\n  return function(val, width) {\n    return padLeft(prefix + printer(val), width)\n  }\n}\n\n/**\n * Sum reduction\n */\n\nTable.aggr.sum = function(acc, val) {\n  return acc + val\n}\n\n/**\n * Average reduction\n */\n\nTable.aggr.avg = function(acc, val, idx, len) {\n  acc = acc + val\n  return idx + 1 == len ? acc/len : acc\n}\n\n/**\n * Print the array or object\n *\n * @param {Array|Object} obj - Object to print\n * @param {Function|Object} [format] - Format options\n * @param {Function} [cb] - Table post processing and formating\n * @returns {String}\n */\n\nTable.print = function(obj, format, cb) {\n  var opts = format || {}\n\n  format = typeof format == 'function'\n    ? format\n    : function(obj, cell) {\n      for(var key in obj) {\n        if (!obj.hasOwnProperty(key)) continue\n        var params = opts[key] || {}\n        cell(params.name || key, obj[key], params.printer)\n      }\n    }\n\n  var t = new Table\n  var cell = t.cell.bind(t)\n\n  if (Array.isArray(obj)) {\n    cb = cb || function(t) { return t.toString() }\n    obj.forEach(function(item) {\n      format(item, cell)\n      t.newRow()\n    })\n  } else {\n    cb = cb || function(t) { return t.printTransposed({separator: ' : '}) }\n    format(obj, cell)\n    t.newRow()\n  }\n\n  return cb(t)\n}\n\n/**\n * Same as `Table.print()` but yields the result to `console.log()`\n */\n\nTable.log = function(obj, format, cb) {\n  console.log(Table.print(obj, format, cb))\n}\n\n/**\n * Same as `.toString()` but yields the result to `console.log()`\n */\n\nTable.prototype.log = function() {\n  console.log(this.toString())\n}\n\n\n//# sourceURL=webpack://BinPacking/../node_modules/easy-table/table.js?");
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.heuristics = exports.Packer = exports.Box = exports.Bin = undefined;
-
-var _Bin = __webpack_require__(7);
-
-var _Bin2 = _interopRequireDefault(_Bin);
-
-var _Box = __webpack_require__(3);
-
-var _Box2 = _interopRequireDefault(_Box);
-
-var _Packer = __webpack_require__(8);
-
-var _Packer2 = _interopRequireDefault(_Packer);
-
-var _heuristics = __webpack_require__(13);
-
-var heuristics = _interopRequireWildcard(_heuristics);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.Bin = _Bin2.default;
-exports.Box = _Box2.default;
-exports.Packer = _Packer2.default;
-exports.heuristics = heuristics;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.FreeSpaceBox = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _BestShortSideFit = __webpack_require__(2);
-
-var _BestShortSideFit2 = _interopRequireDefault(_BestShortSideFit);
-
-var _Box = __webpack_require__(3);
-
-var _Box2 = _interopRequireDefault(_Box);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Bin = function () {
-  function Bin(width, height, heuristic) {
-    _classCallCheck(this, Bin);
-
-    this.width = null;
-    this.height = null;
-    this.boxes = [];
-    this.heuristic = null;
-    this.freeRectangles = [];
-
-    this.width = width;
-    this.height = height;
-    this.freeRectangles = [new FreeSpaceBox(width, height)];
-    this.heuristic = heuristic || new _BestShortSideFit2.default();
-  }
-
-  _createClass(Bin, [{
-    key: 'insert',
-    value: function insert(box) {
-      if (box.packed) return false;
-
-      this.heuristic.findPositionForNewNode(box, this.freeRectangles);
-      if (!box.packed) return false;
-
-      var numRectanglesToProcess = this.freeRectangles.length;
-      var i = 0;
-
-      while (i < numRectanglesToProcess) {
-        if (this.splitFreeNode(this.freeRectangles[i], box)) {
-          this.freeRectangles.splice(i, 1);
-          numRectanglesToProcess--;
-        } else {
-          i++;
-        }
-      }
-
-      this.pruneFreeList();
-      this.boxes.push(box);
-
-      return true;
-    }
-  }, {
-    key: 'scoreFor',
-    value: function scoreFor(box) {
-      var copyBox = new _Box2.default(box.width, box.height);
-      var score = this.heuristic.findPositionForNewNode(copyBox, this.freeRectangles);
-      return score;
-    }
-  }, {
-    key: 'isLargerThan',
-    value: function isLargerThan(box) {
-      return this.width >= box.width && this.height >= box.height || this.height >= box.width && this.width >= box.height;
-    }
-  }, {
-    key: 'splitFreeNode',
-    value: function splitFreeNode(freeNode, usedNode) {
-      // Test with SAT if the rectangles even intersect.
-      if (usedNode.x >= freeNode.x + freeNode.width || usedNode.x + usedNode.width <= freeNode.x || usedNode.y >= freeNode.y + freeNode.height || usedNode.y + usedNode.height <= freeNode.y) {
-        return false;
-      }
-
-      this.trySplitFreeNodeVertically(freeNode, usedNode);
-      this.trySplitFreeNodeHorizontally(freeNode, usedNode);
-
-      return true;
-    }
-  }, {
-    key: 'trySplitFreeNodeVertically',
-    value: function trySplitFreeNodeVertically(freeNode, usedNode) {
-      if (usedNode.x < freeNode.x + freeNode.width && usedNode.x + usedNode.width > freeNode.x) {
-        this.tryLeaveFreeSpaceAtTop(freeNode, usedNode);
-        this.tryLeaveFreeSpaceAtBottom(freeNode, usedNode);
-      }
-    }
-  }, {
-    key: 'tryLeaveFreeSpaceAtTop',
-    value: function tryLeaveFreeSpaceAtTop(freeNode, usedNode) {
-      if (usedNode.y > freeNode.y && usedNode.y < freeNode.y + freeNode.height) {
-        var newNode = _extends({}, freeNode);
-        newNode.height = usedNode.y - newNode.y;
-        this.freeRectangles.push(newNode);
-      }
-    }
-  }, {
-    key: 'tryLeaveFreeSpaceAtBottom',
-    value: function tryLeaveFreeSpaceAtBottom(freeNode, usedNode) {
-      if (usedNode.y + usedNode.height < freeNode.y + freeNode.height) {
-        var newNode = _extends({}, freeNode);
-        newNode.y = usedNode.y + usedNode.height;
-        newNode.height = freeNode.y + freeNode.height - (usedNode.y + usedNode.height);
-        this.freeRectangles.push(newNode);
-      }
-    }
-  }, {
-    key: 'trySplitFreeNodeHorizontally',
-    value: function trySplitFreeNodeHorizontally(freeNode, usedNode) {
-      if (usedNode.y < freeNode.y + freeNode.height && usedNode.y + usedNode.height > freeNode.y) {
-        this.tryLeaveFreeSpaceOnLeft(freeNode, usedNode);
-        this.tryLeaveFreeSpaceOnRight(freeNode, usedNode);
-      }
-    }
-  }, {
-    key: 'tryLeaveFreeSpaceOnLeft',
-    value: function tryLeaveFreeSpaceOnLeft(freeNode, usedNode) {
-      if (usedNode.x > freeNode.x && usedNode.x < freeNode.x + freeNode.width) {
-        var newNode = _extends({}, freeNode);
-        newNode.width = usedNode.x - newNode.x;
-        this.freeRectangles.push(newNode);
-      }
-    }
-  }, {
-    key: 'tryLeaveFreeSpaceOnRight',
-    value: function tryLeaveFreeSpaceOnRight(freeNode, usedNode) {
-      if (usedNode.x + usedNode.width < freeNode.x + freeNode.width) {
-        var newNode = _extends({}, freeNode);
-        newNode.x = usedNode.x + usedNode.width;
-        newNode.width = freeNode.x + freeNode.width - (usedNode.x + usedNode.width);
-        this.freeRectangles.push(newNode);
-      }
-    }
-
-    /**
-     * Goes through the free rectangle list and removes any redundant entries.
-     */
-
-  }, {
-    key: 'pruneFreeList',
-    value: function pruneFreeList() {
-      var i = 0;
-      while (i < this.freeRectangles.length) {
-        var j = i + 1;
-        if (j === this.freeRectangles.length) {
-          break;
-        }
-        while (j < this.freeRectangles.length) {
-          if (this.isContainedIn(this.freeRectangles[i], this.freeRectangles[j])) {
-            this.freeRectangles.splice(i, 1);
-            i--;
-            break;
-          }
-          if (this.isContainedIn(this.freeRectangles[j], this.freeRectangles[i])) {
-            this.freeRectangles.splice(j, 1);
-          } else {
-            j++;
-          }
-          i++;
-        }
-      }
-    }
-  }, {
-    key: 'isContainedIn',
-    value: function isContainedIn(rectA, rectB) {
-      return rectA && rectB && rectA.x >= rectB.x && rectA.y >= rectB.y && rectA.x + rectA.width <= rectB.x + rectB.width && rectA.y + rectA.height <= rectB.y + rectB.height;
-    }
-  }, {
-    key: 'area',
-    get: function get() {
-      return this.width * this.height;
-    }
-  }, {
-    key: 'efficiency',
-    get: function get() {
-      var boxesArea = 0;
-      this.boxes.forEach(function (box) {
-        boxesArea += box.area;
-      });
-      return boxesArea * 100 / this.area;
-    }
-  }, {
-    key: 'label',
-    get: function get() {
-      return this.width + 'x' + this.height + ' ' + this.efficiency + '%';
-    }
-  }]);
-
-  return Bin;
-}();
-
-exports.default = Bin;
-
-var FreeSpaceBox = exports.FreeSpaceBox = function FreeSpaceBox(width, height) {
-  _classCallCheck(this, FreeSpaceBox);
-
-  this.x = 0;
-  this.y = 0;
-  this.width = null;
-  this.height = null;
-
-  this.width = width;
-  this.height = height;
-};
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Score = __webpack_require__(0);
-
-var _Score2 = _interopRequireDefault(_Score);
-
-var _ScoreBoard = __webpack_require__(9);
-
-var _ScoreBoard2 = _interopRequireDefault(_ScoreBoard);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Packer = function () {
-  function Packer(bins) {
-    _classCallCheck(this, Packer);
-
-    this.bins = [];
-    this.unpackedBoxes = [];
-
-    this.bins = bins;
-  }
-
-  _createClass(Packer, [{
-    key: 'pack',
-    value: function pack(boxes) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      var packedBoxes = [];
-      var entry = void 0;
-
-      boxes = boxes.filter(function (box) {
-        return !box.packed;
-      });
-      if (boxes.length === 0) return packedBoxes;
-
-      var limit = options.limit || _Score2.default.MAX_INT;
-      var board = new _ScoreBoard2.default(this.bins, boxes);
-      var r = 0;
-      while (entry = board.bestFit()) {
-        entry.bin.insert(entry.box);
-        board.removeBox(entry.box);
-        board.recalculateBin(entry.bin);
-        packedBoxes.push(entry.box);
-        if (packedBoxes.length >= limit) {
-          break;
-        }
-      };
-
-      this.unpackedBoxes = boxes.filter(function (box) {
-        return !box.packed;
-      });
-
-      return packedBoxes;
-    }
-  }]);
-
-  return Packer;
-}();
-
-exports.default = Packer;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // #       box_1 box_2 box_3 ...
-// # bin_1  100   200    0
-// # bin_2   0     5     0
-// # bin_3   9    100    0
-// # ...
-
-
-var _ScoreBoardEntry = __webpack_require__(10);
-
-var _ScoreBoardEntry2 = _interopRequireDefault(_ScoreBoardEntry);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ScoreBoard = function () {
-  function ScoreBoard(bins, boxes) {
-    var _this = this;
-
-    _classCallCheck(this, ScoreBoard);
-
-    this.entries = [];
-
-    bins.forEach(function (bin) {
-      _this.addBinEntries(bin, boxes);
-    });
-  }
-
-  _createClass(ScoreBoard, [{
-    key: 'debug',
-    value: function debug() {
-      __webpack_require__(11);
-      console.table(this.entries.map(function (entry) {
-        return { bin: entry.bin.label, box: entry.box.label, score: entry.score };
-      }));
-    }
-  }, {
-    key: 'addBinEntries',
-    value: function addBinEntries(bin, boxes) {
-      var _this2 = this;
-
-      boxes.forEach(function (box) {
-        var entry = new _ScoreBoardEntry2.default(bin, box);
-        entry.calculate();
-        _this2.entries.push(entry);
-      });
-    }
-  }, {
-    key: 'any',
-    value: function any() {
-      return this.boxes.some(function (box) {
-        return box;
-      });
-    }
-  }, {
-    key: 'largestNotFitingBox',
-    value: function largestNotFitingBox() {
-      var _this3 = this;
-
-      var unfit = null;
-      var fittingBoxes = this.entries.filter(function (entry) {
-        return entry.fit;
-      }).map(function (entry) {
-        return entry.box;
-      });
-
-      this.entries.forEach(function (entry) {
-        if (!_this3.fittingBoxes.contains(entry.box)) {
-          return;
-        }
-        if (unfit === null || unfit.box.area < entry.box.area) {
-          _this3.unfit = entry;
-        }
-      });
-
-      return unfit.box ? unfit : false;
-    }
-  }, {
-    key: 'bestFit',
-    value: function bestFit() {
-      var best = null;
-      for (var i = 0; i < this.entries.length; i++) {
-        var entry = this.entries[i];
-        if (!entry.fit()) {
-          continue;
-        }
-        if (best === null || entry.score < best.score) {
-          best = entry;
-        }
-      }
-      return best;
-    }
-  }, {
-    key: 'removeBox',
-    value: function removeBox(box) {
-      this.entries = this.entries.filter(function (entry) {
-        return entry.box !== box;
-      });
-    }
-  }, {
-    key: 'addBin',
-    value: function addBin(bin) {
-      this.addBinEntries(bin, this.currentBoxes());
-    }
-  }, {
-    key: 'recalculateBin',
-    value: function recalculateBin(bin) {
-      this.entries.filter(function (entry) {
-        return entry.bin === bin;
-      }).forEach(function (entry) {
-        return entry.calculate();
-      });
-    }
-  }, {
-    key: 'currentBoxes',
-    value: function currentBoxes() {
-      return [].concat(_toConsumableArray(new Set(this.entries.map(function (entry) {
-        return entry.box;
-      }))));
-    }
-  }]);
-
-  return ScoreBoard;
-}();
-
-exports.default = ScoreBoard;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ScoreBoardEntry = function () {
-  function ScoreBoardEntry(bin, box) {
-    _classCallCheck(this, ScoreBoardEntry);
-
-    this.bin = null;
-    this.box = null;
-    this.score = null;
-
-    this.bin = bin;
-    this.box = box;
-  }
-
-  _createClass(ScoreBoardEntry, [{
-    key: "calculate",
-    value: function calculate() {
-      this.score = this.bin.scoreFor(this.box);
-      return this.score;
-    }
-  }, {
-    key: "fit",
-    value: function fit() {
-      return !this.score.isBlank();
-    }
-  }]);
-
-  return ScoreBoardEntry;
-}();
-
-exports.default = ScoreBoardEntry;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function () {
-  'use strict';
-
-  function setupConsoleTable() {
-    if (typeof console === 'undefined') {
-      throw new Error('Weird, console object is undefined');
-    }
-    if (typeof console.table === 'function') {
-      return;
-    }
-
-    function isType(t, x) {
-      return typeof x === t;
-    }
-
-    var isString = isType.bind(null, 'string');
-
-    function isArrayOf(isTypeFn, a) {
-      return Array.isArray(a) &&
-        a.every(isTypeFn);
-    }
-
-    var isArrayOfStrings = isArrayOf.bind(null, isString);
-    var isArrayOfArrays = isArrayOf.bind(null, Array.isArray);
-
-    var Table = __webpack_require__(12);
-
-    function arrayToString(arr) {
-      var t = new Table();
-      arr.forEach(function (record) {
-        if (typeof record === 'string' ||
-          typeof record === 'number') {
-          t.cell('item', record);
-        } else {
-          // assume plain object
-          Object.keys(record).forEach(function (property) {
-            t.cell(property, record[property]);
-          });
-        }
-        t.newRow();
-      });
-      return t.toString();
-    }
-
-    function printTableWithColumnTitles(titles, items) {
-      var t = new Table();
-      items.forEach(function (item) {
-        item.forEach(function (value, k) {
-          t.cell(titles[k], value);
-        });
-        t.newRow();
-      });
-      var str = t.toString();
-      console.log(str);
-    }
-
-    function printTitleTable(title, arr) {
-      var str = arrayToString(arr);
-      var rowLength = str.indexOf('\n');
-      if (rowLength > 0) {
-        if (title.length > rowLength) {
-          rowLength = title.length;
-        }
-        console.log(title);
-        var sep = '-', k, line = '';
-        for (k = 0; k < rowLength; k += 1) {
-          line += sep;
-        }
-        console.log(line);
-      }
-      console.log(str);
-    }
-
-    function objectToArray(obj) {
-      var keys = Object.keys(obj);
-      return keys.map(function (key) {
-        return {
-          key: key,
-          value: obj[key]
-        };
-      });
-    }
-
-    function objectToString(obj) {
-      return arrayToString(objectToArray(obj));
-    }
-
-    console.table = function () {
-      var args = Array.prototype.slice.call(arguments);
-
-      if (args.length === 2 &&
-        typeof args[0] === 'string' &&
-        Array.isArray(args[1])) {
-
-        return printTitleTable(args[0], args[1]);
-      }
-
-      if (args.length === 2 &&
-        isArrayOfStrings(args[0]) &&
-        isArrayOfArrays(args[1])) {
-        return printTableWithColumnTitles(args[0], args[1]);
-      }
-
-      args.forEach(function (k) {
-        if (typeof k === 'string') {
-          return console.log(k);
-        } else if (Array.isArray(k)) {
-          console.log(arrayToString(k));
-        } else if (typeof k === 'object') {
-          console.log(objectToString(k));
-        }
-      });
-    };
-  }
-
-  setupConsoleTable();
-}());
-
-
-/***/ }),
-/* 12 */
+/***/ "../node_modules/ieee754/index.js":
+/*!****************************************!*\
+  !*** ../node_modules/ieee754/index.js ***!
+  \****************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = Table
-
-function Table() {
-  this.rows = []
-  this.row = {__printers : {}}
-}
-
-/**
- * Push the current row to the table and start a new one
- *
- * @returns {Table} `this`
- */
-
-Table.prototype.newRow = function() {
-  this.rows.push(this.row)
-  this.row = {__printers : {}}
-  return this
-}
-
-/**
- * Write cell in the current row
- *
- * @param {String} col          - Column name
- * @param {Any} val             - Cell value
- * @param {Function} [printer]  - Printer function to format the value
- * @returns {Table} `this`
- */
-
-Table.prototype.cell = function(col, val, printer) {
-  this.row[col] = val
-  this.row.__printers[col] = printer || string
-  return this
-}
-
-/**
- * String to separate columns
- */
-
-Table.prototype.separator = '  '
-
-function string(val) {
-  return val === undefined ? '' : ''+val
-}
-
-function length(str) {
-  return str.replace(/\u001b\[\d+m/g, '').length
-}
-
-/**
- * Default printer
- */
-
-Table.string = string
-
-/**
- * Create a printer which right aligns the content by padding with `ch` on the left
- *
- * @param {String} ch
- * @returns {Function}
- */
-
-Table.leftPadder = leftPadder
-
-function leftPadder(ch) {
-  return function(val, width) {
-    var str = string(val)
-    var len = length(str)
-    var pad = width > len ? Array(width - len + 1).join(ch) : ''
-    return pad + str
-  }
-}
-
-/**
- * Printer which right aligns the content
- */
-
-var padLeft = Table.padLeft = leftPadder(' ')
-
-/**
- * Create a printer which pads with `ch` on the right
- *
- * @param {String} ch
- * @returns {Function}
- */
-
-Table.rightPadder = rightPadder
-
-function rightPadder(ch) {
-  return function padRight(val, width) {
-    var str = string(val)
-    var len = length(str)
-    var pad = width > len ? Array(width - len + 1).join(ch) : ''
-    return str + pad
-  }
-}
-
-var padRight = rightPadder(' ')
-
-/**
- * Create a printer for numbers
- *
- * Will do right alignment and optionally fix the number of digits after decimal point
- *
- * @param {Number} [digits] - Number of digits for fixpoint notation
- * @returns {Function}
- */
-
-Table.number = function(digits) {
-  return function(val, width) {
-    if (val == null) return ''
-    if (typeof val != 'number')
-      throw new Error(''+val + ' is not a number')
-    var str = digits == null ? val+'' : val.toFixed(digits)
-    return padLeft(str, width)
-  }
-}
-
-function each(row, fn) {
-  for(var key in row) {
-    if (key == '__printers') continue
-    fn(key, row[key])
-  }
-}
-
-/**
- * Get list of columns in printing order
- *
- * @returns {string[]}
- */
-
-Table.prototype.columns = function() {
-  var cols = {}
-  for(var i = 0; i < 2; i++) { // do 2 times
-    this.rows.forEach(function(row) {
-      var idx = 0
-      each(row, function(key) {
-        idx = Math.max(idx, cols[key] || 0)
-        cols[key] = idx
-        idx++
-      })
-    })
-  }
-  return Object.keys(cols).sort(function(a, b) {
-    return cols[a] - cols[b]
-  })
-}
-
-/**
- * Format just rows, i.e. print the table without headers and totals
- *
- * @returns {String} String representaion of the table
- */
-
-Table.prototype.print = function() {
-  var cols = this.columns()
-  var separator = this.separator
-  var widths = {}
-  var out = ''
-
-  // Calc widths
-  this.rows.forEach(function(row) {
-    each(row, function(key, val) {
-      var str = row.__printers[key].call(row, val)
-      widths[key] = Math.max(length(str), widths[key] || 0)
-    })
-  })
-
-  // Now print
-  this.rows.forEach(function(row) {
-    var line = ''
-    cols.forEach(function(key) {
-      var width = widths[key]
-      var str = row.hasOwnProperty(key)
-        ? ''+row.__printers[key].call(row, row[key], width)
-        : ''
-      line += padRight(str, width) + separator
-    })
-    line = line.slice(0, -separator.length)
-    out += line + '\n'
-  })
-
-  return out
-}
-
-/**
- * Format the table
- *
- * @returns {String}
- */
-
-Table.prototype.toString = function() {
-  var cols = this.columns()
-  var out = new Table()
-
-  // copy options
-  out.separator = this.separator
-
-  // Write header
-  cols.forEach(function(col) {
-    out.cell(col, col)
-  })
-  out.newRow()
-  out.pushDelimeter(cols)
-
-  // Write body
-  out.rows = out.rows.concat(this.rows)
-
-  // Totals
-  if (this.totals && this.rows.length) {
-    out.pushDelimeter(cols)
-    this.forEachTotal(out.cell.bind(out))
-    out.newRow()
-  }
-
-  return out.print()
-}
-
-/**
- * Push delimeter row to the table (with each cell filled with dashs during printing)
- *
- * @param {String[]} [cols]
- * @returns {Table} `this`
- */
-
-Table.prototype.pushDelimeter = function(cols) {
-  cols = cols || this.columns()
-  cols.forEach(function(col) {
-    this.cell(col, undefined, leftPadder('-'))
-  }, this)
-  return this.newRow()
-}
-
-/**
- * Compute all totals and yield the results to `cb`
- *
- * @param {Function} cb - Callback function with signature `(column, value, printer)`
- */
-
-Table.prototype.forEachTotal = function(cb) {
-  for(var key in this.totals) {
-    var aggr = this.totals[key]
-    var acc = aggr.init
-    var len = this.rows.length
-    this.rows.forEach(function(row, idx) {
-      acc = aggr.reduce.call(row, acc, row[key], idx, len)
-    })
-    cb(key, acc, aggr.printer)
-  }
-}
-
-/**
- * Format the table so that each row represents column and each column represents row
- *
- * @param {Object} [opts]
- * @param {String} [ops.separator] - Column separation string
- * @param {Function} [opts.namePrinter] - Printer to format column names
- * @returns {String}
- */
-
-Table.prototype.printTransposed = function(opts) {
-  opts = opts || {}
-  var out = new Table
-  out.separator = opts.separator || this.separator
-  this.columns().forEach(function(col) {
-    out.cell(0, col, opts.namePrinter)
-    this.rows.forEach(function(row, idx) {
-      out.cell(idx+1, row[col], row.__printers[col])
-    })
-    out.newRow()
-  }, this)
-  return out.print()
-}
-
-/**
- * Sort the table
- *
- * @param {Function|string[]} [cmp] - Either compare function or a list of columns to sort on
- * @returns {Table} `this`
- */
-
-Table.prototype.sort = function(cmp) {
-  if (typeof cmp == 'function') {
-    this.rows.sort(cmp)
-    return this
-  }
-
-  var keys = Array.isArray(cmp) ? cmp : this.columns()
-
-  var comparators = keys.map(function(key) {
-    var order = 'asc'
-    var m = /(.*)\|\s*(asc|des)\s*$/.exec(key)
-    if (m) {
-      key = m[1]
-      order = m[2]
-    }
-    return function (a, b) {
-      return order == 'asc'
-        ? compare(a[key], b[key])
-        : compare(b[key], a[key])
-    }
-  })
-
-  return this.sort(function(a, b) {
-    for (var i = 0; i < comparators.length; i++) {
-      var order = comparators[i](a, b)
-      if (order != 0) return order
-    }
-    return 0
-  })
-}
-
-function compare(a, b) {
-  if (a === b) return 0
-  if (a === undefined) return 1
-  if (b === undefined) return -1
-  if (a === null) return 1
-  if (b === null) return -1
-  if (a > b) return 1
-  if (a < b) return -1
-  return compare(String(a), String(b))
-}
-
-/**
- * Add a total for the column
- *
- * @param {String} col - column name
- * @param {Object} [opts]
- * @param {Function} [opts.reduce = sum] - reduce(acc, val, idx, length) function to compute the total value
- * @param {Function} [opts.printer = padLeft] - Printer to format the total cell
- * @param {Any} [opts.init = 0] - Initial value for reduction
- * @returns {Table} `this`
- */
-
-Table.prototype.total = function(col, opts) {
-  opts = opts || {}
-  this.totals = this.totals || {}
-  this.totals[col] = {
-    reduce: opts.reduce || Table.aggr.sum,
-    printer: opts.printer || padLeft,
-    init: opts.init == null ? 0 : opts.init
-  }
-  return this
-}
-
-/**
- * Predefined helpers for totals
- */
-
-Table.aggr = {}
-
-/**
- * Create a printer which formats the value with `printer`,
- * adds the `prefix` to it and right aligns the whole thing
- *
- * @param {String} prefix
- * @param {Function} printer
- * @returns {printer}
- */
-
-Table.aggr.printer = function(prefix, printer) {
-  printer = printer || string
-  return function(val, width) {
-    return padLeft(prefix + printer(val), width)
-  }
-}
-
-/**
- * Sum reduction
- */
-
-Table.aggr.sum = function(acc, val) {
-  return acc + val
-}
-
-/**
- * Average reduction
- */
-
-Table.aggr.avg = function(acc, val, idx, len) {
-  acc = acc + val
-  return idx + 1 == len ? acc/len : acc
-}
-
-/**
- * Print the array or object
- *
- * @param {Array|Object} obj - Object to print
- * @param {Function|Object} [format] - Format options
- * @param {Function} [cb] - Table post processing and formating
- * @returns {String}
- */
-
-Table.print = function(obj, format, cb) {
-  var opts = format || {}
-
-  format = typeof format == 'function'
-    ? format
-    : function(obj, cell) {
-      for(var key in obj) {
-        if (!obj.hasOwnProperty(key)) continue
-        var params = opts[key] || {}
-        cell(params.name || key, obj[key], params.printer)
-      }
-    }
-
-  var t = new Table
-  var cell = t.cell.bind(t)
-
-  if (Array.isArray(obj)) {
-    cb = cb || function(t) { return t.toString() }
-    obj.forEach(function(item) {
-      format(item, cell)
-      t.newRow()
-    })
-  } else {
-    cb = cb || function(t) { return t.printTransposed({separator: ' : '}) }
-    format(obj, cell)
-    t.newRow()
-  }
-
-  return cb(t)
-}
-
-/**
- * Same as `Table.print()` but yields the result to `console.log()`
- */
-
-Table.log = function(obj, format, cb) {
-  console.log(Table.print(obj, format, cb))
-}
-
-/**
- * Same as `.toString()` but yields the result to `console.log()`
- */
-
-Table.prototype.log = function() {
-  console.log(this.toString())
-}
-
+eval("exports.read = function (buffer, offset, isLE, mLen, nBytes) {\n  var e, m\n  var eLen = (nBytes * 8) - mLen - 1\n  var eMax = (1 << eLen) - 1\n  var eBias = eMax >> 1\n  var nBits = -7\n  var i = isLE ? (nBytes - 1) : 0\n  var d = isLE ? -1 : 1\n  var s = buffer[offset + i]\n\n  i += d\n\n  e = s & ((1 << (-nBits)) - 1)\n  s >>= (-nBits)\n  nBits += eLen\n  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}\n\n  m = e & ((1 << (-nBits)) - 1)\n  e >>= (-nBits)\n  nBits += mLen\n  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}\n\n  if (e === 0) {\n    e = 1 - eBias\n  } else if (e === eMax) {\n    return m ? NaN : ((s ? -1 : 1) * Infinity)\n  } else {\n    m = m + Math.pow(2, mLen)\n    e = e - eBias\n  }\n  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)\n}\n\nexports.write = function (buffer, value, offset, isLE, mLen, nBytes) {\n  var e, m, c\n  var eLen = (nBytes * 8) - mLen - 1\n  var eMax = (1 << eLen) - 1\n  var eBias = eMax >> 1\n  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)\n  var i = isLE ? 0 : (nBytes - 1)\n  var d = isLE ? 1 : -1\n  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0\n\n  value = Math.abs(value)\n\n  if (isNaN(value) || value === Infinity) {\n    m = isNaN(value) ? 1 : 0\n    e = eMax\n  } else {\n    e = Math.floor(Math.log(value) / Math.LN2)\n    if (value * (c = Math.pow(2, -e)) < 1) {\n      e--\n      c *= 2\n    }\n    if (e + eBias >= 1) {\n      value += rt / c\n    } else {\n      value += rt * Math.pow(2, 1 - eBias)\n    }\n    if (value * c >= 2) {\n      e++\n      c /= 2\n    }\n\n    if (e + eBias >= eMax) {\n      m = 0\n      e = eMax\n    } else if (e + eBias >= 1) {\n      m = ((value * c) - 1) * Math.pow(2, mLen)\n      e = e + eBias\n    } else {\n      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)\n      e = 0\n    }\n  }\n\n  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}\n\n  e = (e << mLen) | m\n  eLen += mLen\n  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}\n\n  buffer[offset + i - d] |= s * 128\n}\n\n\n//# sourceURL=webpack://BinPacking/../node_modules/ieee754/index.js?");
 
 /***/ }),
-/* 13 */
+
+/***/ "../node_modules/isarray/index.js":
+/*!****************************************!*\
+  !*** ../node_modules/isarray/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("var toString = {}.toString;\n\nmodule.exports = Array.isArray || function (arr) {\n  return toString.call(arr) == '[object Array]';\n};\n\n\n//# sourceURL=webpack://BinPacking/../node_modules/isarray/index.js?");
+
+/***/ }),
+
+/***/ "../node_modules/wcwidth/combining.js":
+/*!********************************************!*\
+  !*** ../node_modules/wcwidth/combining.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = [\n    [ 0x0300, 0x036F ], [ 0x0483, 0x0486 ], [ 0x0488, 0x0489 ],\n    [ 0x0591, 0x05BD ], [ 0x05BF, 0x05BF ], [ 0x05C1, 0x05C2 ],\n    [ 0x05C4, 0x05C5 ], [ 0x05C7, 0x05C7 ], [ 0x0600, 0x0603 ],\n    [ 0x0610, 0x0615 ], [ 0x064B, 0x065E ], [ 0x0670, 0x0670 ],\n    [ 0x06D6, 0x06E4 ], [ 0x06E7, 0x06E8 ], [ 0x06EA, 0x06ED ],\n    [ 0x070F, 0x070F ], [ 0x0711, 0x0711 ], [ 0x0730, 0x074A ],\n    [ 0x07A6, 0x07B0 ], [ 0x07EB, 0x07F3 ], [ 0x0901, 0x0902 ],\n    [ 0x093C, 0x093C ], [ 0x0941, 0x0948 ], [ 0x094D, 0x094D ],\n    [ 0x0951, 0x0954 ], [ 0x0962, 0x0963 ], [ 0x0981, 0x0981 ],\n    [ 0x09BC, 0x09BC ], [ 0x09C1, 0x09C4 ], [ 0x09CD, 0x09CD ],\n    [ 0x09E2, 0x09E3 ], [ 0x0A01, 0x0A02 ], [ 0x0A3C, 0x0A3C ],\n    [ 0x0A41, 0x0A42 ], [ 0x0A47, 0x0A48 ], [ 0x0A4B, 0x0A4D ],\n    [ 0x0A70, 0x0A71 ], [ 0x0A81, 0x0A82 ], [ 0x0ABC, 0x0ABC ],\n    [ 0x0AC1, 0x0AC5 ], [ 0x0AC7, 0x0AC8 ], [ 0x0ACD, 0x0ACD ],\n    [ 0x0AE2, 0x0AE3 ], [ 0x0B01, 0x0B01 ], [ 0x0B3C, 0x0B3C ],\n    [ 0x0B3F, 0x0B3F ], [ 0x0B41, 0x0B43 ], [ 0x0B4D, 0x0B4D ],\n    [ 0x0B56, 0x0B56 ], [ 0x0B82, 0x0B82 ], [ 0x0BC0, 0x0BC0 ],\n    [ 0x0BCD, 0x0BCD ], [ 0x0C3E, 0x0C40 ], [ 0x0C46, 0x0C48 ],\n    [ 0x0C4A, 0x0C4D ], [ 0x0C55, 0x0C56 ], [ 0x0CBC, 0x0CBC ],\n    [ 0x0CBF, 0x0CBF ], [ 0x0CC6, 0x0CC6 ], [ 0x0CCC, 0x0CCD ],\n    [ 0x0CE2, 0x0CE3 ], [ 0x0D41, 0x0D43 ], [ 0x0D4D, 0x0D4D ],\n    [ 0x0DCA, 0x0DCA ], [ 0x0DD2, 0x0DD4 ], [ 0x0DD6, 0x0DD6 ],\n    [ 0x0E31, 0x0E31 ], [ 0x0E34, 0x0E3A ], [ 0x0E47, 0x0E4E ],\n    [ 0x0EB1, 0x0EB1 ], [ 0x0EB4, 0x0EB9 ], [ 0x0EBB, 0x0EBC ],\n    [ 0x0EC8, 0x0ECD ], [ 0x0F18, 0x0F19 ], [ 0x0F35, 0x0F35 ],\n    [ 0x0F37, 0x0F37 ], [ 0x0F39, 0x0F39 ], [ 0x0F71, 0x0F7E ],\n    [ 0x0F80, 0x0F84 ], [ 0x0F86, 0x0F87 ], [ 0x0F90, 0x0F97 ],\n    [ 0x0F99, 0x0FBC ], [ 0x0FC6, 0x0FC6 ], [ 0x102D, 0x1030 ],\n    [ 0x1032, 0x1032 ], [ 0x1036, 0x1037 ], [ 0x1039, 0x1039 ],\n    [ 0x1058, 0x1059 ], [ 0x1160, 0x11FF ], [ 0x135F, 0x135F ],\n    [ 0x1712, 0x1714 ], [ 0x1732, 0x1734 ], [ 0x1752, 0x1753 ],\n    [ 0x1772, 0x1773 ], [ 0x17B4, 0x17B5 ], [ 0x17B7, 0x17BD ],\n    [ 0x17C6, 0x17C6 ], [ 0x17C9, 0x17D3 ], [ 0x17DD, 0x17DD ],\n    [ 0x180B, 0x180D ], [ 0x18A9, 0x18A9 ], [ 0x1920, 0x1922 ],\n    [ 0x1927, 0x1928 ], [ 0x1932, 0x1932 ], [ 0x1939, 0x193B ],\n    [ 0x1A17, 0x1A18 ], [ 0x1B00, 0x1B03 ], [ 0x1B34, 0x1B34 ],\n    [ 0x1B36, 0x1B3A ], [ 0x1B3C, 0x1B3C ], [ 0x1B42, 0x1B42 ],\n    [ 0x1B6B, 0x1B73 ], [ 0x1DC0, 0x1DCA ], [ 0x1DFE, 0x1DFF ],\n    [ 0x200B, 0x200F ], [ 0x202A, 0x202E ], [ 0x2060, 0x2063 ],\n    [ 0x206A, 0x206F ], [ 0x20D0, 0x20EF ], [ 0x302A, 0x302F ],\n    [ 0x3099, 0x309A ], [ 0xA806, 0xA806 ], [ 0xA80B, 0xA80B ],\n    [ 0xA825, 0xA826 ], [ 0xFB1E, 0xFB1E ], [ 0xFE00, 0xFE0F ],\n    [ 0xFE20, 0xFE23 ], [ 0xFEFF, 0xFEFF ], [ 0xFFF9, 0xFFFB ],\n    [ 0x10A01, 0x10A03 ], [ 0x10A05, 0x10A06 ], [ 0x10A0C, 0x10A0F ],\n    [ 0x10A38, 0x10A3A ], [ 0x10A3F, 0x10A3F ], [ 0x1D167, 0x1D169 ],\n    [ 0x1D173, 0x1D182 ], [ 0x1D185, 0x1D18B ], [ 0x1D1AA, 0x1D1AD ],\n    [ 0x1D242, 0x1D244 ], [ 0xE0001, 0xE0001 ], [ 0xE0020, 0xE007F ],\n    [ 0xE0100, 0xE01EF ]\n]\n\n\n//# sourceURL=webpack://BinPacking/../node_modules/wcwidth/combining.js?");
+
+/***/ }),
+
+/***/ "../node_modules/wcwidth/index.js":
+/*!****************************************!*\
+  !*** ../node_modules/wcwidth/index.js ***!
+  \****************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _BestAreaFit = __webpack_require__(14);
-
-Object.defineProperty(exports, 'BestAreaFit', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_BestAreaFit).default;
-  }
-});
-
-var _BestLongSideFit = __webpack_require__(15);
-
-Object.defineProperty(exports, 'BestLongSideFit', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_BestLongSideFit).default;
-  }
-});
-
-var _BestShortSideFit = __webpack_require__(2);
-
-Object.defineProperty(exports, 'BestShortSideFit', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_BestShortSideFit).default;
-  }
-});
-
-var _BottomLeft = __webpack_require__(16);
-
-Object.defineProperty(exports, 'BottomLeft', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_BottomLeft).default;
-  }
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+eval("\n\nvar defaults = __webpack_require__(/*! defaults */ \"../node_modules/defaults/index.js\")\nvar combining = __webpack_require__(/*! ./combining */ \"../node_modules/wcwidth/combining.js\")\n\nvar DEFAULTS = {\n  nul: 0,\n  control: 0\n}\n\nmodule.exports = function wcwidth(str) {\n  return wcswidth(str, DEFAULTS)\n}\n\nmodule.exports.config = function(opts) {\n  opts = defaults(opts || {}, DEFAULTS)\n  return function wcwidth(str) {\n    return wcswidth(str, opts)\n  }\n}\n\n/*\n *  The following functions define the column width of an ISO 10646\n *  character as follows:\n *  - The null character (U+0000) has a column width of 0.\n *  - Other C0/C1 control characters and DEL will lead to a return value\n *    of -1.\n *  - Non-spacing and enclosing combining characters (general category\n *    code Mn or Me in the\n *    Unicode database) have a column width of 0.\n *  - SOFT HYPHEN (U+00AD) has a column width of 1.\n *  - Other format characters (general category code Cf in the Unicode\n *    database) and ZERO WIDTH\n *    SPACE (U+200B) have a column width of 0.\n *  - Hangul Jamo medial vowels and final consonants (U+1160-U+11FF)\n *    have a column width of 0.\n *  - Spacing characters in the East Asian Wide (W) or East Asian\n *    Full-width (F) category as\n *    defined in Unicode Technical Report #11 have a column width of 2.\n *  - All remaining characters (including all printable ISO 8859-1 and\n *    WGL4 characters, Unicode control characters, etc.) have a column\n *    width of 1.\n *  This implementation assumes that characters are encoded in ISO 10646.\n*/\n\nfunction wcswidth(str, opts) {\n  if (typeof str !== 'string') return wcwidth(str, opts)\n\n  var s = 0\n  for (var i = 0; i < str.length; i++) {\n    var n = wcwidth(str.charCodeAt(i), opts)\n    if (n < 0) return -1\n    s += n\n  }\n\n  return s\n}\n\nfunction wcwidth(ucs, opts) {\n  // test for 8-bit control characters\n  if (ucs === 0) return opts.nul\n  if (ucs < 32 || (ucs >= 0x7f && ucs < 0xa0)) return opts.control\n\n  // binary search in table of non-spacing characters\n  if (bisearch(ucs)) return 0\n\n  // if we arrive here, ucs is not a combining or C0/C1 control character\n  return 1 +\n      (ucs >= 0x1100 &&\n       (ucs <= 0x115f ||                       // Hangul Jamo init. consonants\n        ucs == 0x2329 || ucs == 0x232a ||\n        (ucs >= 0x2e80 && ucs <= 0xa4cf &&\n         ucs != 0x303f) ||                     // CJK ... Yi\n        (ucs >= 0xac00 && ucs <= 0xd7a3) ||    // Hangul Syllables\n        (ucs >= 0xf900 && ucs <= 0xfaff) ||    // CJK Compatibility Ideographs\n        (ucs >= 0xfe10 && ucs <= 0xfe19) ||    // Vertical forms\n        (ucs >= 0xfe30 && ucs <= 0xfe6f) ||    // CJK Compatibility Forms\n        (ucs >= 0xff00 && ucs <= 0xff60) ||    // Fullwidth Forms\n        (ucs >= 0xffe0 && ucs <= 0xffe6) ||\n        (ucs >= 0x20000 && ucs <= 0x2fffd) ||\n        (ucs >= 0x30000 && ucs <= 0x3fffd)));\n}\n\nfunction bisearch(ucs) {\n  var min = 0\n  var max = combining.length - 1\n  var mid\n\n  if (ucs < combining[0][0] || ucs > combining[max][1]) return false\n\n  while (max >= min) {\n    mid = Math.floor((min + max) / 2)\n    if (ucs > combining[mid][1]) min = mid + 1\n    else if (ucs < combining[mid][0]) max = mid - 1\n    else return true\n  }\n\n  return false\n}\n\n\n//# sourceURL=webpack://BinPacking/../node_modules/wcwidth/index.js?");
 
 /***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+/***/ "../node_modules/webpack/buildin/global.js":
+/*!*************************************************!*\
+  !*** ../node_modules/webpack/buildin/global.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Base2 = __webpack_require__(1);
-
-var _Base3 = _interopRequireDefault(_Base2);
-
-var _Score = __webpack_require__(0);
-
-var _Score2 = _interopRequireDefault(_Score);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BestAreaFit = function (_Base) {
-  _inherits(BestAreaFit, _Base);
-
-  function BestAreaFit() {
-    _classCallCheck(this, BestAreaFit);
-
-    return _possibleConstructorReturn(this, (BestAreaFit.__proto__ || Object.getPrototypeOf(BestAreaFit)).apply(this, arguments));
-  }
-
-  _createClass(BestAreaFit, [{
-    key: 'calculateScore',
-    value: function calculateScore(freeRect, rectWidth, rectHeight) {
-      var areaFit = freeRect.width * freeRect.height - rectWidth * rectHeight;
-      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);
-      var leftOverVert = Math.abs(freeRect.height - rectHeight);
-      var shortSideFit = Math.min(leftOverHoriz, leftOverVert);
-      return new _Score2.default(areaFit, shortSideFit);
-    }
-  }]);
-
-  return BestAreaFit;
-}(_Base3.default);
-
-exports.default = BestAreaFit;
+eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn this;\n})();\n\ntry {\n\t// This works if eval is allowed (see CSP)\n\tg = g || new Function(\"return this\")();\n} catch (e) {\n\t// This works if the window reference is available\n\tif (typeof window === \"object\") g = window;\n}\n\n// g can still be undefined, but nothing to do about it...\n// We return undefined, instead of nothing here, so it's\n// easier to handle this case. if(!global) { ...}\n\nmodule.exports = g;\n\n\n//# sourceURL=webpack://BinPacking/../node_modules/webpack/buildin/global.js?");
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
+
+/***/ "./2D/Bin.js":
+/*!*******************!*\
+  !*** ./2D/Bin.js ***!
+  \*******************/
+/*! exports provided: default, FreeSpaceBox */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Base2 = __webpack_require__(1);
-
-var _Base3 = _interopRequireDefault(_Base2);
-
-var _Score = __webpack_require__(0);
-
-var _Score2 = _interopRequireDefault(_Score);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BestLongSideFit = function (_Base) {
-  _inherits(BestLongSideFit, _Base);
-
-  function BestLongSideFit() {
-    _classCallCheck(this, BestLongSideFit);
-
-    return _possibleConstructorReturn(this, (BestLongSideFit.__proto__ || Object.getPrototypeOf(BestLongSideFit)).apply(this, arguments));
-  }
-
-  _createClass(BestLongSideFit, [{
-    key: 'calculateScore',
-    value: function calculateScore(freeRect, rectWidth, rectHeight) {
-      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);
-      var leftOverVert = Math.abs(freeRect.height - rectHeight);
-      var args = [leftOverHoriz, leftOverVert].sort(function (a, b) {
-        return a - b;
-      }).reverse();
-      return new _Score2.default(args[0], args[1]);
-    }
-  }]);
-
-  return BestLongSideFit;
-}(_Base3.default);
-
-exports.default = BestLongSideFit;
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Bin; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"FreeSpaceBox\", function() { return FreeSpaceBox; });\n/* harmony import */ var _heuristics_BestShortSideFit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./heuristics/BestShortSideFit */ \"./2D/heuristics/BestShortSideFit.js\");\n/* harmony import */ var _Box__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Box */ \"./2D/Box.js\");\nfunction ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }\n\nfunction _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\n\n\nvar Bin =\n/*#__PURE__*/\nfunction () {\n  function Bin(width, height, heuristic) {\n    _classCallCheck(this, Bin);\n\n    _defineProperty(this, \"width\", null);\n\n    _defineProperty(this, \"height\", null);\n\n    _defineProperty(this, \"boxes\", []);\n\n    _defineProperty(this, \"heuristic\", null);\n\n    _defineProperty(this, \"freeRectangles\", []);\n\n    this.width = width;\n    this.height = height;\n    this.freeRectangles = [new FreeSpaceBox(width, height)];\n    this.heuristic = heuristic || new _heuristics_BestShortSideFit__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\n  }\n\n  _createClass(Bin, [{\n    key: \"insert\",\n    value: function insert(box) {\n      if (box.packed) return false;\n      this.heuristic.findPositionForNewNode(box, this.freeRectangles);\n      if (!box.packed) return false;\n      var numRectanglesToProcess = this.freeRectangles.length;\n      var i = 0;\n\n      while (i < numRectanglesToProcess) {\n        if (this.splitFreeNode(this.freeRectangles[i], box)) {\n          this.freeRectangles.splice(i, 1);\n          numRectanglesToProcess--;\n        } else {\n          i++;\n        }\n      }\n\n      this.pruneFreeList();\n      this.boxes.push(box);\n      return true;\n    }\n  }, {\n    key: \"scoreFor\",\n    value: function scoreFor(box) {\n      var copyBox = new _Box__WEBPACK_IMPORTED_MODULE_1__[\"default\"](box.width, box.height, box.constrainRotation);\n      var score = this.heuristic.findPositionForNewNode(copyBox, this.freeRectangles);\n      return score;\n    }\n  }, {\n    key: \"isLargerThan\",\n    value: function isLargerThan(box) {\n      return this.width >= box.width && this.height >= box.height || this.height >= box.width && this.width >= box.height;\n    }\n  }, {\n    key: \"splitFreeNode\",\n    value: function splitFreeNode(freeNode, usedNode) {\n      // Test with SAT if the rectangles even intersect.\n      if (usedNode.x >= freeNode.x + freeNode.width || usedNode.x + usedNode.width <= freeNode.x || usedNode.y >= freeNode.y + freeNode.height || usedNode.y + usedNode.height <= freeNode.y) {\n        return false;\n      }\n\n      this.trySplitFreeNodeVertically(freeNode, usedNode);\n      this.trySplitFreeNodeHorizontally(freeNode, usedNode);\n      return true;\n    }\n  }, {\n    key: \"trySplitFreeNodeVertically\",\n    value: function trySplitFreeNodeVertically(freeNode, usedNode) {\n      if (usedNode.x < freeNode.x + freeNode.width && usedNode.x + usedNode.width > freeNode.x) {\n        this.tryLeaveFreeSpaceAtTop(freeNode, usedNode);\n        this.tryLeaveFreeSpaceAtBottom(freeNode, usedNode);\n      }\n    }\n  }, {\n    key: \"tryLeaveFreeSpaceAtTop\",\n    value: function tryLeaveFreeSpaceAtTop(freeNode, usedNode) {\n      if (usedNode.y > freeNode.y && usedNode.y < freeNode.y + freeNode.height) {\n        var newNode = _objectSpread({}, freeNode);\n\n        newNode.height = usedNode.y - newNode.y;\n        this.freeRectangles.push(newNode);\n      }\n    }\n  }, {\n    key: \"tryLeaveFreeSpaceAtBottom\",\n    value: function tryLeaveFreeSpaceAtBottom(freeNode, usedNode) {\n      if (usedNode.y + usedNode.height < freeNode.y + freeNode.height) {\n        var newNode = _objectSpread({}, freeNode);\n\n        newNode.y = usedNode.y + usedNode.height;\n        newNode.height = freeNode.y + freeNode.height - (usedNode.y + usedNode.height);\n        this.freeRectangles.push(newNode);\n      }\n    }\n  }, {\n    key: \"trySplitFreeNodeHorizontally\",\n    value: function trySplitFreeNodeHorizontally(freeNode, usedNode) {\n      if (usedNode.y < freeNode.y + freeNode.height && usedNode.y + usedNode.height > freeNode.y) {\n        this.tryLeaveFreeSpaceOnLeft(freeNode, usedNode);\n        this.tryLeaveFreeSpaceOnRight(freeNode, usedNode);\n      }\n    }\n  }, {\n    key: \"tryLeaveFreeSpaceOnLeft\",\n    value: function tryLeaveFreeSpaceOnLeft(freeNode, usedNode) {\n      if (usedNode.x > freeNode.x && usedNode.x < freeNode.x + freeNode.width) {\n        var newNode = _objectSpread({}, freeNode);\n\n        newNode.width = usedNode.x - newNode.x;\n        this.freeRectangles.push(newNode);\n      }\n    }\n  }, {\n    key: \"tryLeaveFreeSpaceOnRight\",\n    value: function tryLeaveFreeSpaceOnRight(freeNode, usedNode) {\n      if (usedNode.x + usedNode.width < freeNode.x + freeNode.width) {\n        var newNode = _objectSpread({}, freeNode);\n\n        newNode.x = usedNode.x + usedNode.width;\n        newNode.width = freeNode.x + freeNode.width - (usedNode.x + usedNode.width);\n        this.freeRectangles.push(newNode);\n      }\n    }\n    /**\r\n     * Goes through the free rectangle list and removes any redundant entries.\r\n     */\n\n  }, {\n    key: \"pruneFreeList\",\n    value: function pruneFreeList() {\n      var i = 0;\n\n      while (i < this.freeRectangles.length) {\n        var j = i + 1;\n\n        if (j === this.freeRectangles.length) {\n          break;\n        }\n\n        while (j < this.freeRectangles.length) {\n          if (this.isContainedIn(this.freeRectangles[i], this.freeRectangles[j])) {\n            this.freeRectangles.splice(i, 1);\n            i--;\n            break;\n          }\n\n          if (this.isContainedIn(this.freeRectangles[j], this.freeRectangles[i])) {\n            this.freeRectangles.splice(j, 1);\n          } else {\n            j++;\n          }\n\n          i++;\n        }\n      }\n    }\n  }, {\n    key: \"isContainedIn\",\n    value: function isContainedIn(rectA, rectB) {\n      return rectA && rectB && rectA.x >= rectB.x && rectA.y >= rectB.y && rectA.x + rectA.width <= rectB.x + rectB.width && rectA.y + rectA.height <= rectB.y + rectB.height;\n    }\n  }, {\n    key: \"area\",\n    get: function get() {\n      return this.width * this.height;\n    }\n  }, {\n    key: \"efficiency\",\n    get: function get() {\n      var boxesArea = 0;\n      this.boxes.forEach(function (box) {\n        boxesArea += box.area;\n      });\n      return boxesArea * 100 / this.area;\n    }\n  }, {\n    key: \"label\",\n    get: function get() {\n      return \"\".concat(this.width, \"x\").concat(this.height, \" \").concat(this.efficiency, \"%\");\n    }\n  }]);\n\n  return Bin;\n}();\n\n\nvar FreeSpaceBox = function FreeSpaceBox(width, height) {\n  _classCallCheck(this, FreeSpaceBox);\n\n  _defineProperty(this, \"x\", 0);\n\n  _defineProperty(this, \"y\", 0);\n\n  _defineProperty(this, \"width\", null);\n\n  _defineProperty(this, \"height\", null);\n\n  this.width = width;\n  this.height = height;\n};\n\n//# sourceURL=webpack://BinPacking/./2D/Bin.js?");
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
+
+/***/ "./2D/Box.js":
+/*!*******************!*\
+  !*** ./2D/Box.js ***!
+  \*******************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Base2 = __webpack_require__(1);
-
-var _Base3 = _interopRequireDefault(_Base2);
-
-var _Score = __webpack_require__(0);
-
-var _Score2 = _interopRequireDefault(_Score);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BottomLeft = function (_Base) {
-  _inherits(BottomLeft, _Base);
-
-  function BottomLeft() {
-    _classCallCheck(this, BottomLeft);
-
-    return _possibleConstructorReturn(this, (BottomLeft.__proto__ || Object.getPrototypeOf(BottomLeft)).apply(this, arguments));
-  }
-
-  _createClass(BottomLeft, [{
-    key: 'calculateScore',
-    value: function calculateScore(freeRect, rectWidth, rectHeight) {
-      var topSideY = freeRect.y + rectHeight;
-      return new _Score2.default(topSideY, freeRect.x);
-    }
-  }]);
-
-  return BottomLeft;
-}(_Base3.default);
-
-exports.default = BottomLeft;
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Box; });\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar Box =\n/*#__PURE__*/\nfunction () {\n  function Box(width, height) {\n    var constrainRotation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;\n\n    _classCallCheck(this, Box);\n\n    _defineProperty(this, \"width\", null);\n\n    _defineProperty(this, \"height\", null);\n\n    _defineProperty(this, \"constrainRotation\", false);\n\n    _defineProperty(this, \"x\", 0);\n\n    _defineProperty(this, \"y\", 0);\n\n    _defineProperty(this, \"packed\", false);\n\n    this.width = width;\n    this.height = height; // Avoid the packer to try the rotated dimensions\n\n    this.constrainRotation = constrainRotation;\n  }\n\n  _createClass(Box, [{\n    key: \"rotate\",\n    value: function rotate() {\n      var width = this.width,\n          height = this.height;\n      this.width = height;\n      this.height = width;\n    }\n  }, {\n    key: \"label\",\n    get: function get() {\n      return \"\".concat(this.width, \"x\").concat(this.height, \" at [\").concat(this.x, \",\").concat(this.y, \"]\");\n    }\n  }, {\n    key: \"area\",\n    get: function get() {\n      return this.width * this.height;\n    }\n  }]);\n\n  return Box;\n}();\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/Box.js?");
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
+
+/***/ "./2D/Packer.js":
+/*!**********************!*\
+  !*** ./2D/Packer.js ***!
+  \**********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Packer = exports.Item = exports.Bin = undefined;
-
-var _Bin = __webpack_require__(4);
-
-var _Bin2 = _interopRequireDefault(_Bin);
-
-var _Item = __webpack_require__(5);
-
-var _Item2 = _interopRequireDefault(_Item);
-
-var _Packer = __webpack_require__(18);
-
-var _Packer2 = _interopRequireDefault(_Packer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.Bin = _Bin2.default;
-exports.Item = _Item2.default;
-exports.Packer = _Packer2.default;
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Packer; });\n/* harmony import */ var _Score__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Score */ \"./2D/Score.js\");\n/* harmony import */ var _ScoreBoard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ScoreBoard */ \"./2D/ScoreBoard.js\");\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\n\n\nvar Packer =\n/*#__PURE__*/\nfunction () {\n  function Packer(bins) {\n    _classCallCheck(this, Packer);\n\n    _defineProperty(this, \"bins\", []);\n\n    _defineProperty(this, \"unpackedBoxes\", []);\n\n    this.bins = bins;\n  }\n\n  _createClass(Packer, [{\n    key: \"pack\",\n    value: function pack(boxes) {\n      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};\n      var packedBoxes = [];\n      var entry;\n      boxes = boxes.filter(function (box) {\n        return !box.packed;\n      });\n      if (boxes.length === 0) return packedBoxes;\n      var limit = options.limit || _Score__WEBPACK_IMPORTED_MODULE_0__[\"default\"].MAX_INT;\n      var board = new _ScoreBoard__WEBPACK_IMPORTED_MODULE_1__[\"default\"](this.bins, boxes);\n      var r = 0;\n\n      while (entry = board.bestFit()) {\n        entry.bin.insert(entry.box);\n        board.removeBox(entry.box);\n        board.recalculateBin(entry.bin);\n        packedBoxes.push(entry.box);\n\n        if (packedBoxes.length >= limit) {\n          break;\n        }\n      }\n\n      ;\n      this.unpackedBoxes = boxes.filter(function (box) {\n        return !box.packed;\n      });\n      return packedBoxes;\n    }\n  }]);\n\n  return Packer;\n}();\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/Packer.js?");
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
+
+/***/ "./2D/Score.js":
+/*!*********************!*\
+  !*** ./2D/Score.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Bin = __webpack_require__(4);
-
-var _Bin2 = _interopRequireDefault(_Bin);
-
-var _Item = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Packer = function () {
-  function Packer() {
-    _classCallCheck(this, Packer);
-
-    this.bins = [];
-    this.items = [];
-    this.unfitItems = [];
-  }
-
-  _createClass(Packer, [{
-    key: 'addBin',
-    value: function addBin(bin) {
-      this.bins.push(bin);
-    }
-  }, {
-    key: 'addItem',
-    value: function addItem(item) {
-      this.items.push(item);
-    }
-  }, {
-    key: 'findFittedBin',
-    value: function findFittedBin(i) {
-      for (var _i = 0; _i < this.bins.length; _i++) {
-        var b = this.bins[_i];
-
-        if (!b.weighItem(i) || !b.putItem(i, _Item.StartPosition)) {
-          continue;
-        }
-
-        if (b.items.length === 1 && b.items[0] === i) {
-          b.items = [];
-        }
-
-        return b;
-      }
-      return null;
-    }
-  }, {
-    key: 'getBiggerBinThan',
-    value: function getBiggerBinThan(b) {
-      var v = b.getVolume();
-      for (var _i = 0; _i < this.bins; _i++) {
-        var b2 = this.bins[_i];
-        if (b2.getVolume() > v) {
-          return b2;
-        }
-      }
-      return null;
-    }
-  }, {
-    key: 'unfitItem',
-    value: function unfitItem() {
-      if (this.items.length === 0) {
-        return;
-      }
-      this.unfitItems.push(this.items[0]);
-      this.items.splice(0, 1);
-    }
-  }, {
-    key: 'packToBin',
-    value: function packToBin(b, items) {
-      var b2 = null;
-      var unpacked = [];
-      var fit = b.weighItem(items[0]) && b.putItem(items[0], _Item.StartPosition);
-
-      if (!fit) {
-        var _b = this.getBiggerBinThan(b);
-        if (_b) {
-          return this.packToBin(_b, items);
-        }
-        return this.items;
-      }
-
-      // Pack unpacked items.
-      for (var _i = 1; _i < this.items.length; _i++) {
-        var fitted = false;
-        var item = this.items[_i];
-
-        if (b.weighItem(item)) {
-          // Try available pivots in current bin that are not intersect with
-          // existing items in current bin.
-          lookup: for (var _pt = 0; _pt < 3; _pt++) {
-            for (var _j = 0; _j < b.items.length; _j++) {
-              var pv = void 0;
-              var ib = b.items[_j];
-              switch (_pt) {
-                case _Item.WidthAxis:
-                  pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
-                  break;
-                case _Item.HeightAxis:
-                  pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
-                  break;
-                case _Item.DepthAxis:
-                  pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
-                  break;
-              }
-
-              if (b.putItem(item, pv)) {
-                fitted = true;
-                break lookup;
-              }
-            }
-          }
-        }
-
-        if (!fitted) {
-          while (b2 !== null) {
-            b2 = this.getBiggerBinThan(b);
-            if (b2) {
-              b2.items.push(item);
-              var left = this.packToBin(b2, b2.items);
-              if (left.length === 0) {
-                b = b2;
-                fitted = true;
-                break;
-              }
-            }
-          }
-
-          if (!fitted) {
-            unpacked.push(item);
-          }
-        }
-      }
-
-      return unpacked;
-    }
-  }, {
-    key: 'pack',
-    value: function pack() {
-      this.bins.sort(function (a, b) {
-        return a.getVolume() > b.getVolume();
-      });
-
-      this.items.sort(function (a, b) {
-        return a.getVolume() > b.getVolume();
-      });
-
-      while (this.items.length > 0) {
-        var bin = this.findFittedBin(this.items[0]);
-
-        if (bin === null) {
-          this.unfitItem();
-          continue;
-        }
-
-        this.items = this.packToBin(bin, this.items);
-      }
-
-      return null;
-    }
-  }]);
-
-  return Packer;
-}();
-
-exports.default = Packer;
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Score; });\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar Score =\n/*#__PURE__*/\nfunction () {\n  function Score(score_1, score_2) {\n    _classCallCheck(this, Score);\n\n    _defineProperty(this, \"score_1\", Score.MAX_INT);\n\n    _defineProperty(this, \"score_2\", Score.MAX_INT);\n\n    if (typeof score_1 != 'undefined') this.score_1 = score_1;\n    if (typeof score_2 != 'undefined') this.score_2 = score_2;\n  }\n  /**\r\n   * Lower is better\r\n   */\n\n\n  _createClass(Score, [{\n    key: \"valueOf\",\n    value: function valueOf() {\n      return this.score_1 + this.score_2;\n    }\n  }, {\n    key: \"assign\",\n    value: function assign(other) {\n      this.score_1 = other.score_1;\n      this.score_2 = other.score_2;\n    }\n  }, {\n    key: \"isBlank\",\n    value: function isBlank() {\n      return this.score_1 === Score.MAX_INT;\n    }\n  }, {\n    key: \"decreaseBy\",\n    value: function decreaseBy(delta) {\n      this.score_1 += delta;\n      this.score_2 += delta;\n    }\n  }]);\n\n  return Score;\n}();\n\n_defineProperty(Score, \"MAX_INT\", Number.MAX_SAFE_INTEGER);\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/Score.js?");
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
+
+/***/ "./2D/ScoreBoard.js":
+/*!**************************!*\
+  !*** ./2D/ScoreBoard.js ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return ScoreBoard; });\n/* harmony import */ var _ScoreBoardEntry__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ScoreBoardEntry */ \"./2D/ScoreBoardEntry.js\");\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance\"); }\n\nfunction _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === \"[object Arguments]\") return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n// #       box_1 box_2 box_3 ...\n// # bin_1  100   200    0\n// # bin_2   0     5     0\n// # bin_3   9    100    0\n// # ...\n\n\nvar ScoreBoard =\n/*#__PURE__*/\nfunction () {\n  function ScoreBoard(bins, boxes) {\n    var _this = this;\n\n    _classCallCheck(this, ScoreBoard);\n\n    _defineProperty(this, \"entries\", []);\n\n    bins.forEach(function (bin) {\n      _this.addBinEntries(bin, boxes);\n    });\n  }\n\n  _createClass(ScoreBoard, [{\n    key: \"debug\",\n    value: function debug() {\n      __webpack_require__(/*! console.table */ \"../node_modules/console.table/index.js\");\n\n      console.table(this.entries.map(function (entry) {\n        return {\n          bin: entry.bin.label,\n          box: entry.box.label,\n          score: entry.score\n        };\n      }));\n    }\n  }, {\n    key: \"addBinEntries\",\n    value: function addBinEntries(bin, boxes) {\n      var _this2 = this;\n\n      boxes.forEach(function (box) {\n        var entry = new _ScoreBoardEntry__WEBPACK_IMPORTED_MODULE_0__[\"default\"](bin, box);\n        entry.calculate();\n\n        _this2.entries.push(entry);\n      });\n    }\n  }, {\n    key: \"any\",\n    value: function any() {\n      return this.boxes.some(function (box) {\n        return box;\n      });\n    }\n  }, {\n    key: \"largestNotFitingBox\",\n    value: function largestNotFitingBox() {\n      var _this3 = this;\n\n      var unfit = null;\n      var fittingBoxes = this.entries.filter(function (entry) {\n        return entry.fit;\n      }).map(function (entry) {\n        return entry.box;\n      });\n      this.entries.forEach(function (entry) {\n        if (!_this3.fittingBoxes.contains(entry.box)) {\n          return;\n        }\n\n        if (unfit === null || unfit.box.area < entry.box.area) {\n          _this3.unfit = entry;\n        }\n      });\n      return unfit.box ? unfit : false;\n    }\n  }, {\n    key: \"bestFit\",\n    value: function bestFit() {\n      var best = null;\n\n      for (var i = 0; i < this.entries.length; i++) {\n        var entry = this.entries[i];\n\n        if (!entry.fit()) {\n          continue;\n        }\n\n        if (best === null || entry.score < best.score) {\n          best = entry;\n        }\n      }\n\n      return best;\n    }\n  }, {\n    key: \"removeBox\",\n    value: function removeBox(box) {\n      this.entries = this.entries.filter(function (entry) {\n        return entry.box !== box;\n      });\n    }\n  }, {\n    key: \"addBin\",\n    value: function addBin(bin) {\n      this.addBinEntries(bin, this.currentBoxes());\n    }\n  }, {\n    key: \"recalculateBin\",\n    value: function recalculateBin(bin) {\n      this.entries.filter(function (entry) {\n        return entry.bin === bin;\n      }).forEach(function (entry) {\n        return entry.calculate();\n      });\n    }\n  }, {\n    key: \"currentBoxes\",\n    value: function currentBoxes() {\n      return _toConsumableArray(new Set(this.entries.map(function (entry) {\n        return entry.box;\n      })));\n    }\n  }]);\n\n  return ScoreBoard;\n}();\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/ScoreBoard.js?");
 
+/***/ }),
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.BP3D = exports.BP2D = undefined;
+/***/ "./2D/ScoreBoardEntry.js":
+/*!*******************************!*\
+  !*** ./2D/ScoreBoardEntry.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var _D = __webpack_require__(6);
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return ScoreBoardEntry; });\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar ScoreBoardEntry =\n/*#__PURE__*/\nfunction () {\n  function ScoreBoardEntry(bin, box) {\n    _classCallCheck(this, ScoreBoardEntry);\n\n    _defineProperty(this, \"bin\", null);\n\n    _defineProperty(this, \"box\", null);\n\n    _defineProperty(this, \"score\", null);\n\n    this.bin = bin;\n    this.box = box;\n  }\n\n  _createClass(ScoreBoardEntry, [{\n    key: \"calculate\",\n    value: function calculate() {\n      this.score = this.bin.scoreFor(this.box);\n      return this.score;\n    }\n  }, {\n    key: \"fit\",\n    value: function fit() {\n      return !this.score.isBlank();\n    }\n  }]);\n\n  return ScoreBoardEntry;\n}();\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/ScoreBoardEntry.js?");
 
-var BP2D = _interopRequireWildcard(_D);
+/***/ }),
 
-var _D2 = __webpack_require__(17);
+/***/ "./2D/heuristics/Base.js":
+/*!*******************************!*\
+  !*** ./2D/heuristics/Base.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var BP3D = _interopRequireWildcard(_D2);
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Base; });\n/* harmony import */ var _Score__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Score */ \"./2D/Score.js\");\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\n\n\nvar Base =\n/*#__PURE__*/\nfunction () {\n  function Base() {\n    _classCallCheck(this, Base);\n  }\n\n  _createClass(Base, [{\n    key: \"findPositionForNewNode\",\n    value: function findPositionForNewNode(box, freeRects) {\n      var _this = this;\n\n      var bestScore = new _Score__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\n      var width = box.width;\n      var height = box.height;\n      freeRects.forEach(function (freeRect) {\n        _this.tryPlaceRectIn(freeRect, box, width, height, bestScore);\n\n        if (!box.constrainRotation) {\n          _this.tryPlaceRectIn(freeRect, box, height, width, bestScore);\n        }\n      });\n      return bestScore;\n    }\n  }, {\n    key: \"tryPlaceRectIn\",\n    value: function tryPlaceRectIn(freeRect, box, rectWidth, rectHeight, bestScore) {\n      if (freeRect.width >= rectWidth && freeRect.height >= rectHeight) {\n        var score = this.calculateScore(freeRect, rectWidth, rectHeight);\n\n        if (score < bestScore) {\n          box.x = freeRect.x;\n          box.y = freeRect.y;\n          box.width = rectWidth;\n          box.height = rectHeight;\n          box.packed = true;\n          bestScore.assign(score);\n        }\n      }\n    }\n  }, {\n    key: \"calculateScore\",\n    value: function calculateScore(freeRect, rectWidth, rectHeight) {\n      throw \"NotImplementedError\";\n    }\n  }]);\n\n  return Base;\n}();\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/heuristics/Base.js?");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+/***/ }),
 
-exports.BP2D = BP2D;
-exports.BP3D = BP3D;
+/***/ "./2D/heuristics/BestAreaFit.js":
+/*!**************************************!*\
+  !*** ./2D/heuristics/BestAreaFit.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return BestAreaFit; });\n/* harmony import */ var _Base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Base */ \"./2D/heuristics/Base.js\");\n/* harmony import */ var _Score__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Score */ \"./2D/Score.js\");\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\n\n\n\nvar BestAreaFit =\n/*#__PURE__*/\nfunction (_Base) {\n  _inherits(BestAreaFit, _Base);\n\n  function BestAreaFit() {\n    _classCallCheck(this, BestAreaFit);\n\n    return _possibleConstructorReturn(this, _getPrototypeOf(BestAreaFit).apply(this, arguments));\n  }\n\n  _createClass(BestAreaFit, [{\n    key: \"calculateScore\",\n    value: function calculateScore(freeRect, rectWidth, rectHeight) {\n      var areaFit = freeRect.width * freeRect.height - rectWidth * rectHeight;\n      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);\n      var leftOverVert = Math.abs(freeRect.height - rectHeight);\n      var shortSideFit = Math.min(leftOverHoriz, leftOverVert);\n      return new _Score__WEBPACK_IMPORTED_MODULE_1__[\"default\"](areaFit, shortSideFit);\n    }\n  }]);\n\n  return BestAreaFit;\n}(_Base__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/heuristics/BestAreaFit.js?");
+
+/***/ }),
+
+/***/ "./2D/heuristics/BestLongSideFit.js":
+/*!******************************************!*\
+  !*** ./2D/heuristics/BestLongSideFit.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return BestLongSideFit; });\n/* harmony import */ var _Base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Base */ \"./2D/heuristics/Base.js\");\n/* harmony import */ var _Score__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Score */ \"./2D/Score.js\");\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\n\n\n\nvar BestLongSideFit =\n/*#__PURE__*/\nfunction (_Base) {\n  _inherits(BestLongSideFit, _Base);\n\n  function BestLongSideFit() {\n    _classCallCheck(this, BestLongSideFit);\n\n    return _possibleConstructorReturn(this, _getPrototypeOf(BestLongSideFit).apply(this, arguments));\n  }\n\n  _createClass(BestLongSideFit, [{\n    key: \"calculateScore\",\n    value: function calculateScore(freeRect, rectWidth, rectHeight) {\n      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);\n      var leftOverVert = Math.abs(freeRect.height - rectHeight);\n      var args = [leftOverHoriz, leftOverVert].sort(function (a, b) {\n        return a - b;\n      }).reverse();\n      return new _Score__WEBPACK_IMPORTED_MODULE_1__[\"default\"](args[0], args[1]);\n    }\n  }]);\n\n  return BestLongSideFit;\n}(_Base__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/heuristics/BestLongSideFit.js?");
+
+/***/ }),
+
+/***/ "./2D/heuristics/BestShortSideFit.js":
+/*!*******************************************!*\
+  !*** ./2D/heuristics/BestShortSideFit.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return BestShortSideFit; });\n/* harmony import */ var _Base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Base */ \"./2D/heuristics/Base.js\");\n/* harmony import */ var _Score__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Score */ \"./2D/Score.js\");\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\n\n\n\nvar BestShortSideFit =\n/*#__PURE__*/\nfunction (_Base) {\n  _inherits(BestShortSideFit, _Base);\n\n  function BestShortSideFit() {\n    _classCallCheck(this, BestShortSideFit);\n\n    return _possibleConstructorReturn(this, _getPrototypeOf(BestShortSideFit).apply(this, arguments));\n  }\n\n  _createClass(BestShortSideFit, [{\n    key: \"calculateScore\",\n    value: function calculateScore(freeRect, rectWidth, rectHeight) {\n      var leftOverHoriz = Math.abs(freeRect.width - rectWidth);\n      var leftOverVert = Math.abs(freeRect.height - rectHeight);\n      var args = [leftOverHoriz, leftOverVert].sort(function (a, b) {\n        return a - b;\n      });\n      var score = new _Score__WEBPACK_IMPORTED_MODULE_1__[\"default\"](args[0], args[1]);\n      return score;\n    }\n  }]);\n\n  return BestShortSideFit;\n}(_Base__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/heuristics/BestShortSideFit.js?");
+
+/***/ }),
+
+/***/ "./2D/heuristics/BottomLeft.js":
+/*!*************************************!*\
+  !*** ./2D/heuristics/BottomLeft.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return BottomLeft; });\n/* harmony import */ var _Base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Base */ \"./2D/heuristics/Base.js\");\n/* harmony import */ var _Score__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Score */ \"./2D/Score.js\");\nfunction _typeof(obj) { if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\n\n\n\nvar BottomLeft =\n/*#__PURE__*/\nfunction (_Base) {\n  _inherits(BottomLeft, _Base);\n\n  function BottomLeft() {\n    _classCallCheck(this, BottomLeft);\n\n    return _possibleConstructorReturn(this, _getPrototypeOf(BottomLeft).apply(this, arguments));\n  }\n\n  _createClass(BottomLeft, [{\n    key: \"calculateScore\",\n    value: function calculateScore(freeRect, rectWidth, rectHeight) {\n      var topSideY = freeRect.y + rectHeight;\n      return new _Score__WEBPACK_IMPORTED_MODULE_1__[\"default\"](topSideY, freeRect.x);\n    }\n  }]);\n\n  return BottomLeft;\n}(_Base__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/heuristics/BottomLeft.js?");
+
+/***/ }),
+
+/***/ "./2D/heuristics/index.js":
+/*!********************************!*\
+  !*** ./2D/heuristics/index.js ***!
+  \********************************/
+/*! exports provided: BestAreaFit, BestLongSideFit, BestShortSideFit, BottomLeft */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _BestAreaFit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BestAreaFit */ \"./2D/heuristics/BestAreaFit.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"BestAreaFit\", function() { return _BestAreaFit__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n/* harmony import */ var _BestLongSideFit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BestLongSideFit */ \"./2D/heuristics/BestLongSideFit.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"BestLongSideFit\", function() { return _BestLongSideFit__WEBPACK_IMPORTED_MODULE_1__[\"default\"]; });\n\n/* harmony import */ var _BestShortSideFit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BestShortSideFit */ \"./2D/heuristics/BestShortSideFit.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"BestShortSideFit\", function() { return _BestShortSideFit__WEBPACK_IMPORTED_MODULE_2__[\"default\"]; });\n\n/* harmony import */ var _BottomLeft__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./BottomLeft */ \"./2D/heuristics/BottomLeft.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"BottomLeft\", function() { return _BottomLeft__WEBPACK_IMPORTED_MODULE_3__[\"default\"]; });\n\n\n\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/heuristics/index.js?");
+
+/***/ }),
+
+/***/ "./2D/index.js":
+/*!*********************!*\
+  !*** ./2D/index.js ***!
+  \*********************/
+/*! exports provided: Bin, Box, Packer, heuristics */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _Bin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Bin */ \"./2D/Bin.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Bin\", function() { return _Bin__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n/* harmony import */ var _Box__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Box */ \"./2D/Box.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Box\", function() { return _Box__WEBPACK_IMPORTED_MODULE_1__[\"default\"]; });\n\n/* harmony import */ var _Packer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Packer */ \"./2D/Packer.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Packer\", function() { return _Packer__WEBPACK_IMPORTED_MODULE_2__[\"default\"]; });\n\n/* harmony import */ var _heuristics__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./heuristics */ \"./2D/heuristics/index.js\");\n/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, \"heuristics\", function() { return _heuristics__WEBPACK_IMPORTED_MODULE_3__; });\n\n\n\n\n\n\n//# sourceURL=webpack://BinPacking/./2D/index.js?");
+
+/***/ }),
+
+/***/ "./3D/Bin.js":
+/*!*******************!*\
+  !*** ./3D/Bin.js ***!
+  \*******************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Bin; });\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar Bin =\n/*#__PURE__*/\nfunction () {\n  function Bin(name, w, h, d, mw) {\n    _classCallCheck(this, Bin);\n\n    _defineProperty(this, \"name\", '');\n\n    _defineProperty(this, \"width\", 0);\n\n    _defineProperty(this, \"height\", 0);\n\n    _defineProperty(this, \"depth\", 0);\n\n    _defineProperty(this, \"maxWeight\", 0);\n\n    _defineProperty(this, \"items\", []);\n\n    this.name = name;\n    this.width = w;\n    this.height = h;\n    this.depth = d;\n    this.maxWeight = mw;\n  }\n\n  _createClass(Bin, [{\n    key: \"getName\",\n    value: function getName() {\n      return this.name;\n    }\n  }, {\n    key: \"getWidth\",\n    value: function getWidth() {\n      return this.width;\n    }\n  }, {\n    key: \"getHeight\",\n    value: function getHeight() {\n      return this.height;\n    }\n  }, {\n    key: \"getDepth\",\n    value: function getDepth() {\n      return this.depth;\n    }\n  }, {\n    key: \"getMaxWeight\",\n    value: function getMaxWeight() {\n      return this.maxWeight;\n    }\n  }, {\n    key: \"getItems\",\n    value: function getItems() {\n      return this.items;\n    }\n  }, {\n    key: \"getVolume\",\n    value: function getVolume() {\n      return this.getWidth() * this.getHeight() * this.getDepth();\n    }\n  }, {\n    key: \"getPackedWeight\",\n    value: function getPackedWeight() {\n      return this.items.reduce(function (weight, item) {\n        return weight + item.getWeight();\n      }, 0);\n    }\n  }, {\n    key: \"weighItem\",\n    value: function weighItem(item) {\n      var maxWeight = this.getMaxWeight();\n      return !maxWeight || item.getWeight() + this.getPackedWeight() <= maxWeight;\n    }\n  }, {\n    key: \"putItem\",\n    value: function putItem(item, p) {\n      var box = this;\n      var fit = false;\n      item.position = p;\n\n      for (var i = 0; i < 6; i++) {\n        item.rotationType = i;\n        var d = item.getDimension();\n\n        if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {\n          continue;\n        }\n\n        fit = true;\n\n        for (var j = 0; j < box.items.length; j++) {\n          var _j = box.items[j];\n\n          if (_j.intersect(item)) {\n            fit = false;\n            break;\n          }\n        }\n\n        if (fit) {\n          box.items.push(item);\n        }\n\n        return fit;\n      }\n\n      return fit;\n    }\n  }]);\n\n  return Bin;\n}();\n\n\n\n//# sourceURL=webpack://BinPacking/./3D/Bin.js?");
+
+/***/ }),
+
+/***/ "./3D/Item.js":
+/*!********************!*\
+  !*** ./3D/Item.js ***!
+  \********************/
+/*! exports provided: RotationType_WHD, RotationType_HWD, RotationType_HDW, RotationType_DHW, RotationType_DWH, RotationType_WDH, WidthAxis, HeightAxis, DepthAxis, StartPosition, RotationTypeStrings, default, rectIntersect */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"RotationType_WHD\", function() { return RotationType_WHD; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"RotationType_HWD\", function() { return RotationType_HWD; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"RotationType_HDW\", function() { return RotationType_HDW; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"RotationType_DHW\", function() { return RotationType_DHW; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"RotationType_DWH\", function() { return RotationType_DWH; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"RotationType_WDH\", function() { return RotationType_WDH; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"WidthAxis\", function() { return WidthAxis; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"HeightAxis\", function() { return HeightAxis; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"DepthAxis\", function() { return DepthAxis; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"StartPosition\", function() { return StartPosition; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"RotationTypeStrings\", function() { return RotationTypeStrings; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Item; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"rectIntersect\", function() { return rectIntersect; });\nvar _RotationTypeStrings;\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar RotationType_WHD = 0;\nvar RotationType_HWD = 1;\nvar RotationType_HDW = 2;\nvar RotationType_DHW = 3;\nvar RotationType_DWH = 4;\nvar RotationType_WDH = 5;\nvar WidthAxis = 0;\nvar HeightAxis = 1;\nvar DepthAxis = 2;\nvar StartPosition = [0, 0, 0];\nvar RotationTypeStrings = (_RotationTypeStrings = {}, _defineProperty(_RotationTypeStrings, RotationType_WHD, 'RotationType_WHD (w,h,d)'), _defineProperty(_RotationTypeStrings, RotationType_HWD, 'RotationType_HWD (h,w,d)'), _defineProperty(_RotationTypeStrings, RotationType_HDW, 'RotationType_HDW (h,d,w)'), _defineProperty(_RotationTypeStrings, RotationType_DHW, 'RotationType_DHW (d,h,w)'), _defineProperty(_RotationTypeStrings, RotationType_DWH, 'RotationType_DWH (d,w,h)'), _defineProperty(_RotationTypeStrings, RotationType_WDH, 'RotationType_WDH (w,d,h)'), _RotationTypeStrings);\n\nvar Item =\n/*#__PURE__*/\nfunction () {\n  // x, y, z\n  function Item(name, w, h, d, wg) {\n    _classCallCheck(this, Item);\n\n    _defineProperty(this, \"name\", '');\n\n    _defineProperty(this, \"width\", 0);\n\n    _defineProperty(this, \"height\", 0);\n\n    _defineProperty(this, \"depth\", 0);\n\n    _defineProperty(this, \"weight\", 0);\n\n    _defineProperty(this, \"rotationType\", RotationType_WHD);\n\n    _defineProperty(this, \"position\", []);\n\n    this.name = name;\n    this.width = w;\n    this.height = h;\n    this.depth = d;\n    this.weight = wg;\n  }\n\n  _createClass(Item, [{\n    key: \"getWidth\",\n    value: function getWidth() {\n      return this.width;\n    }\n  }, {\n    key: \"getHeight\",\n    value: function getHeight() {\n      return this.height;\n    }\n  }, {\n    key: \"getDepth\",\n    value: function getDepth() {\n      return this.depth;\n    }\n  }, {\n    key: \"getWeight\",\n    value: function getWeight() {\n      return this.weight;\n    }\n  }, {\n    key: \"getRotationType\",\n    value: function getRotationType() {\n      return this.rotationType;\n    }\n  }, {\n    key: \"getRotationTypeString\",\n    value: function getRotationTypeString() {\n      return RotationTypeStrings[this.getRotationType()];\n    }\n  }, {\n    key: \"getDimension\",\n    value: function getDimension() {\n      var d;\n\n      switch (this.rotationType) {\n        case RotationType_WHD:\n          d = [this.getWidth(), this.getHeight(), this.getDepth()];\n          break;\n\n        case RotationType_HWD:\n          d = [this.getHeight(), this.getWidth(), this.getDepth()];\n          break;\n\n        case RotationType_HDW:\n          d = [this.getHeight(), this.getDepth(), this.getWidth()];\n          break;\n\n        case RotationType_DHW:\n          d = [this.getDepth(), this.getHeight(), this.getWidth()];\n          break;\n\n        case RotationType_DWH:\n          d = [this.getDepth(), this.getWidth(), this.getHeight()];\n          break;\n\n        case RotationType_WDH:\n          d = [this.getWidth(), this.getDepth(), this.getHeight()];\n          break;\n      }\n\n      return d;\n    }\n  }, {\n    key: \"intersect\",\n    value: function intersect(i2) {\n      return rectIntersect(this, i2, WidthAxis, HeightAxis) && rectIntersect(this, i2, HeightAxis, DepthAxis) && rectIntersect(this, i2, WidthAxis, DepthAxis);\n    }\n  }, {\n    key: \"getVolume\",\n    value: function getVolume() {\n      return this.getWidth() * this.getHeight() * this.getDepth();\n    }\n  }]);\n\n  return Item;\n}();\n\n\nvar rectIntersect = function rectIntersect(i1, i2, x, y) {\n  var d1, d2, cx1, cy1, cx2, cy2, ix, iy;\n  d1 = i1.getDimension();\n  d2 = i2.getDimension();\n  cx1 = i1.position[x] + d1[x] / 2;\n  cy1 = i1.position[y] + d1[y] / 2;\n  cx2 = i2.position[x] + d2[x] / 2;\n  cy2 = i2.position[y] + d2[y] / 2;\n  ix = Math.max(cx1, cx2) - Math.min(cx1, cx2);\n  iy = Math.max(cy1, cy2) - Math.min(cy1, cy2);\n  return ix < (d1[x] + d2[x]) / 2 && iy < (d1[y] + d2[y]) / 2;\n};\n\n//# sourceURL=webpack://BinPacking/./3D/Item.js?");
+
+/***/ }),
+
+/***/ "./3D/Packer.js":
+/*!**********************!*\
+  !*** ./3D/Packer.js ***!
+  \**********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Packer; });\n/* harmony import */ var _Bin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Bin */ \"./3D/Bin.js\");\n/* harmony import */ var _Item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Item */ \"./3D/Item.js\");\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\n\n\nvar Packer =\n/*#__PURE__*/\nfunction () {\n  function Packer() {\n    _classCallCheck(this, Packer);\n\n    _defineProperty(this, \"bins\", []);\n\n    _defineProperty(this, \"items\", []);\n\n    _defineProperty(this, \"unfitItems\", []);\n  }\n\n  _createClass(Packer, [{\n    key: \"addBin\",\n    value: function addBin(bin) {\n      this.bins.push(bin);\n    }\n  }, {\n    key: \"addItem\",\n    value: function addItem(item) {\n      this.items.push(item);\n    }\n  }, {\n    key: \"findFittedBin\",\n    value: function findFittedBin(i) {\n      for (var _i = 0; _i < this.bins.length; _i++) {\n        var b = this.bins[_i];\n\n        if (!b.weighItem(i) || !b.putItem(i, _Item__WEBPACK_IMPORTED_MODULE_1__[\"StartPosition\"])) {\n          continue;\n        }\n\n        if (b.items.length === 1 && b.items[0] === i) {\n          b.items = [];\n        }\n\n        return b;\n      }\n\n      return null;\n    }\n  }, {\n    key: \"getBiggerBinThan\",\n    value: function getBiggerBinThan(b) {\n      var v = b.getVolume();\n\n      for (var _i = 0; _i < this.bins; _i++) {\n        var b2 = this.bins[_i];\n\n        if (b2.getVolume() > v) {\n          return b2;\n        }\n      }\n\n      return null;\n    }\n  }, {\n    key: \"unfitItem\",\n    value: function unfitItem() {\n      if (this.items.length === 0) {\n        return;\n      }\n\n      this.unfitItems.push(this.items[0]);\n      this.items.splice(0, 1);\n    }\n  }, {\n    key: \"packToBin\",\n    value: function packToBin(b, items) {\n      var b2 = null;\n      var unpacked = [];\n      var fit = b.weighItem(items[0]) && b.putItem(items[0], _Item__WEBPACK_IMPORTED_MODULE_1__[\"StartPosition\"]);\n\n      if (!fit) {\n        var _b = this.getBiggerBinThan(b);\n\n        if (_b) {\n          return this.packToBin(_b, items);\n        }\n\n        return this.items;\n      } // Pack unpacked items.\n\n\n      for (var _i = 1; _i < this.items.length; _i++) {\n        var fitted = false;\n        var item = this.items[_i];\n\n        if (b.weighItem(item)) {\n          // Try available pivots in current bin that are not intersect with\n          // existing items in current bin.\n          lookup: for (var _pt = 0; _pt < 3; _pt++) {\n            for (var _j = 0; _j < b.items.length; _j++) {\n              var pv = void 0;\n              var ib = b.items[_j];\n\n              switch (_pt) {\n                case _Item__WEBPACK_IMPORTED_MODULE_1__[\"WidthAxis\"]:\n                  pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];\n                  break;\n\n                case _Item__WEBPACK_IMPORTED_MODULE_1__[\"HeightAxis\"]:\n                  pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];\n                  break;\n\n                case _Item__WEBPACK_IMPORTED_MODULE_1__[\"DepthAxis\"]:\n                  pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];\n                  break;\n              }\n\n              if (b.putItem(item, pv)) {\n                fitted = true;\n                break lookup;\n              }\n            }\n          }\n        }\n\n        if (!fitted) {\n          while (b2 !== null) {\n            b2 = this.getBiggerBinThan(b);\n\n            if (b2) {\n              b2.items.push(item);\n              var left = this.packToBin(b2, b2.items);\n\n              if (left.length === 0) {\n                b = b2;\n                fitted = true;\n                break;\n              }\n            }\n          }\n\n          if (!fitted) {\n            unpacked.push(item);\n          }\n        }\n      }\n\n      return unpacked;\n    }\n  }, {\n    key: \"pack\",\n    value: function pack() {\n      this.bins.sort(function (a, b) {\n        return a.getVolume() > b.getVolume();\n      });\n      this.items.sort(function (a, b) {\n        return a.getVolume() > b.getVolume();\n      });\n\n      while (this.items.length > 0) {\n        var bin = this.findFittedBin(this.items[0]);\n\n        if (bin === null) {\n          this.unfitItem();\n          continue;\n        }\n\n        this.items = this.packToBin(bin, this.items);\n      }\n\n      return null;\n    }\n  }]);\n\n  return Packer;\n}();\n\n\n\n//# sourceURL=webpack://BinPacking/./3D/Packer.js?");
+
+/***/ }),
+
+/***/ "./3D/index.js":
+/*!*********************!*\
+  !*** ./3D/index.js ***!
+  \*********************/
+/*! exports provided: Bin, Item, Packer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _Bin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Bin */ \"./3D/Bin.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Bin\", function() { return _Bin__WEBPACK_IMPORTED_MODULE_0__[\"default\"]; });\n\n/* harmony import */ var _Item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Item */ \"./3D/Item.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Item\", function() { return _Item__WEBPACK_IMPORTED_MODULE_1__[\"default\"]; });\n\n/* harmony import */ var _Packer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Packer */ \"./3D/Packer.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Packer\", function() { return _Packer__WEBPACK_IMPORTED_MODULE_2__[\"default\"]; });\n\n\n\n\n\n\n//# sourceURL=webpack://BinPacking/./3D/index.js?");
+
+/***/ }),
+
+/***/ "./index.js":
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
+/*! exports provided: BP2D, BP3D */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _2D__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./2D */ \"./2D/index.js\");\n/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, \"BP2D\", function() { return _2D__WEBPACK_IMPORTED_MODULE_0__; });\n/* harmony import */ var _3D__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./3D */ \"./3D/index.js\");\n/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, \"BP3D\", function() { return _3D__WEBPACK_IMPORTED_MODULE_1__; });\n\n\n\n\n//# sourceURL=webpack://BinPacking/./index.js?");
 
 /***/ })
-/******/ ]);
+
+/******/ });
 });
