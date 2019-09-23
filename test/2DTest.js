@@ -220,6 +220,20 @@ describe('bp2d.js', function() {
       assert.equal(packed_boxes.length, 4);
     });
 
+    it('Contrain rotation on boxes', function () {
+      let bin_1 = new Bin(100, 50);
+      let boxes = [
+        new Box(50, 100, true), // Constrained, so should not be packed
+        new Box(50, 100), // Not constrained, so should be packed
+      ];
+      let packer = new Packer([bin_1]);
+      let packed_boxes = packer.pack(boxes);
+
+      assert.equal(packed_boxes.length, 1);
+      assert.equal(boxes[0].packed, false, "First box should not be packed");
+      assert.equal(boxes[1].packed, true, "Second box should not be packed"); 
+    });
+
   });
 
 });
