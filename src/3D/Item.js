@@ -33,10 +33,10 @@ export default class Item {
 
   constructor(name, w, h, d, wg) {
     this.name = name;
-    this.width = w;
-    this.height = h;
-    this.depth = d;
-    this.weight = wg;
+    this.width = parseInt(w);
+    this.height = parseInt(h);
+    this.depth = parseInt(d);
+    this.weight = parseInt(wg);
   }
 
   getWidth() {
