@@ -108,6 +108,36 @@ const testDatas = [
       return packer.bins[0].items.length === 2
         && packer.unfitItems.length === 1;
     }
+  },
+  {
+    name: 'an Item with string value with parsable value.',
+    bins: [
+      new Bin("Bin 1", 100, 100, 100, 1000),
+    ],
+    items: [
+      new Item("Item 1", 50, 100, 100, 100),
+      new Item("Item 2", "100", "100", "100", "100"),
+      new Item("Item 3", 50, 100, 100, 100),
+    ],
+    expectation: function (packer) {
+      return packer.bins[0].items.length === 2
+        && packer.unfitItems.length === 1;
+    }
+  }
+  ,
+  {
+    name: 'an Item with string value with unparsable value.',
+    bins: [
+      new Bin("Bin 1", 100, 100, 100, 1000),
+    ],
+    items: [
+      new Item("Item 1", 50, 100, 100, 100),
+      new Item("Item 2", "binpacking", "100", "100", "100"),
+      new Item("Item 3", 50, 100, 100, 100),
+    ],
+    expectation: function (packer) {
+      return packer.bins[0].items.length === 1;
+    }
   }
 ];
 
@@ -126,6 +156,8 @@ describe('bp3d.js', function() {
 
         testData.items.forEach((item) => {
           packer.addItem(item);
+          console.log(packer.items)
+
         });
 
         packer.pack();

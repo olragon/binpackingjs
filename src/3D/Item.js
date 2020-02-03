@@ -33,10 +33,11 @@ export default class Item {
 
   constructor(name, w, h, d, wg) {
     this.name = name;
-    this.width = parseInt(w);
-    this.height = parseInt(h);
-    this.depth = parseInt(d);
-    this.weight = parseInt(wg);
+    if (!Number(w).isNaN()) this.width = Number(w);
+    if (!Number(h).isNaN()) this.height = Number(h);
+    if (!Number(d).isNaN()) this.depth = Number(d);
+    if (!Number(wg).isNaN()) this.weight = Number(wg);
+    if ([this.width, this.height, this.depth, this.weight].includes(0)) return null;
   }
 
   getWidth() {
