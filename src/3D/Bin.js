@@ -58,8 +58,8 @@ export default class Bin {
     let fit = false;
 
     item.position = p;
-    for (let i=0; i<6; i++) {
-      item.rotationType = i;
+    for (let i=0; i<item.allowedRotation.length; i++) {
+      item.rotationType = item.allowedRotation[i];
       let d = item.getDimension();
 
       if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {

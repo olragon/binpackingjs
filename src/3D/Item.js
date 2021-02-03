@@ -27,16 +27,18 @@ export default class Item {
   height = 0;
   depth = 0;
   weight = 0;
+  allowedRotation = [0,1,2,3,4,5];
 
   rotationType = RotationType_WHD;
   position = []; // x, y, z
 
-  constructor(name, w, h, d, wg) {
+  constructor(name, w, h, d, wg, allowedRotation) {
     this.name = name;
     this.width = w;
     this.height = h;
     this.depth = d;
     this.weight = wg;
+    this.allowedRotation = allowedRotation ? allowedRotation : this.allowedRotation;
   }
 
   getWidth() {
@@ -57,6 +59,10 @@ export default class Item {
 
   getRotationType() {
     return this.rotationType;
+  }
+
+  getAllowedRotation() {
+    return this.allowedRotation;
   }
 
   getRotationTypeString() {
