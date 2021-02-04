@@ -22,6 +22,19 @@ const testDatas = [
     }
   },
   {
+    name: 'Edge case with only rotation 3 and 0 enabled.',
+    bins: [
+      new Bin('Le grande box', 100, 100, 300, 1500),
+    ],
+    items: [
+      new Item('Item 1', 150, 50, 50, 20, [0,3])
+    ],
+    expectation: function (packer) {
+      return packer.bins[0].items.length === 1
+          && packer.unfitItems.length === 0;
+    }
+  },
+  {
     name: 'Test three items fit into smaller bin.',
     bins: [
       new Bin("1. Le petite box", 296, 296, 8, 1000),
