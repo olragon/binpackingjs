@@ -127,10 +127,12 @@ export default class Packer {
   }
 
   pack() {
+    // Sort bins smallest to largest.
     this.bins.sort((a, b) => {
-      return b.getVolume() - a.getVolume();
+      return a.getVolume() - b.getVolume();
     });
 
+    // Sort items largest to smallest.
     this.items.sort((a, b) => {
       return b.getVolume() - a.getVolume();
     });
