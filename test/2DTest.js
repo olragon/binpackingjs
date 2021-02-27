@@ -1,5 +1,5 @@
 const assert = require('assert');
-const BP2D = require('../dist/BinPacking').BP2D;
+const BP2D = require('../src/2D');
 
 const {
   Bin,

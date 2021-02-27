@@ -1,5 +1,8 @@
 const assert = require('assert');
-const BinPacking = require('../dist/BinPacking').BP3D;
+const BinPacking = require('../src/3D');
+const { enableLog, createLogger } = require("../src/lib/log");
+const log = createLogger("[3DTest]");
+enableLog(!!process.env.DEBUG);
 
 const {
   Item,
@@ -151,11 +154,10 @@ const testDatas = [
       new Bin('USPS Medium Flat Rate Box (Top Loading)', 11, 8.5, 5.5, 1500),
     ],
     items: [
-      new Item('Item 1', 8.1, 5.2, 5.2, 20),
-      new Item('Item 2', 8.1, 5.2, 5.2, 20),
+      new Item('Item 1', 8.1, 5.2, 2.2, 20),
+      new Item('Item 2', 8.1, 5.2, 3.3, 20),
     ],
     expectation: function (packer) {
-
       return packer.bins[0].items.length === 2
         && packer.unfitItems.length === 0;
     }

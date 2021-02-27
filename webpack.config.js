@@ -3,9 +3,9 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 let libraryName = 'BinPacking',
 	plugins = [],
 	outputFile;
-const env = "build";
+const isMinify = !!process.env.BUILD_MINIFY;
 
-if (env === 'build') {
+if (isMinify) {
 	plugins.push(
 		new UglifyJSPlugin({
 			sourceMap: true
@@ -41,5 +41,5 @@ module.exports = {
 		]
 	},
 	plugins: plugins,
-	mode: env === 'build' ? 'production' : 'development'
+	mode: isMinify ? 'production' : 'development'
 };
