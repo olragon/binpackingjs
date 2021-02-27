@@ -83,15 +83,16 @@ export default class Packer {
           for (let _j=0; _j < b.items.length; _j++) {
             let pv;
             let ib = b.items[_j];
+            let d = ib.getDimension();
             switch (_pt) {
               case WidthAxis:
-                pv = [ib.position[0] + ib.getWidth(), ib.position[1], ib.position[2]];
+                pv = [ib.position[0] + d[0], ib.position[1], ib.position[2]];
                 break;
               case HeightAxis:
-                pv = [ib.position[0], ib.position[1] + ib.getHeight(), ib.position[2]];
+                pv = [ib.position[0], ib.position[1] + d[1], ib.position[2]];
                 break;
               case DepthAxis:
-                pv = [ib.position[0], ib.position[1], ib.position[2] + ib.getDepth()];
+                pv = [ib.position[0], ib.position[1], ib.position[2] + d[2]];
                 break;
             }
 
