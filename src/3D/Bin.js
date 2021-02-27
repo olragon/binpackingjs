@@ -1,3 +1,4 @@
+import { factoredInteger } from './util';
 import {createLogger} from "../lib/log";
 const log = createLogger('3D:');
 
@@ -13,10 +14,10 @@ export default class Bin {
 
   constructor(name, w, h, d, mw) {
     this.name = name;
-    this.width = w;
-    this.height = h;
-    this.depth = d;
-    this.maxWeight = mw;
+    this.width = factoredInteger( w );
+    this.height = factoredInteger( h );
+    this.depth = factoredInteger( d );
+    this.maxWeight = factoredInteger( mw );
   }
 
   getName() {

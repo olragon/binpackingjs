@@ -162,6 +162,21 @@ const testDatas = [
         && packer.unfitItems.length === 0;
     }
   },
+  {
+    // https://github.com/Automattic/woocommerce-services/issues/1293
+    name: 'Floating point arithmetic is handled correctly.',
+    bins: [
+      new Bin("Bin 1", 12, 12, 5.5, 70),
+    ],
+    items: [
+      new Item("Item 1", 12, 12, .005, .0375),
+      new Item("Item 2", 12, 12, .005, .0375),
+    ],
+    expectation: function (packer) {
+      return packer.bins[0].items.length === 2
+        && packer.unfitItems.length === 0;
+    }
+  }
 ];
 
 describe('bp3d.js', function() {

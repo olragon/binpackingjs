@@ -1,6 +1,6 @@
 {
 	"name": "binpackingjs",
-	"version": "2.4.0",
+	"version": "3.0.0",
 	"description": "2D, 3D, 4D Bin Packing",
 	"repository": {
 		"type": "git",
