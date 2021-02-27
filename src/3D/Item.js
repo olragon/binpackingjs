@@ -103,6 +103,10 @@ export default class Item {
   getVolume() {
     return this.getWidth() * this.getHeight() * this.getDepth();
   }
+
+  toString() {
+    return `Item:${this.name} (${this.getRotationTypeString()} = ${this.getDimension().join('x')}, Wg. = ${this.weight})`;
+  }
 }
 
 export const rectIntersect = (i1, i2, x, y) => {

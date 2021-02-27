@@ -1,3 +1,6 @@
+import {createLogger} from "../lib/log";
+const log = createLogger('3D:');
+
 export default class Bin {
 
   name = '';
@@ -106,7 +109,8 @@ export default class Bin {
 
     // Score all rotation types
 	for (let i=0; i<item.allowedRotation.length; i++) {
-		rotationScores[i] = this.scoreRotation( item, item.allowedRotation[i] );
+	    const r = item.allowedRotation[i];
+		rotationScores[r] = this.scoreRotation( item, r );
     }
 
     // Sort the rotation types (index of scores object) DESC
@@ -129,27 +133,34 @@ export default class Bin {
       let d = item.getDimension();
 
       if (box.getWidth() < p[0] + d[0] || box.getHeight() < p[1] + d[1] || box.getDepth() < p[2] + d[2]) {
-        continue;
-      }
+        fit = false;
+      } else {
+        fit = true;
 
-      fit = true;
+        for (let j=0; j<box.items.length; j++) {
+          let _j = box.items[j];
+          if (_j.intersect(item)) {
+            fit = false;
+            break;
+          }
+        }
 
-      for (let j=0; j<box.items.length; j++) {
-        let _j = box.items[j];
-        if (_j.intersect(item)) {
-          fit = false;
-          break;
+        if (fit) {
+          box.items.push(item);
         }
       }
 
+      log('try to putItem', fit, 'item', item.toString(), 'box', box.toString());
+
       if (fit) {
-        box.items.push(item);
+        break;
       }
-
-      return fit;
     }
-
     return fit;
+  }
+
+  toString() {
+    return `Bin:${this.name} (WxHxD = ${this.getWidth()}x${this.getHeight()}x${this.getDepth()}, MaxWg. = ${this.getMaxWeight()})`;
   }
 
 }
