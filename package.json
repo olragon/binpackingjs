@@ -1,6 +1,6 @@
 {
 	"name": "binpackingjs",
-	"version": "2.3.2",
+	"version": "2.4.0",
 	"description": "2D, 3D, 4D Bin Packing",
 	"repository": {
 		"type": "git",
@@ -8,9 +8,9 @@
 	},
 	"main": "dist/BinPacking.min.js",
 	"scripts": {
-		"build": "webpack",
+		"build": "webpack && BUILD_MINIFY=1 webpack",
 		"dev": "webpack --progress --colors --watch",
-		"test": "mocha ./test/*.js",
+		"test": "mocha --require @babel/register ./test/*.js",
 		"test-dev": "mocha --watch ./test/*.js"
 	},
 	"browserslist": [
@@ -19,13 +19,15 @@
 	"author": "Long Nguyen",
 	"license": "MIT",
 	"devDependencies": {
-		"@babel/core": "^7.5.5",
-		"@babel/plugin-proposal-class-properties": "^7.5.5",
-		"@babel/plugin-proposal-object-rest-spread": "^7.5.5",
-		"@babel/preset-env": "^7.5.5",
-		"babel-loader": "^8.0.6",
+		"@babel/core": "^7.13.8",
+		"@babel/plugin-proposal-class-properties": "^7.13.0",
+		"@babel/plugin-proposal-object-rest-spread": "^7.13.8",
+		"@babel/preset-env": "^7.13.8",
+		"@babel/plugin-transform-runtime":  "^7.13.8",
+		"@babel/register": "^7.13.8",
+		"babel-loader": "^8.2.2",
 		"console.table": "^0.10.0",
-		"mocha": "^6.2.0",
+		"mocha": "^8.3.0",
 		"uglifyjs-webpack-plugin": "2.2.0",
 		"webpack": "4.38.0",
 		"webpack-cli": "3.3.6"
