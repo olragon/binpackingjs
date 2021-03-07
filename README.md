@@ -7,7 +7,7 @@ binpackingjs
 
 binpackingjs is 2D, 3D, 4D well tested JavaScript Bin Packing library.
 
-- 3D Bin Packing Code is porting from golang package [bp3d](https://github.com/gedex/bp3d) which is based on [this paper](http://www.cs.ukzn.ac.za/publications/erick_dube_507-034.pdf).
+- 3D Bin Packing Code is porting from golang package [bp3d](https://github.com/gedex/bp3d) which is based on [this paper](https://www.researchgate.net/publication/228974015_Optimizing_Three-Dimensional_Bin_Packing_Through_Simulation).
 - 2D Bin Packing Code is porting from ruby package [bin_packing](https://github.com/mak-it/bin_packing) which is based on [this paper](http://clb.demon.fi/files/RectangleBinPack.pdf).
 
 ## Install
