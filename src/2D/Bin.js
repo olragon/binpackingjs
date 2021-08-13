@@ -151,8 +151,8 @@ export default class Bin {
         } else {
           j++;
         }
-        i++;
       }
+      i++;
     }
   }
 
