@@ -50,12 +50,22 @@
     "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
     "test": "bun test",
     "clean": "rm -rf dist",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "playground:dev": "bun --hot playground/server.ts",
+    "playground:build": "rm -rf playground/dist && bun build playground/index.html --outdir=playground/dist --target=browser --minify --public-path=./"
   },
   "author": "Long Nguyen",
   "license": "MIT",
   "devDependencies": {
+    "@react-three/drei": "latest",
+    "@react-three/fiber": "latest",
     "@types/bun": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/three": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "three": "latest",
     "typescript": "^5.8"
   }
 }

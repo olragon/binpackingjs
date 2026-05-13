@@ -15,6 +15,25 @@ A fast, fully-typed **2D and 3D bin packing** library for JavaScript and TypeScr
 - 2D: [A Thousand Ways to Pack the Bin](https://github.com/juj/RectangleBinPack/blob/master/RectangleBinPack.pdf) (Jukka Jylänki) — maximal rectangles with pluggable heuristics
 - 3D: [Optimizing Three-Dimensional Bin Packing Through Simulation](https://www.researchgate.net/publication/228974015_Optimizing_Three-Dimensional_Bin_Packing_Through_Simulation) (Erick Dube et al.) — pivot-based placement with rotation scoring
 
+## Playground
+
+Live interactive demos of every feature in this README — `pack2D` / `pack3D`, all four heuristics, rotation control, and a 3D viewer — at **[olragon.github.io/binpackingjs](https://olragon.github.io/binpackingjs/)**.
+
+Run it locally:
+
+```bash
+bun install
+bun run playground:dev   # http://localhost:3031
+```
+
+Or build a static bundle for hosting:
+
+```bash
+bun run playground:build # outputs to playground/dist
+```
+
+The playground is auto-deployed to GitHub Pages on every push to `main` via `.github/workflows/playground.yml`. To enable on a fresh fork: repo Settings → Pages → Source: **GitHub Actions**.
+
 ## Install
 
 ```bash
