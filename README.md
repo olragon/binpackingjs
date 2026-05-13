@@ -1,88 +1,192 @@
-binpackingjs
-------------
+# binpackingjs
 
-[![Build Status](https://api.travis-ci.org/olragon/binpackingjs.svg?branch=master)](https://travis-ci.org/olragon/binpackingjs)
-[![npm version](http://img.shields.io/npm/v/binpackingjs.svg?style=flat)](https://npmjs.org/package/binpackingjs "View this project on npm")
-[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/binpackingjs.svg?style=flat)](https://npmjs.org/package/binpackingjs "View this project on npm")
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
-binpackingjs is 2D, 3D, 4D well tested JavaScript Bin Packing library.
+A fast, fully-typed **2D and 3D bin packing** library for JavaScript and TypeScript.
 
-- 3D Bin Packing Code is porting from golang package [bp3d](https://github.com/gedex/bp3d) which is based on [this paper](https://www.researchgate.net/publication/228974015_Optimizing_Three-Dimensional_Bin_Packing_Through_Simulation).
-- 2D Bin Packing Code is porting from ruby package [bin_packing](https://github.com/mak-it/bin_packing) which is based on [this paper](https://github.com/juj/RectangleBinPack/blob/master/RectangleBinPack.pdf).
+- **Immutable** — input objects are never mutated; results are returned as new objects
+- **Tree-shakeable** — import only `binpackingjs/2d` or `binpackingjs/3d` to keep your bundle small
+- **Zero runtime dependencies**
+- **ESM + CJS** — works everywhere: Node.js, Bun, Deno, browsers (via bundler)
+
+### Algorithm references
+
+- 2D: [A Thousand Ways to Pack the Bin](https://github.com/juj/RectangleBinPack/blob/master/RectangleBinPack.pdf) (Jukka Jylänki) — maximal rectangles with pluggable heuristics
+- 3D: [Optimizing Three-Dimensional Bin Packing Through Simulation](https://www.researchgate.net/publication/228974015_Optimizing_Three-Dimensional_Bin_Packing_Through_Simulation) (Erick Dube et al.) — pivot-based placement with rotation scoring
 
 ## Install
 
-`yarn add binpackingjs`
-
-## 2D Bin Packing
-
-[2D Bin Packing Demo](https://codesandbox.io/s/XVJnv7Yg)
-
-[![2D Bin Packing](/screenshot.png)](https://codesandbox.io/s/XVJnv7Yg)
-
-```
-const BinPacking2D = require('binpackingjs').BP2D;
-const { Bin, Box, Packer } = BinPacking2D;
-
-let bin_1 = new Bin(100, 50);
-let bin_2 = new Bin(50, 50);
-let boxes = [
-  new Box(15, 10), // Should be added last (smaller)
-  new Box(50, 45), // Fits in bin_2 better than in bin_1
-  new Box(40, 40),
-  new Box(200, 200), // Too large to fit
-];
-let packer = new Packer([bin_1, bin_2]);
-let packed_boxes = packer.pack(boxes);
-
-packed_boxes.length
-=> 3
-bin_1.boxes.length
-=> 2
-bin_1.boxes[0].label
-=> '40x40 at [0x0]'
-bin_1.boxes[0].label
-=> '40x40 at [0x0]'
-bin_1.boxes[1].label
-=> '15x10 at [0x40]'
-bin_2.boxes.length
-=> 1
-bin_2.boxes[0].label
-=> '50x45 at [0x0]'
-boxes[3].packed
-=> false
+```bash
+npm install binpackingjs
+# or
+bun add binpackingjs
+# or
+yarn add binpackingjs
 ```
 
-## 3D Bin Packing
+## Quick Start
 
+### 2D Bin Packing
+
+```typescript
+import { pack2D } from 'binpackingjs/2d';
+
+const result = pack2D({
+  bins: [
+    { width: 100, height: 50 },
+    { width: 50, height: 50 },
+  ],
+  boxes: [
+    { width: 15, height: 10 },
+    { width: 50, height: 45 },
+    { width: 40, height: 40 },
+    { width: 200, height: 200 }, // Too large to fit
+  ],
+});
+
+console.log(result.packedBins[0].boxes);
+// [
+//   { width: 40, height: 40, x: 0, y: 0, rotated: false, sourceBox: ... },
+//   { width: 15, height: 10, x: 0, y: 40, rotated: false, sourceBox: ... },
+// ]
+
+console.log(result.packedBins[1].boxes);
+// [
+//   { width: 50, height: 45, x: 0, y: 0, rotated: false, sourceBox: ... },
+// ]
+
+console.log(result.unpackedBoxes.length); // 1 (the 200x200 box)
 ```
-const BinPacking3D = require('binpackingjs').BP3D;
 
-const { Item, Bin, Packer } = BinPacking3D;
+### 3D Bin Packing
 
-let bin1 = new Bin("Le petite box", 296, 296, 8, 1000);
-let item1 = new Item("Item 1", 250, 250, 2, 200);
-let item2 = new Item("Item 2", 250, 250, 2, 200);
-let item3 = new Item("Item 3", 250, 250, 2, 200);
-let packer = new Packer();
+```typescript
+import { pack3D } from 'binpackingjs/3d';
 
-packer.addBin(bin1);
-packer.addItem(item1);
-packer.addItem(item2);
-packer.addItem(item3);
+const result = pack3D({
+  bins: [
+    { name: 'Small Box', width: 296, height: 296, depth: 8, maxWeight: 1000 },
+  ],
+  items: [
+    { name: 'Item 1', width: 250, height: 250, depth: 2, weight: 200 },
+    { name: 'Item 2', width: 250, height: 250, depth: 2, weight: 200 },
+    { name: 'Item 3', width: 250, height: 250, depth: 2, weight: 200 },
+  ],
+});
 
-// pack items into bin1
-packer.pack();
-
-// item1, item2, item3
-console.log(bin1.items);
-
-// items will be empty, all items was packed
-console.log(packer.items);
-
-// unfitItems will be empty, all items fit into bin1
-console.log(packer.unfitItems)
+console.log(result.packedBins[0].items.length); // 3
+console.log(result.unfitItems.length);          // 0
 ```
+
+## API Reference
+
+### `pack2D(options): Pack2DResult`
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `bins` | `Bin2D[]` | required | Available bins `{ width, height }` |
+| `boxes` | `Box2D[]` | required | Boxes to pack `{ width, height, constrainRotation? }` |
+| `heuristic` | `Heuristic` | `BestShortSideFit` | Placement strategy |
+| `limit` | `number` | all | Max boxes to pack |
+
+**Returns** `{ packedBins: PackedBin2D[], unpackedBoxes: Box2D[] }`
+
+Each `PackedBin2D` contains:
+- `boxes` — packed boxes with `x`, `y`, `width`, `height`, `rotated`, and `sourceBox` (reference to input)
+- `efficiency` — percentage of bin area used
+
+### `pack3D(options): Pack3DResult`
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `bins` | `Bin3D[]` | required | Available bins `{ name, width, height, depth, maxWeight }` |
+| `items` | `Item3D[]` | required | Items to pack `{ name, width, height, depth, weight, allowedRotations? }` |
+
+**Returns** `{ packedBins: PackedBin3D[], unfitItems: Item3D[] }`
+
+Each `PackedItem3D` contains `position`, `rotationType`, `dimension`, and `sourceItem` (reference to input).
+
+## Heuristics (2D)
+
+```typescript
+import { pack2D, BestAreaFit } from 'binpackingjs/2d';
+
+const result = pack2D({
+  bins: [{ width: 100, height: 50 }],
+  boxes: [{ width: 50, height: 100 }],
+  heuristic: new BestAreaFit(),
+});
+```
+
+| Heuristic | Description |
+|-----------|-------------|
+| `BestShortSideFit` | **(default)** Minimizes leftover on the shorter side |
+| `BestAreaFit` | Minimizes wasted area in the chosen free rectangle |
+| `BestLongSideFit` | Minimizes leftover on the longer side |
+| `BottomLeft` | Places items as low and left as possible |
+
+## Rotation Control
+
+### 2D — Constrain rotation
+
+```typescript
+pack2D({
+  bins: [{ width: 100, height: 50 }],
+  boxes: [
+    { width: 50, height: 100, constrainRotation: true }, // Will NOT be rotated to fit
+  ],
+});
+```
+
+### 3D — Restrict allowed rotations
+
+```typescript
+import { pack3D, RotationType } from 'binpackingjs/3d';
+
+pack3D({
+  bins: [{ name: 'Bin', width: 100, height: 100, depth: 300, maxWeight: 1500 }],
+  items: [{
+    name: 'Fragile Item',
+    width: 150, height: 50, depth: 50, weight: 20,
+    allowedRotations: [RotationType.WHD, RotationType.DHW], // Only 2 of 6 rotations
+  }],
+});
+```
+
+All 6 rotation types: `WHD`, `HWD`, `HDW`, `DHW`, `DWH`, `WDH`.
+
+## Class-based API
+
+For a more imperative style:
+
+```typescript
+import { Packer2D } from 'binpackingjs/2d';
+import { Packer3D } from 'binpackingjs/3d';
+
+// 2D
+const packer2d = new Packer2D([{ width: 100, height: 50 }]);
+const result2d = packer2d.pack([{ width: 50, height: 50 }]);
+
+// 3D
+const packer3d = new Packer3D();
+packer3d.addBin({ name: 'Bin', width: 100, height: 100, depth: 100, maxWeight: 1000 });
+packer3d.addItem({ name: 'Item', width: 50, height: 50, depth: 50, weight: 10 });
+const result3d = packer3d.pack();
+```
+
+## Migrating from v3
+
+v4 is a full rewrite. Key changes:
+
+| v3 | v4 |
+|---|---|
+| `new Box(w, h)` then check `box.packed`, `box.x`, `box.y` | Pass plain objects; read placement from result |
+| `bin.boxes` mutated in place | `result.packedBins[i].boxes` on the return value |
+| `require('binpackingjs').BP2D` | `import { pack2D } from 'binpackingjs/2d'` |
+| `new Packer(bins).pack(boxes)` returns packed boxes | `pack2D({ bins, boxes })` returns full result |
+| `packer.addBin()` / `packer.addItem()` / `packer.pack()` (void) | `packer.pack()` returns `Pack3DResult` |
+| `packer.unfitItems` after pack | `result.unfitItems` on the return value |
 
 ## License
 

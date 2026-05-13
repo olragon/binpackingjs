@@ -1,35 +1,61 @@
 {
-	"name": "binpackingjs",
-	"version": "3.1.0",
-	"description": "2D, 3D, 4D Bin Packing",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/olragon/binpackingjs"
-	},
-	"main": "dist/BinPacking.min.js",
-	"scripts": {
-		"build": "webpack && BUILD_MINIFY=1 webpack",
-		"dev": "webpack --progress --colors --watch",
-		"test": "mocha --require @babel/register ./test/*.js",
-		"test-dev": "mocha --watch ./test/*.js"
-	},
-	"browserslist": [
-		"defaults"
-	],
-	"author": "Long Nguyen",
-	"license": "MIT",
-	"devDependencies": {
-		"@babel/core": "^7.13.8",
-		"@babel/plugin-proposal-class-properties": "^7.13.0",
-		"@babel/plugin-proposal-object-rest-spread": "^7.13.8",
-		"@babel/plugin-transform-runtime": "^7.13.8",
-		"@babel/preset-env": "^7.13.8",
-		"@babel/register": "^7.13.8",
-		"@babel/runtime": "^7.29.2",
-		"babel-loader": "^8.2.2",
-		"console.table": "^0.10.0",
-		"mocha": "^11.3.0",
-		"webpack": "^5.24.2",
-		"webpack-cli": "^7.0.2"
-	}
+  "name": "binpackingjs",
+  "version": "4.0.0",
+  "description": "2D and 3D Bin Packing library with TypeScript and immutable design",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./2d": {
+      "import": {
+        "types": "./dist/types/2d/index.d.ts",
+        "default": "./dist/esm/2D/index.js"
+      },
+      "require": {
+        "types": "./dist/types/2d/index.d.ts",
+        "default": "./dist/cjs/2D/index.js"
+      }
+    },
+    "./3d": {
+      "import": {
+        "types": "./dist/types/3d/index.d.ts",
+        "default": "./dist/esm/3D/index.js"
+      },
+      "require": {
+        "types": "./dist/types/3d/index.d.ts",
+        "default": "./dist/cjs/3D/index.js"
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olragon/binpackingjs"
+  },
+  "files": ["dist", "src", "LICENSE", "README.md"],
+  "scripts": {
+    "build": "bun run build:esm && bun run build:cjs && bun run build:types",
+    "build:esm": "bun build src/index.ts src/2d/index.ts src/3d/index.ts --outdir dist/esm --format esm --splitting",
+    "build:cjs": "bun build src/index.ts src/2d/index.ts src/3d/index.ts --outdir dist/cjs --format cjs",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
+    "test": "bun test",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "Long Nguyen",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.8"
+  }
 }
