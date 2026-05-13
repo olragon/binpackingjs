@@ -1,6 +1,6 @@
 {
 	"name": "binpackingjs",
-	"version": "3.0.2",
+	"version": "3.1.0",
 	"description": "2D, 3D, 4D Bin Packing",
 	"repository": {
 		"type": "git",
@@ -22,12 +22,14 @@
 		"@babel/core": "^7.13.8",
 		"@babel/plugin-proposal-class-properties": "^7.13.0",
 		"@babel/plugin-proposal-object-rest-spread": "^7.13.8",
+		"@babel/plugin-transform-runtime": "^7.13.8",
 		"@babel/preset-env": "^7.13.8",
-		"@babel/plugin-transform-runtime":  "^7.13.8",
 		"@babel/register": "^7.13.8",
+		"@babel/runtime": "^7.29.2",
 		"babel-loader": "^8.2.2",
 		"console.table": "^0.10.0",
-		"mocha": "^8.3.0",
-		"webpack": "^5.24.2"
+		"mocha": "^11.3.0",
+		"webpack": "^5.24.2",
+		"webpack-cli": "^7.0.2"
 	}
 }

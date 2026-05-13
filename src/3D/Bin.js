@@ -91,12 +91,13 @@ export default class Bin {
         return 0;
     }
 
-    // Square the results to increase the impact of high values (e.g. > 0.8)
-    const widthScore = Math.pow( d[0] / this.getWidth(), 2 );
-    const heightScore = Math.pow( d[1] / this.getHeight(), 2 );
-    const depthScore = Math.pow( d[2] / this.getDepth(), 2 );
+    // Score based on tiling efficiency: how much bin space is usable
+    // when items are packed in a grid along each axis.
+    const widthEfficiency = Math.floor( this.getWidth() / d[0] ) * d[0] / this.getWidth();
+    const heightEfficiency = Math.floor( this.getHeight() / d[1] ) * d[1] / this.getHeight();
+    const depthEfficiency = Math.floor( this.getDepth() / d[2] ) * d[2] / this.getDepth();
 
-    return widthScore + heightScore + depthScore;
+    return widthEfficiency * heightEfficiency * depthEfficiency;
   }
 
   /**
