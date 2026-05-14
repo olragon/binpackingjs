@@ -21,13 +21,6 @@ interface WorkingBin {
   readonly packedBoxes: PackedBox2D[];
 }
 
-function isLargerThan(bin: Bin2D, box: Box2D): boolean {
-  return (
-    (bin.width >= box.width && bin.height >= box.height) ||
-    (bin.height >= box.width && bin.width >= box.height)
-  );
-}
-
 export function pack2D(options: Pack2DOptions): Pack2DResult {
   const { bins, boxes, heuristic, limit } = options;
   const defaultHeuristic = heuristic ?? new BestShortSideFit();

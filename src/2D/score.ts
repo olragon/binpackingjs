@@ -18,6 +18,6 @@ export class Score {
   }
 
   subtract(delta: number): Score {
-    return new Score(this.score1 + delta, this.score2 + delta);
+    return new Score(this.score1 - delta, this.score2 - delta);
   }
 }

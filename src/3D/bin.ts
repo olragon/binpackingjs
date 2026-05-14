@@ -88,7 +88,8 @@ export class MutableBin3D {
   }
 
   weighItem(weight: number): boolean {
-    return !this.maxWeight || weight + this.getPackedWeight() <= this.maxWeight;
+    if (this.maxWeight === 0) return false;
+    return this.maxWeight === Infinity || weight + this.getPackedWeight() <= this.maxWeight;
   }
 
   putItem(

@@ -1,7 +1,6 @@
 import {
   RotationType,
   ALL_ROTATIONS,
-  START_POSITION,
   Axis,
   type Item3D,
   type Bin3D,
@@ -10,7 +9,7 @@ import {
   type PackedBin3D,
   type PackedItem3D,
 } from './types';
-import { factoredInteger } from './util';
+import { factoredInteger, toOriginal } from './util';
 import { normalizeItem, getDimension, getVolume } from './item';
 import { MutableBin3D, normalizeBin, binVolume } from './bin';
 
@@ -59,10 +58,14 @@ function findFittedBin(
   return null;
 }
 
-function getBiggerBinThan(bins: MutableBin3D[], b: MutableBin3D): MutableBin3D | null {
+function getBiggerBinThan(
+  bins: MutableBin3D[],
+  b: MutableBin3D,
+  visited: Set<MutableBin3D>
+): MutableBin3D | null {
   const v = b.getVolume();
   for (const b2 of bins) {
-    if (b2.getVolume() > v) {
+    if (b2.getVolume() > v && !visited.has(b2)) {
       return b2;
     }
   }
@@ -72,14 +75,17 @@ function getBiggerBinThan(bins: MutableBin3D[], b: MutableBin3D): MutableBin3D |
 function packToBin(
   bins: MutableBin3D[],
   b: MutableBin3D,
-  items: NormalizedItem[]
+  items: NormalizedItem[],
+  visited: Set<MutableBin3D> = new Set()
 ): NormalizedItem[] {
   const firstItem = items[0];
   if (!firstItem) return [];
 
+  visited.add(b);
+
   if (!b.weighItem(firstItem.weight)) {
-    const b2 = getBiggerBinThan(bins, b);
-    if (b2) return packToBin(bins, b2, items);
+    const b2 = getBiggerBinThan(bins, b, visited);
+    if (b2) return packToBin(bins, b2, items, visited);
     return items;
   }
 
@@ -95,8 +101,8 @@ function packToBin(
   );
 
   if (!fit) {
-    const b2 = getBiggerBinThan(bins, b);
-    if (b2) return packToBin(bins, b2, items);
+    const b2 = getBiggerBinThan(bins, b, visited);
+    if (b2) return packToBin(bins, b2, items, visited);
     return items;
   }
 
@@ -177,15 +183,26 @@ export function pack3D(options: Pack3DOptions): Pack3DResult {
     items = packToBin(mutableBins, bin, items);
   }
 
-  const packedBins: PackedBin3D[] = mutableBins.map((mb, i) => ({
-    name: mb.name,
-    width: normalizedBins[i]!.source.width,
-    height: normalizedBins[i]!.source.height,
-    depth: normalizedBins[i]!.source.depth,
-    maxWeight: normalizedBins[i]!.source.maxWeight,
-    items: mb.items,
-    volume: mb.getVolume(),
-  }));
+  const packedBins: PackedBin3D[] = mutableBins.map((mb, i) => {
+    const src = normalizedBins[i]!.source;
+    return {
+      name: mb.name,
+      width: src.width,
+      height: src.height,
+      depth: src.depth,
+      maxWeight: src.maxWeight,
+      items: mb.items.map((item) => ({
+        ...item,
+        width: toOriginal(item.width),
+        height: toOriginal(item.height),
+        depth: toOriginal(item.depth),
+        weight: toOriginal(item.weight),
+        position: item.position.map(toOriginal) as unknown as readonly [number, number, number],
+        dimension: item.dimension.map(toOriginal) as unknown as readonly [number, number, number],
+      })),
+      volume: src.width * src.height * src.depth,
+    };
+  });
 
   return { packedBins, unfitItems };
 }

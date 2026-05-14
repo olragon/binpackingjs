@@ -98,8 +98,6 @@ export class FreeRectManager {
     let i = 0;
     while (i < this.rects.length) {
       let j = i + 1;
-      if (j === this.rects.length) break;
-
       let pruned = false;
       while (j < this.rects.length) {
         if (this.isContainedIn(this.rects[i]!, this.rects[j]!)) {

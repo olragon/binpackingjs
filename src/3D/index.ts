@@ -1,5 +1,5 @@
 export { pack3D, Packer3D } from './packer';
-export { factoredInteger } from './util';
+export { factoredInteger, toOriginal } from './util';
 export { getDimension, rectIntersect, itemsIntersect } from './item';
 export { scoreRotation } from './bin';
 export {
