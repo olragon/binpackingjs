@@ -17,7 +17,21 @@ A fast, fully-typed **2D and 3D bin packing** library for JavaScript and TypeScr
 
 ## Playground
 
+> *Playground contributed by [@seanparkross](https://github.com/seanparkross) — thank you!*
+
 Live interactive demos of every feature in this README — `pack2D` / `pack3D`, all four heuristics, rotation control, and a 3D viewer — at **[olragon.github.io/binpackingjs](https://olragon.github.io/binpackingjs/)**.
+
+<p align="center">
+  <img src="docs/screenshots/2d-quickstart.png" alt="2D bin packing — rectangles into bins" width="700" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/2d-heuristics.png" alt="Four heuristic strategies compared side-by-side" width="700" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/3d-quickstart.png" alt="3D bin packing with interactive Three.js viewer" width="700" />
+</p>
 
 Run it locally:
 
@@ -32,7 +46,7 @@ Or build a static bundle for hosting:
 bun run playground:build # outputs to playground/dist
 ```
 
-The playground is auto-deployed to GitHub Pages on every push to `main` via `.github/workflows/playground.yml`. To enable on a fresh fork: repo Settings → Pages → Source: **GitHub Actions**.
+The playground is auto-deployed to GitHub Pages on every push to `master` via `.github/workflows/playground.yml`. To enable on a fresh fork: repo Settings → Pages → Source: **GitHub Actions**.
 
 ## Install
 
