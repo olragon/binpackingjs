@@ -12,6 +12,3 @@ export function colorForName(name: string): string {
   return `hsl(${hue}, 70%, 55%)`;
 }
 
-export function colorForIndex(i: number): string {
-  return colorForName(`__idx_${i}`);
-}

@@ -1,0 +1,21 @@
+{
+  "name": "binpackingjs-playground",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot server.ts",
+    "build": "rm -rf dist && bun build index.html --outdir=dist --target=browser --minify --public-path=./"
+  },
+  "devDependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "@types/bun": "^1.3.14",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.184.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "three": "^0.184.0",
+    "typescript": "^5.8"
+  }
+}

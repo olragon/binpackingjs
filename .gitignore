@@ -1,4 +1,6 @@
 node_modules
 dist
+playground/dist
+playground/node_modules
 .vscode
 .idea

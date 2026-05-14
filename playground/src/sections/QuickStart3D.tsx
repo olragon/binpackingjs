@@ -5,7 +5,6 @@ import { Pack3DViewer, type Decoded3DItem } from "../components/Pack3DViewer";
 import { seed_quickStart3D, type Item3D } from "../util/seeds";
 import { colorForName } from "../util/colors";
 
-const FACTOR = 100000;
 
 const README_INPUT = {
   bin: { name: "Small Box", width: 296, height: 296, depth: 8, maxWeight: 1000 },
@@ -19,8 +18,8 @@ const README_INPUT = {
 function decode(packedBin: any): Decoded3DItem[] {
   return (packedBin?.items ?? []).map((p: any) => ({
     name: p.name,
-    position: [p.position[0] / FACTOR, p.position[1] / FACTOR, p.position[2] / FACTOR],
-    dimension: [p.dimension[0] / FACTOR, p.dimension[1] / FACTOR, p.dimension[2] / FACTOR],
+    position: [p.position[0], p.position[1], p.position[2]],
+    dimension: [p.dimension[0], p.dimension[1], p.dimension[2]],
     color: colorForName(p.name),
   }));
 }
