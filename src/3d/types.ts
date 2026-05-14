@@ -66,6 +66,7 @@ export interface PackedBin3D {
 export interface Pack3DOptions {
   readonly bins: readonly Bin3D[];
   readonly items: readonly Item3D[];
+  readonly factor?: number;
 }
 
 export interface Pack3DResult {

@@ -1,5 +1,5 @@
 import { RotationType, Axis, type Item3D, type PackedItem3D } from './types';
-import { factoredInteger } from './util';
+import { factoredInteger } from '../lib/factor';
 
 export function getDimension(
   width: number,
@@ -55,17 +55,17 @@ export function itemsIntersect(
   );
 }
 
-export function normalizeItem(item: Item3D): {
+export function normalizeItem(item: Item3D, factor: number): {
   width: number;
   height: number;
   depth: number;
   weight: number;
 } {
   return {
-    width: factoredInteger(item.width),
-    height: factoredInteger(item.height),
-    depth: factoredInteger(item.depth),
-    weight: factoredInteger(item.weight),
+    width: factoredInteger(item.width, factor),
+    height: factoredInteger(item.height, factor),
+    depth: factoredInteger(item.depth, factor),
+    weight: factoredInteger(item.weight, factor),
   };
 }
 

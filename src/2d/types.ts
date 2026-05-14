@@ -44,6 +44,7 @@ export interface Pack2DOptions {
   readonly boxes: readonly Box2D[];
   readonly heuristic?: import('./heuristics/types').Heuristic;
   readonly limit?: number | undefined;
+  readonly factor?: number;
 }
 
 export interface Pack2DResult {

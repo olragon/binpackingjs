@@ -9,7 +9,7 @@ import {
   type PackedBin3D,
   type PackedItem3D,
 } from './types';
-import { factoredInteger, toOriginal } from './util';
+import { computeFactor, toOriginal } from '../lib/factor';
 import { normalizeItem, getDimension, getVolume } from './item';
 import { MutableBin3D, normalizeBin, binVolume } from './bin';
 
@@ -22,8 +22,8 @@ interface NormalizedItem {
   readonly allowedRotations: readonly RotationType[];
 }
 
-function normalize(item: Item3D): NormalizedItem {
-  const n = normalizeItem(item);
+function normalize(item: Item3D, factor: number): NormalizedItem {
+  const n = normalizeItem(item, factor);
   return {
     source: item,
     width: n.width,
@@ -159,12 +159,21 @@ function packToBin(
 }
 
 export function pack3D(options: Pack3DOptions): Pack3DResult {
+  const allValues: number[] = [];
+  for (const bin of options.bins) {
+    allValues.push(bin.width, bin.height, bin.depth, bin.maxWeight);
+  }
+  for (const item of options.items) {
+    allValues.push(item.width, item.height, item.depth, item.weight);
+  }
+  const factor = options.factor ?? computeFactor(allValues);
+
   const normalizedBins = options.bins
-    .map((bin) => ({ source: bin, normalized: normalizeBin(bin) }))
+    .map((bin) => ({ source: bin, normalized: normalizeBin(bin, factor) }))
     .sort((a, b) => binVolume(a.normalized) - binVolume(b.normalized));
 
   let items = options.items
-    .map(normalize)
+    .map((item) => normalize(item, factor))
     .sort((a, b) => getVolume(b.width, b.height, b.depth) - getVolume(a.width, a.height, a.depth));
 
   const mutableBins = normalizedBins.map((b) => new MutableBin3D(b.normalized));
@@ -183,6 +192,7 @@ export function pack3D(options: Pack3DOptions): Pack3DResult {
     items = packToBin(mutableBins, bin, items);
   }
 
+  const defactor = (v: number) => toOriginal(v, factor);
   const packedBins: PackedBin3D[] = mutableBins.map((mb, i) => {
     const src = normalizedBins[i]!.source;
     return {
@@ -193,12 +203,12 @@ export function pack3D(options: Pack3DOptions): Pack3DResult {
       maxWeight: src.maxWeight,
       items: mb.items.map((item) => ({
         ...item,
-        width: toOriginal(item.width),
-        height: toOriginal(item.height),
-        depth: toOriginal(item.depth),
-        weight: toOriginal(item.weight),
-        position: item.position.map(toOriginal) as unknown as readonly [number, number, number],
-        dimension: item.dimension.map(toOriginal) as unknown as readonly [number, number, number],
+        width: defactor(item.width),
+        height: defactor(item.height),
+        depth: defactor(item.depth),
+        weight: defactor(item.weight),
+        position: item.position.map(defactor) as unknown as readonly [number, number, number],
+        dimension: item.dimension.map(defactor) as unknown as readonly [number, number, number],
       })),
       volume: src.width * src.height * src.depth,
     };

@@ -11,6 +11,7 @@ import type { Heuristic as HeuristicInterface } from './heuristics/types';
 import { BestShortSideFit } from './heuristics/best-short-side-fit';
 import { FreeRectManager } from './free-rect-manager';
 import { findBestEntry } from './scoreboard';
+import { computeFactor, factoredInteger, toOriginal } from '../lib/factor';
 
 interface WorkingBin {
   readonly source: Bin2D;
@@ -25,47 +26,71 @@ export function pack2D(options: Pack2DOptions): Pack2DResult {
   const { bins, boxes, heuristic, limit } = options;
   const defaultHeuristic = heuristic ?? new BestShortSideFit();
 
-  const workingBins: WorkingBin[] = bins.map((bin) => ({
-    source: bin,
-    width: bin.width,
-    height: bin.height,
-    freeRects: new FreeRectManager(bin.width, bin.height),
-    heuristic: defaultHeuristic,
-    packedBoxes: [],
-  }));
+  const allValues: number[] = [];
+  for (const bin of bins) {
+    allValues.push(bin.width, bin.height);
+  }
+  for (const box of boxes) {
+    allValues.push(box.width, box.height);
+  }
+  const factor = options.factor ?? computeFactor(allValues);
+
+  const factoredBoxes: Box2D[] = boxes.map((box) => {
+    const fb: Box2D = {
+      width: factoredInteger(box.width, factor),
+      height: factoredInteger(box.height, factor),
+      ...(box.constrainRotation !== undefined && { constrainRotation: box.constrainRotation }),
+    };
+    return fb;
+  });
+
+  const workingBins: WorkingBin[] = bins.map((bin) => {
+    const w = factoredInteger(bin.width, factor);
+    const h = factoredInteger(bin.height, factor);
+    return {
+      source: bin,
+      width: w,
+      height: h,
+      freeRects: new FreeRectManager(w, h),
+      heuristic: defaultHeuristic,
+      packedBoxes: [],
+    };
+  });
 
   const packedFlags = new Array<boolean>(boxes.length).fill(false);
   let packedCount = 0;
   const maxPack = limit ?? boxes.length;
 
   while (packedCount < maxPack) {
-    const entry = findBestEntry(workingBins, boxes, packedFlags);
+    const entry = findBestEntry(workingBins, factoredBoxes, packedFlags);
     if (!entry) break;
 
     const bin = workingBins[entry.binIndex]!;
-    const box = boxes[entry.boxIndex]!;
+    const fBox = factoredBoxes[entry.boxIndex]!;
 
     const placement = bin.heuristic.findPosition(
-      box.width,
-      box.height,
+      fBox.width,
+      fBox.height,
       bin.freeRects.getRects(),
-      box.constrainRotation
+      fBox.constrainRotation
     );
 
     if (!placement) break;
 
     bin.freeRects.insert(placement);
 
+    const sourceBox = boxes[entry.boxIndex]!;
     const rotated =
-      placement.width !== box.width || placement.height !== box.height;
+      placement.width !== fBox.width || placement.height !== fBox.height;
 
+    const defactor = (v: number) => toOriginal(v, factor);
     bin.packedBoxes.push({
-      width: placement.width,
-      height: placement.height,
-      x: placement.x,
-      y: placement.y,
+      width: rotated ? sourceBox.height : sourceBox.width,
+      height: rotated ? sourceBox.width : sourceBox.height,
+      x: defactor(placement.x),
+      y: defactor(placement.y),
       rotated,
-      sourceBox: box,
+      sourceBox,
     });
 
     packedFlags[entry.boxIndex] = true;
@@ -73,14 +98,14 @@ export function pack2D(options: Pack2DOptions): Pack2DResult {
   }
 
   const packedBins: PackedBin2D[] = workingBins.map((wb) => {
-    const binArea = wb.width * wb.height;
+    const binArea = wb.source.width * wb.source.height;
     const boxesArea = wb.packedBoxes.reduce(
       (sum, b) => sum + b.width * b.height,
       0
     );
     return {
-      width: wb.width,
-      height: wb.height,
+      width: wb.source.width,
+      height: wb.source.height,
       boxes: wb.packedBoxes,
       efficiency: binArea > 0 ? (boxesArea * 100) / binArea : 0,
     };

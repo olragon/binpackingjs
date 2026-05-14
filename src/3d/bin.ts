@@ -1,5 +1,5 @@
 import { RotationType, ALL_ROTATIONS, type Bin3D, type Item3D, type PackedItem3D } from './types';
-import { factoredInteger } from './util';
+import { factoredInteger } from '../lib/factor';
 import { getDimension, itemsIntersect, getVolume } from './item';
 import { createLogger } from '../lib/log';
 
@@ -13,13 +13,13 @@ interface NormalizedBin {
   readonly maxWeight: number;
 }
 
-export function normalizeBin(bin: Bin3D): NormalizedBin {
+export function normalizeBin(bin: Bin3D, factor: number): NormalizedBin {
   return {
     name: bin.name,
-    width: factoredInteger(bin.width),
-    height: factoredInteger(bin.height),
-    depth: factoredInteger(bin.depth),
-    maxWeight: factoredInteger(bin.maxWeight),
+    width: factoredInteger(bin.width, factor),
+    height: factoredInteger(bin.height, factor),
+    depth: factoredInteger(bin.depth, factor),
+    maxWeight: factoredInteger(bin.maxWeight, factor),
   };
 }
 
