@@ -19,6 +19,11 @@ export function App() {
       <ImperativeAPI />
       <footer>
         Built with binpackingjs + React + three.js · runs entirely in the browser
+        <br />
+        Library by{" "}
+        <a href="https://github.com/olragon" target="_blank" rel="noreferrer">@olragon</a>
+        {" · "}Playground by{" "}
+        <a href="https://github.com/seanparkross" target="_blank" rel="noreferrer">@seanparkross</a>
       </footer>
     </div>
   );

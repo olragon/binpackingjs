@@ -380,4 +380,14 @@ footer {
   padding-top: 40px;
   border-top: 1px solid #1b1e28;
   margin-top: 24px;
+  line-height: 2;
+}
+
+footer a {
+  color: #5c7cfa;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }

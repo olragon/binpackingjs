@@ -3,7 +3,7 @@ import React from "react";
 export function Hero() {
   return (
     <div className="hero">
-      <span className="badge">binpackingjs · v4</span>
+      <span className="badge">binpackingjs · v4.0.1</span>
       <h1>2D & 3D bin packing, visualised.</h1>
       <p className="lede">
         A faithful, zero-dependency JavaScript library that packs rectangles into bins
