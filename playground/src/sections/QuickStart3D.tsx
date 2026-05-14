@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { pack3D } from "../../../src/3D";
+import { pack3D } from "../../../src/3d";
 import { DemoCard } from "../components/DemoCard";
 import { Pack3DViewer, type Decoded3DItem } from "../components/Pack3DViewer";
 import { seed_quickStart3D, type Item3D } from "../util/seeds";

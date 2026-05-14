@@ -5,7 +5,7 @@ import {
   BestAreaFit,
   BestLongSideFit,
   BottomLeft,
-} from "../../../src/2D";
+} from "../../../src/2d";
 import { DemoCard } from "../components/DemoCard";
 import { Pack2DViewer } from "../components/Pack2DViewer";
 import { seed_heuristics2D, type Bin2D, type Box2D } from "../util/seeds";

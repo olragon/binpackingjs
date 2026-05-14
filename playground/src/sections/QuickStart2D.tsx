@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { pack2D } from "../../../src/2D";
+import { pack2D } from "../../../src/2d";
 import { DemoCard } from "../components/DemoCard";
 import { Pack2DViewer } from "../components/Pack2DViewer";
 import { seed_quickStart2D, type Bin2D, type Box2D } from "../util/seeds";

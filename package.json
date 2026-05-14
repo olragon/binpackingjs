@@ -20,21 +20,21 @@
     "./2d": {
       "import": {
         "types": "./dist/types/2d/index.d.ts",
-        "default": "./dist/esm/2D/index.js"
+        "default": "./dist/esm/2d/index.js"
       },
       "require": {
         "types": "./dist/types/2d/index.d.ts",
-        "default": "./dist/cjs/2D/index.js"
+        "default": "./dist/cjs/2d/index.js"
       }
     },
     "./3d": {
       "import": {
         "types": "./dist/types/3d/index.d.ts",
-        "default": "./dist/esm/3D/index.js"
+        "default": "./dist/esm/3d/index.js"
       },
       "require": {
         "types": "./dist/types/3d/index.d.ts",
-        "default": "./dist/cjs/3D/index.js"
+        "default": "./dist/cjs/3d/index.js"
       }
     }
   },
