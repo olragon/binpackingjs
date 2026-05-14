@@ -2,5 +2,6 @@ node_modules
 dist
 playground/dist
 playground/node_modules
+CLAUDE.md
 .vscode
 .idea
