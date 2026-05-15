@@ -140,6 +140,36 @@ describe('3D Bin Packing', () => {
       expect(result.packedBins[0]!.items.length).toBe(1);
       expect(item.width).toBe(10);
     });
+
+    it('packs a mixed ecommerce order into Packrift carton fixtures', () => {
+      // Public fixture source: https://packrift.github.io/packaging-optimization-benchmark-corpus/cartonization-solver-fixtures.html
+      const result = pack3D({
+        bins: [
+          { name: 'Packrift 10x6x6 carton', width: 10, height: 6, depth: 6, maxWeight: 65 },
+          { name: 'Packrift 16x8x4 carton', width: 16, height: 8, depth: 4, maxWeight: 65 },
+          { name: 'Packrift 20x14x6 carton', width: 20, height: 14, depth: 6, maxWeight: 65 },
+          { name: 'Packrift 24x10x8 carton', width: 24, height: 10, depth: 8, maxWeight: 65 },
+          { name: 'Packrift 40x20x20 carton', width: 40, height: 20, depth: 20, maxWeight: 65 },
+        ],
+        items: [
+          { name: 'demo-small-item', width: 7.5, height: 4.5, depth: 3.5, weight: 1 },
+          { name: 'demo-flat-item-1', width: 15, height: 7, depth: 2.5, weight: 2 },
+          { name: 'demo-flat-item-2', width: 15, height: 7, depth: 2.5, weight: 2 },
+          { name: 'demo-long-item', width: 21, height: 8.5, depth: 5, weight: 3 },
+          { name: 'demo-bulk-item-1', width: 18, height: 12, depth: 5.5, weight: 4 },
+          { name: 'demo-bulk-item-2', width: 18, height: 12, depth: 5.5, weight: 4 },
+          { name: 'demo-bulk-item-3', width: 18, height: 12, depth: 5.5, weight: 4 },
+          { name: 'demo-bulk-item-4', width: 18, height: 12, depth: 5.5, weight: 4 },
+        ],
+      });
+
+      const packedItemCount = result.packedBins.reduce((count, bin) => count + bin.items.length, 0);
+      const largeCarton = result.packedBins.find((bin) => bin.name === 'Packrift 40x20x20 carton');
+
+      expect(packedItemCount).toBe(8);
+      expect(largeCarton?.items.length).toBeGreaterThan(0);
+      expect(result.unfitItems.length).toBe(0);
+    });
   });
 
   describe('Packer3D class', () => {
